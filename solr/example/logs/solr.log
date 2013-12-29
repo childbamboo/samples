@@ -1,0 +1,944 @@
+INFO  - 2013-12-29 16:19:33.010; org.eclipse.jetty.server.Server; jetty-8.1.10.v20130312
+INFO  - 2013-12-29 16:19:33.051; org.eclipse.jetty.deploy.providers.ScanningAppProvider; Deployment monitor /Users/childbamboo1980/git/samples/solr/example/contexts at interval 0
+INFO  - 2013-12-29 16:19:33.059; org.eclipse.jetty.deploy.DeploymentManager; Deployable added: /Users/childbamboo1980/git/samples/solr/example/contexts/solr-jetty-context.xml
+INFO  - 2013-12-29 16:19:33.146; org.eclipse.jetty.webapp.WebInfConfiguration; Extract jar:file:/Users/childbamboo1980/git/samples/solr/example/webapps/solr.war!/ to /Users/childbamboo1980/git/samples/solr/example/solr-webapp/webapp
+INFO  - 2013-12-29 16:19:36.493; org.eclipse.jetty.webapp.StandardDescriptorProcessor; NO JSP Support for /solr, did not find org.apache.jasper.servlet.JspServlet
+INFO  - 2013-12-29 16:19:36.574; org.apache.solr.servlet.SolrDispatchFilter; SolrDispatchFilter.init()
+INFO  - 2013-12-29 16:19:36.598; org.apache.solr.core.SolrResourceLoader; JNDI not configured for solr (NoInitialContextEx)
+INFO  - 2013-12-29 16:19:36.599; org.apache.solr.core.SolrResourceLoader; solr home defaulted to 'solr/' (could not find system property or JNDI)
+INFO  - 2013-12-29 16:19:36.600; org.apache.solr.core.SolrResourceLoader; new SolrResourceLoader for directory: 'solr/'
+INFO  - 2013-12-29 16:19:36.763; org.apache.solr.core.ConfigSolr; Loading container configuration from /Users/childbamboo1980/git/samples/solr/example/solr/solr.xml
+INFO  - 2013-12-29 16:19:37.000; org.apache.solr.core.ConfigSolrXml; Config-defined core root directory: 
+INFO  - 2013-12-29 16:19:37.014; org.apache.solr.core.CoreContainer; New CoreContainer 2000169429
+INFO  - 2013-12-29 16:19:37.014; org.apache.solr.core.CoreContainer; Loading cores into CoreContainer [instanceDir=solr/]
+INFO  - 2013-12-29 16:19:37.033; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting socketTimeout to: 0
+INFO  - 2013-12-29 16:19:37.034; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting urlScheme to: http://
+INFO  - 2013-12-29 16:19:37.035; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting connTimeout to: 0
+INFO  - 2013-12-29 16:19:37.039; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting maxConnectionsPerHost to: 20
+INFO  - 2013-12-29 16:19:37.039; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting corePoolSize to: 0
+INFO  - 2013-12-29 16:19:37.040; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting maximumPoolSize to: 2147483647
+INFO  - 2013-12-29 16:19:37.040; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting maxThreadIdleTime to: 5
+INFO  - 2013-12-29 16:19:37.041; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting sizeOfQueue to: -1
+INFO  - 2013-12-29 16:19:37.041; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting fairnessPolicy to: false
+INFO  - 2013-12-29 16:19:37.399; org.apache.solr.logging.LogWatcher; SLF4J impl is org.slf4j.impl.Log4jLoggerFactory
+INFO  - 2013-12-29 16:19:37.400; org.apache.solr.logging.LogWatcher; Registering Log Listener [Log4j (org.slf4j.impl.Log4jLoggerFactory)]
+INFO  - 2013-12-29 16:19:37.451; org.apache.solr.core.CorePropertiesLocator; Looking for core definitions underneath /Users/childbamboo1980/git/samples/solr/example/solr
+INFO  - 2013-12-29 16:19:37.475; org.apache.solr.core.CorePropertiesLocator; Found core collection1 in /Users/childbamboo1980/git/samples/solr/example/solr/collection1/
+INFO  - 2013-12-29 16:19:37.476; org.apache.solr.core.CorePropertiesLocator; Found 1 core definitions
+INFO  - 2013-12-29 16:19:37.478; org.apache.solr.core.CoreContainer; Creating SolrCore 'collection1' using instanceDir: /Users/childbamboo1980/git/samples/solr/example/solr/collection1
+INFO  - 2013-12-29 16:19:37.479; org.apache.solr.core.SolrResourceLoader; new SolrResourceLoader for directory: '/Users/childbamboo1980/git/samples/solr/example/solr/collection1/'
+INFO  - 2013-12-29 16:19:37.603; org.apache.solr.core.SolrConfig; Adding specified lib dirs to ClassLoader
+WARN  - 2013-12-29 16:19:37.604; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../contrib/extraction/lib (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../contrib/extraction/lib).
+WARN  - 2013-12-29 16:19:37.606; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../dist/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../dist).
+WARN  - 2013-12-29 16:19:37.606; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../contrib/clustering/lib/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../contrib/clustering/lib).
+WARN  - 2013-12-29 16:19:37.607; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../dist/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../dist).
+WARN  - 2013-12-29 16:19:37.607; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../contrib/langid/lib/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../contrib/langid/lib).
+WARN  - 2013-12-29 16:19:37.608; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../dist/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../dist).
+WARN  - 2013-12-29 16:19:37.608; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../contrib/velocity/lib (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../contrib/velocity/lib).
+WARN  - 2013-12-29 16:19:37.609; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../dist/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../dist).
+INFO  - 2013-12-29 16:19:37.831; org.apache.solr.update.SolrIndexConfig; IndexWriter infoStream solr logging is enabled
+INFO  - 2013-12-29 16:19:37.841; org.apache.solr.core.SolrConfig; Using Lucene MatchVersion: LUCENE_46
+INFO  - 2013-12-29 16:19:38.076; org.apache.solr.core.SolrConfig; Loaded SolrConfig: solrconfig.xml
+INFO  - 2013-12-29 16:19:38.084; org.apache.solr.schema.IndexSchema; Reading Solr Schema from schema.xml
+INFO  - 2013-12-29 16:19:38.250; org.apache.solr.schema.IndexSchema; [collection1] Schema name=example
+INFO  - 2013-12-29 16:19:39.084; org.apache.solr.schema.IndexSchema; unique key field: id
+INFO  - 2013-12-29 16:19:39.214; org.apache.solr.schema.FileExchangeRateProvider; Reloading exchange rates from file currency.xml
+INFO  - 2013-12-29 16:19:39.225; org.apache.solr.schema.FileExchangeRateProvider; Reloading exchange rates from file currency.xml
+INFO  - 2013-12-29 16:19:39.489; org.apache.solr.core.SolrCore; solr.NRTCachingDirectoryFactory
+INFO  - 2013-12-29 16:19:39.498; org.apache.solr.core.SolrCore; [collection1] Opening new SolrCore at /Users/childbamboo1980/git/samples/solr/example/solr/collection1/, dataDir=/Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/
+INFO  - 2013-12-29 16:19:39.500; org.apache.solr.core.JmxMonitoredMap; No JMX servers found, not exposing Solr information with JMX.
+INFO  - 2013-12-29 16:19:39.505; org.apache.solr.core.SolrCore; [collection1] Added SolrEventListener for newSearcher: org.apache.solr.core.QuerySenderListener{queries=[]}
+INFO  - 2013-12-29 16:19:39.505; org.apache.solr.core.SolrCore; [collection1] Added SolrEventListener for firstSearcher: org.apache.solr.core.QuerySenderListener{queries=[{q=static firstSearcher warming in solrconfig.xml}]}
+INFO  - 2013-12-29 16:19:39.522; org.apache.solr.core.CachingDirectoryFactory; return new directory for /Users/childbamboo1980/git/samples/solr/example/solr/collection1/data
+INFO  - 2013-12-29 16:19:39.522; org.apache.solr.core.SolrCore; New index directory detected: old=null new=/Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index/
+WARN  - 2013-12-29 16:19:39.523; org.apache.solr.core.SolrCore; [collection1] Solr index directory '/Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index' doesn't exist. Creating new index...
+INFO  - 2013-12-29 16:19:39.532; org.apache.solr.core.CachingDirectoryFactory; return new directory for /Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index
+INFO  - 2013-12-29 16:19:39.609; org.apache.solr.core.SolrDeletionPolicy; SolrDeletionPolicy.onCommit: commits: num=1
+	commit{dir=NRTCachingDirectory(org.apache.lucene.store.NIOFSDirectory@/Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index lockFactory=org.apache.lucene.store.NativeFSLockFactory@68b57af1; maxCacheMB=48.0 maxMergeSizeMB=4.0),segFN=segments_1,generation=1}
+INFO  - 2013-12-29 16:19:39.610; org.apache.solr.core.SolrDeletionPolicy; newest commit generation = 1
+INFO  - 2013-12-29 16:19:39.616; org.apache.solr.core.SolrCore; created json: solr.JSONResponseWriter
+INFO  - 2013-12-29 16:19:39.617; org.apache.solr.core.SolrCore; adding lazy queryResponseWriter: solr.VelocityResponseWriter
+INFO  - 2013-12-29 16:19:39.617; org.apache.solr.core.SolrCore; created velocity: solr.VelocityResponseWriter
+INFO  - 2013-12-29 16:19:39.621; org.apache.solr.core.SolrCore; created xslt: solr.XSLTResponseWriter
+INFO  - 2013-12-29 16:19:39.622; org.apache.solr.response.XSLTResponseWriter; xsltCacheLifetimeSeconds=5
+INFO  - 2013-12-29 16:19:39.732; org.apache.solr.core.SolrCore; no updateRequestProcessorChain defined as default, creating implicit default
+INFO  - 2013-12-29 16:19:39.743; org.apache.solr.core.RequestHandlers; created /select: solr.SearchHandler
+INFO  - 2013-12-29 16:19:39.744; org.apache.solr.core.RequestHandlers; created /query: solr.SearchHandler
+INFO  - 2013-12-29 16:19:39.746; org.apache.solr.core.RequestHandlers; created /get: solr.RealTimeGetHandler
+INFO  - 2013-12-29 16:19:39.746; org.apache.solr.core.RequestHandlers; created /browse: solr.SearchHandler
+INFO  - 2013-12-29 16:19:39.749; org.apache.solr.core.RequestHandlers; created /update: solr.UpdateRequestHandler
+WARN  - 2013-12-29 16:19:39.768; org.apache.solr.core.SolrResourceLoader; Solr loaded a deprecated plugin/analysis class [solr.JsonUpdateRequestHandler]. Please consult documentation how to replace it accordingly.
+INFO  - 2013-12-29 16:19:39.768; org.apache.solr.core.RequestHandlers; created /update/json: solr.JsonUpdateRequestHandler
+WARN  - 2013-12-29 16:19:39.770; org.apache.solr.core.SolrResourceLoader; Solr loaded a deprecated plugin/analysis class [solr.CSVRequestHandler]. Please consult documentation how to replace it accordingly.
+INFO  - 2013-12-29 16:19:39.771; org.apache.solr.core.RequestHandlers; created /update/csv: solr.CSVRequestHandler
+INFO  - 2013-12-29 16:19:39.771; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.extraction.ExtractingRequestHandler
+INFO  - 2013-12-29 16:19:39.772; org.apache.solr.core.RequestHandlers; created /update/extract: solr.extraction.ExtractingRequestHandler
+INFO  - 2013-12-29 16:19:39.772; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.FieldAnalysisRequestHandler
+INFO  - 2013-12-29 16:19:39.772; org.apache.solr.core.RequestHandlers; created /analysis/field: solr.FieldAnalysisRequestHandler
+INFO  - 2013-12-29 16:19:39.773; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.DocumentAnalysisRequestHandler
+INFO  - 2013-12-29 16:19:39.773; org.apache.solr.core.RequestHandlers; created /analysis/document: solr.DocumentAnalysisRequestHandler
+INFO  - 2013-12-29 16:19:39.775; org.apache.solr.core.RequestHandlers; created /admin/: solr.admin.AdminHandlers
+INFO  - 2013-12-29 16:19:39.777; org.apache.solr.core.RequestHandlers; created /admin/ping: solr.PingRequestHandler
+INFO  - 2013-12-29 16:19:39.780; org.apache.solr.core.RequestHandlers; created /debug/dump: solr.DumpRequestHandler
+INFO  - 2013-12-29 16:19:39.791; org.apache.solr.core.RequestHandlers; created /replication: solr.ReplicationHandler
+INFO  - 2013-12-29 16:19:39.791; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.SearchHandler
+INFO  - 2013-12-29 16:19:39.792; org.apache.solr.core.RequestHandlers; created /spell: solr.SearchHandler
+INFO  - 2013-12-29 16:19:39.792; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.SearchHandler
+INFO  - 2013-12-29 16:19:39.792; org.apache.solr.core.RequestHandlers; created /tvrh: solr.SearchHandler
+INFO  - 2013-12-29 16:19:39.792; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: org.apache.solr.handler.js.JavaScriptRequestHandler
+INFO  - 2013-12-29 16:19:39.793; org.apache.solr.core.RequestHandlers; created /js: org.apache.solr.handler.js.JavaScriptRequestHandler
+INFO  - 2013-12-29 16:19:39.793; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.SearchHandler
+INFO  - 2013-12-29 16:19:39.793; org.apache.solr.core.RequestHandlers; created /terms: solr.SearchHandler
+INFO  - 2013-12-29 16:19:39.793; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.SearchHandler
+INFO  - 2013-12-29 16:19:39.794; org.apache.solr.core.RequestHandlers; created /elevate: solr.SearchHandler
+INFO  - 2013-12-29 16:19:39.819; org.apache.solr.handler.loader.XMLLoader; xsltCacheLifetimeSeconds=60
+INFO  - 2013-12-29 16:19:39.822; org.apache.solr.handler.loader.XMLLoader; xsltCacheLifetimeSeconds=60
+INFO  - 2013-12-29 16:19:39.823; org.apache.solr.handler.loader.XMLLoader; xsltCacheLifetimeSeconds=60
+INFO  - 2013-12-29 16:19:39.848; org.apache.solr.update.CommitTracker; Hard AutoCommit: if uncommited for 15000ms; 
+INFO  - 2013-12-29 16:19:39.848; org.apache.solr.update.CommitTracker; Soft AutoCommit: disabled
+INFO  - 2013-12-29 16:19:39.855; org.apache.solr.core.SolrDeletionPolicy; SolrDeletionPolicy.onInit: commits: num=1
+	commit{dir=NRTCachingDirectory(org.apache.lucene.store.NIOFSDirectory@/Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index lockFactory=org.apache.lucene.store.NativeFSLockFactory@68b57af1; maxCacheMB=48.0 maxMergeSizeMB=4.0),segFN=segments_1,generation=1}
+INFO  - 2013-12-29 16:19:39.856; org.apache.solr.core.SolrDeletionPolicy; newest commit generation = 1
+INFO  - 2013-12-29 16:19:39.865; org.apache.solr.search.SolrIndexSearcher; Opening Searcher@675ee9e3 main
+INFO  - 2013-12-29 16:19:39.872; org.apache.solr.handler.component.SpellCheckComponent; Initializing spell checkers
+INFO  - 2013-12-29 16:19:39.883; org.apache.solr.spelling.DirectSolrSpellChecker; init: {name=default,field=text,classname=solr.DirectSolrSpellChecker,distanceMeasure=internal,accuracy=0.5,maxEdits=2,minPrefix=1,maxInspections=5,minQueryLength=4,maxQueryFrequency=0.01}
+INFO  - 2013-12-29 16:19:39.892; org.apache.solr.handler.component.SpellCheckComponent; No queryConverter defined, using default converter
+INFO  - 2013-12-29 16:19:39.895; org.apache.solr.handler.component.QueryElevationComponent; Loading QueryElevation from: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/conf/elevate.xml
+INFO  - 2013-12-29 16:19:39.961; org.apache.solr.handler.ReplicationHandler; Commits will be reserved for  10000
+INFO  - 2013-12-29 16:19:39.962; org.apache.solr.core.CoreContainer; registering core: collection1
+INFO  - 2013-12-29 16:19:39.962; org.apache.solr.core.QuerySenderListener; QuerySenderListener sending requests to Searcher@675ee9e3 main{StandardDirectoryReader(segments_1:1:nrt)}
+INFO  - 2013-12-29 16:19:39.966; org.apache.solr.servlet.SolrDispatchFilter; user.dir=/Users/childbamboo1980/git/samples/solr/example
+INFO  - 2013-12-29 16:19:39.986; org.apache.solr.servlet.SolrDispatchFilter; SolrDispatchFilter.init() done
+INFO  - 2013-12-29 16:19:40.189; org.apache.solr.core.SolrCore; [collection1] webapp=null path=null params={event=firstSearcher&q=static+firstSearcher+warming+in+solrconfig.xml&distrib=false} hits=0 status=0 QTime=219 
+INFO  - 2013-12-29 16:19:40.190; org.apache.solr.core.QuerySenderListener; QuerySenderListener done.
+INFO  - 2013-12-29 16:19:40.190; org.apache.solr.handler.component.SpellCheckComponent$SpellCheckerListener; Loading spell index for spellchecker: default
+INFO  - 2013-12-29 16:19:40.195; org.apache.solr.handler.component.SpellCheckComponent$SpellCheckerListener; Loading spell index for spellchecker: wordbreak
+INFO  - 2013-12-29 16:19:40.196; org.apache.solr.core.SolrCore; [collection1] Registered new searcher Searcher@675ee9e3 main{StandardDirectoryReader(segments_1:1:nrt)}
+INFO  - 2013-12-29 16:19:40.208; org.eclipse.jetty.server.AbstractConnector; Started SocketConnector@0.0.0.0:8983
+INFO  - 2013-12-29 16:19:50.392; org.apache.solr.servlet.SolrDispatchFilter; [admin] webapp=null path=/admin/cores params={indexInfo=false&_=1388301590334&wt=json} status=0 QTime=6 
+INFO  - 2013-12-29 16:19:50.614; org.apache.solr.servlet.SolrDispatchFilter; [admin] webapp=null path=/admin/info/system params={_=1388301590472&wt=json} status=0 QTime=122 
+INFO  - 2013-12-29 16:19:51.787; org.apache.solr.servlet.SolrDispatchFilter; [admin] webapp=null path=/admin/info/logging params={_=1388301591766&since=0&wt=json} status=0 QTime=3 
+INFO  - 2013-12-29 16:19:59.046; org.apache.solr.core.SolrCore; [collection1] webapp=/solr path=/admin/file/ params={file=admin-extra.menu-top.html&_=1388301599012&contentType=text/html;charset%3Dutf-8} status=0 QTime=12 
+INFO  - 2013-12-29 16:19:59.065; org.apache.solr.core.SolrCore; [collection1] webapp=/solr path=/admin/file/ params={file=admin-extra.menu-bottom.html&_=1388301599013&contentType=text/html;charset%3Dutf-8} status=0 QTime=2 
+INFO  - 2013-12-29 16:19:59.183; org.apache.solr.core.SolrCore; [collection1] webapp=/solr path=/replication params={command=details&_=1388301599135&wt=json} status=0 QTime=6 
+INFO  - 2013-12-29 16:19:59.208; org.apache.solr.core.SolrCore; [collection1] webapp=/solr path=/admin/luke params={numTerms=0&_=1388301599128&show=index&wt=json} status=0 QTime=17 
+INFO  - 2013-12-29 16:19:59.199; org.apache.solr.core.SolrCore; [collection1] webapp=/solr path=/admin/file/ params={file=admin-extra.html&_=1388301599139} status=0 QTime=2 
+INFO  - 2013-12-29 16:19:59.318; org.apache.solr.core.SolrCore; [collection1] webapp=/solr path=/admin/ping params={action=status&_=1388301599141&wt=json} status=503 QTime=93 
+INFO  - 2013-12-29 16:19:59.394; org.apache.solr.core.SolrCore; [collection1] webapp=/solr path=/admin/system params={_=1388301599137&wt=json} status=0 QTime=192 
+INFO  - 2013-12-29 16:20:07.225; org.eclipse.jetty.server.Server; Graceful shutdown SocketConnector@0.0.0.0:8983
+INFO  - 2013-12-29 16:20:07.227; org.eclipse.jetty.server.Server; Graceful shutdown o.e.j.w.WebAppContext{/solr,file:/Users/childbamboo1980/git/samples/solr/example/solr-webapp/webapp/},/Users/childbamboo1980/git/samples/solr/example/webapps/solr.war
+INFO  - 2013-12-29 16:20:08.244; org.apache.solr.core.CoreContainer; Shutting down CoreContainer instance=2000169429
+INFO  - 2013-12-29 16:20:08.245; org.apache.solr.core.SolrCore; [collection1]  CLOSING SolrCore org.apache.solr.core.SolrCore@5a56182f
+INFO  - 2013-12-29 16:20:08.247; org.apache.solr.update.DirectUpdateHandler2; closing DirectUpdateHandler2{commits=0,autocommit maxTime=15000ms,autocommits=0,soft autocommits=0,optimizes=0,rollbacks=0,expungeDeletes=0,docsPending=0,adds=0,deletesById=0,deletesByQuery=0,errors=0,cumulative_adds=0,cumulative_deletesById=0,cumulative_deletesByQuery=0,cumulative_errors=0}
+INFO  - 2013-12-29 16:20:08.248; org.apache.solr.update.SolrCoreState; Closing SolrCoreState
+INFO  - 2013-12-29 16:20:08.248; org.apache.solr.update.DefaultSolrCoreState; SolrCoreState ref count has reached 0 - closing IndexWriter
+INFO  - 2013-12-29 16:20:08.249; org.apache.solr.update.DefaultSolrCoreState; closing IndexWriter with IndexWriterCloser
+INFO  - 2013-12-29 16:20:08.252; org.apache.solr.core.SolrCore; [collection1] Closing main searcher on request.
+INFO  - 2013-12-29 16:20:08.253; org.apache.solr.core.CachingDirectoryFactory; Closing NRTCachingDirectoryFactory - 2 directories currently being tracked
+INFO  - 2013-12-29 16:20:08.254; org.apache.solr.core.CachingDirectoryFactory; looking to close /Users/childbamboo1980/git/samples/solr/example/solr/collection1/data [CachedDir<<refCount=0;path=/Users/childbamboo1980/git/samples/solr/example/solr/collection1/data;done=false>>]
+INFO  - 2013-12-29 16:20:08.254; org.apache.solr.core.CachingDirectoryFactory; Closing directory: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/data
+INFO  - 2013-12-29 16:20:08.255; org.apache.solr.core.CachingDirectoryFactory; looking to close /Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index [CachedDir<<refCount=0;path=/Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index;done=false>>]
+INFO  - 2013-12-29 16:20:08.255; org.apache.solr.core.CachingDirectoryFactory; Closing directory: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index
+INFO  - 2013-12-29 16:20:08.259; org.eclipse.jetty.server.handler.ContextHandler; stopped o.e.j.w.WebAppContext{/solr,file:/Users/childbamboo1980/git/samples/solr/example/solr-webapp/webapp/},/Users/childbamboo1980/git/samples/solr/example/webapps/solr.war
+INFO  - 2013-12-29 16:20:58.190; org.eclipse.jetty.server.Server; jetty-8.1.10.v20130312
+INFO  - 2013-12-29 16:20:58.223; org.eclipse.jetty.deploy.providers.ScanningAppProvider; Deployment monitor /Users/childbamboo1980/git/samples/solr/example/contexts at interval 0
+INFO  - 2013-12-29 16:20:58.230; org.eclipse.jetty.deploy.DeploymentManager; Deployable added: /Users/childbamboo1980/git/samples/solr/example/contexts/solr-jetty-context.xml
+INFO  - 2013-12-29 16:21:00.557; org.eclipse.jetty.webapp.StandardDescriptorProcessor; NO JSP Support for /solr, did not find org.apache.jasper.servlet.JspServlet
+INFO  - 2013-12-29 16:21:00.645; org.apache.solr.servlet.SolrDispatchFilter; SolrDispatchFilter.init()
+INFO  - 2013-12-29 16:21:00.665; org.apache.solr.core.SolrResourceLoader; JNDI not configured for solr (NoInitialContextEx)
+INFO  - 2013-12-29 16:21:00.666; org.apache.solr.core.SolrResourceLoader; solr home defaulted to 'solr/' (could not find system property or JNDI)
+INFO  - 2013-12-29 16:21:00.667; org.apache.solr.core.SolrResourceLoader; new SolrResourceLoader for directory: 'solr/'
+INFO  - 2013-12-29 16:21:00.838; org.apache.solr.core.ConfigSolr; Loading container configuration from /Users/childbamboo1980/git/samples/solr/example/solr/solr.xml
+INFO  - 2013-12-29 16:21:01.022; org.apache.solr.core.ConfigSolrXml; Config-defined core root directory: 
+INFO  - 2013-12-29 16:21:01.097; org.apache.solr.core.CoreContainer; New CoreContainer 208924888
+INFO  - 2013-12-29 16:21:01.102; org.apache.solr.core.CoreContainer; Loading cores into CoreContainer [instanceDir=solr/]
+INFO  - 2013-12-29 16:21:01.141; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting socketTimeout to: 0
+INFO  - 2013-12-29 16:21:01.143; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting urlScheme to: http://
+INFO  - 2013-12-29 16:21:01.143; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting connTimeout to: 0
+INFO  - 2013-12-29 16:21:01.156; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting maxConnectionsPerHost to: 20
+INFO  - 2013-12-29 16:21:01.160; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting corePoolSize to: 0
+INFO  - 2013-12-29 16:21:01.163; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting maximumPoolSize to: 2147483647
+INFO  - 2013-12-29 16:21:01.164; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting maxThreadIdleTime to: 5
+INFO  - 2013-12-29 16:21:01.164; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting sizeOfQueue to: -1
+INFO  - 2013-12-29 16:21:01.165; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting fairnessPolicy to: false
+INFO  - 2013-12-29 16:21:01.504; org.apache.solr.logging.LogWatcher; SLF4J impl is org.slf4j.impl.Log4jLoggerFactory
+INFO  - 2013-12-29 16:21:01.506; org.apache.solr.logging.LogWatcher; Registering Log Listener [Log4j (org.slf4j.impl.Log4jLoggerFactory)]
+INFO  - 2013-12-29 16:21:01.553; org.apache.solr.core.CorePropertiesLocator; Looking for core definitions underneath /Users/childbamboo1980/git/samples/solr/example/solr
+INFO  - 2013-12-29 16:21:01.576; org.apache.solr.core.CorePropertiesLocator; Found core collection1 in /Users/childbamboo1980/git/samples/solr/example/solr/collection1/
+INFO  - 2013-12-29 16:21:01.576; org.apache.solr.core.CorePropertiesLocator; Found 1 core definitions
+INFO  - 2013-12-29 16:21:01.579; org.apache.solr.core.CoreContainer; Creating SolrCore 'collection1' using instanceDir: /Users/childbamboo1980/git/samples/solr/example/solr/collection1
+INFO  - 2013-12-29 16:21:01.580; org.apache.solr.core.SolrResourceLoader; new SolrResourceLoader for directory: '/Users/childbamboo1980/git/samples/solr/example/solr/collection1/'
+INFO  - 2013-12-29 16:21:01.753; org.apache.solr.core.SolrConfig; Adding specified lib dirs to ClassLoader
+WARN  - 2013-12-29 16:21:01.754; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../contrib/extraction/lib (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../contrib/extraction/lib).
+WARN  - 2013-12-29 16:21:01.755; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../dist/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../dist).
+WARN  - 2013-12-29 16:21:01.756; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../contrib/clustering/lib/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../contrib/clustering/lib).
+WARN  - 2013-12-29 16:21:01.756; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../dist/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../dist).
+WARN  - 2013-12-29 16:21:01.757; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../contrib/langid/lib/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../contrib/langid/lib).
+WARN  - 2013-12-29 16:21:01.757; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../dist/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../dist).
+WARN  - 2013-12-29 16:21:01.758; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../contrib/velocity/lib (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../contrib/velocity/lib).
+WARN  - 2013-12-29 16:21:01.758; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../dist/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../dist).
+INFO  - 2013-12-29 16:21:01.981; org.apache.solr.update.SolrIndexConfig; IndexWriter infoStream solr logging is enabled
+INFO  - 2013-12-29 16:21:01.989; org.apache.solr.core.SolrConfig; Using Lucene MatchVersion: LUCENE_46
+INFO  - 2013-12-29 16:21:02.258; org.apache.solr.core.SolrConfig; Loaded SolrConfig: solrconfig.xml
+INFO  - 2013-12-29 16:21:02.268; org.apache.solr.schema.IndexSchema; Reading Solr Schema from schema.xml
+INFO  - 2013-12-29 16:21:02.453; org.apache.solr.schema.IndexSchema; [collection1] Schema name=example
+INFO  - 2013-12-29 16:21:03.331; org.apache.solr.schema.IndexSchema; unique key field: id
+INFO  - 2013-12-29 16:21:03.446; org.apache.solr.schema.FileExchangeRateProvider; Reloading exchange rates from file currency.xml
+INFO  - 2013-12-29 16:21:03.457; org.apache.solr.schema.FileExchangeRateProvider; Reloading exchange rates from file currency.xml
+INFO  - 2013-12-29 16:21:03.809; org.apache.solr.core.SolrCore; solr.NRTCachingDirectoryFactory
+INFO  - 2013-12-29 16:21:03.819; org.apache.solr.core.SolrCore; [collection1] Opening new SolrCore at /Users/childbamboo1980/git/samples/solr/example/solr/collection1/, dataDir=/Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/
+INFO  - 2013-12-29 16:21:03.820; org.apache.solr.core.JmxMonitoredMap; No JMX servers found, not exposing Solr information with JMX.
+INFO  - 2013-12-29 16:21:03.826; org.apache.solr.core.SolrCore; [collection1] Added SolrEventListener for newSearcher: org.apache.solr.core.QuerySenderListener{queries=[]}
+INFO  - 2013-12-29 16:21:03.826; org.apache.solr.core.SolrCore; [collection1] Added SolrEventListener for firstSearcher: org.apache.solr.core.QuerySenderListener{queries=[{q=static firstSearcher warming in solrconfig.xml}]}
+INFO  - 2013-12-29 16:21:03.843; org.apache.solr.core.CachingDirectoryFactory; return new directory for /Users/childbamboo1980/git/samples/solr/example/solr/collection1/data
+INFO  - 2013-12-29 16:21:03.844; org.apache.solr.core.SolrCore; New index directory detected: old=null new=/Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index/
+INFO  - 2013-12-29 16:21:03.844; org.apache.solr.core.CachingDirectoryFactory; return new directory for /Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index
+INFO  - 2013-12-29 16:21:03.857; org.apache.solr.core.SolrCore; created json: solr.JSONResponseWriter
+INFO  - 2013-12-29 16:21:03.857; org.apache.solr.core.SolrCore; adding lazy queryResponseWriter: solr.VelocityResponseWriter
+INFO  - 2013-12-29 16:21:03.858; org.apache.solr.core.SolrCore; created velocity: solr.VelocityResponseWriter
+INFO  - 2013-12-29 16:21:03.862; org.apache.solr.core.SolrCore; created xslt: solr.XSLTResponseWriter
+INFO  - 2013-12-29 16:21:03.862; org.apache.solr.response.XSLTResponseWriter; xsltCacheLifetimeSeconds=5
+INFO  - 2013-12-29 16:21:03.967; org.apache.solr.core.SolrCore; no updateRequestProcessorChain defined as default, creating implicit default
+INFO  - 2013-12-29 16:21:03.989; org.apache.solr.core.RequestHandlers; created /select: solr.SearchHandler
+INFO  - 2013-12-29 16:21:03.992; org.apache.solr.core.RequestHandlers; created /query: solr.SearchHandler
+INFO  - 2013-12-29 16:21:03.994; org.apache.solr.core.RequestHandlers; created /get: solr.RealTimeGetHandler
+INFO  - 2013-12-29 16:21:03.995; org.apache.solr.core.RequestHandlers; created /browse: solr.SearchHandler
+INFO  - 2013-12-29 16:21:03.998; org.apache.solr.core.RequestHandlers; created /update: solr.UpdateRequestHandler
+WARN  - 2013-12-29 16:21:04.019; org.apache.solr.core.SolrResourceLoader; Solr loaded a deprecated plugin/analysis class [solr.JsonUpdateRequestHandler]. Please consult documentation how to replace it accordingly.
+INFO  - 2013-12-29 16:21:04.019; org.apache.solr.core.RequestHandlers; created /update/json: solr.JsonUpdateRequestHandler
+WARN  - 2013-12-29 16:21:04.021; org.apache.solr.core.SolrResourceLoader; Solr loaded a deprecated plugin/analysis class [solr.CSVRequestHandler]. Please consult documentation how to replace it accordingly.
+INFO  - 2013-12-29 16:21:04.022; org.apache.solr.core.RequestHandlers; created /update/csv: solr.CSVRequestHandler
+INFO  - 2013-12-29 16:21:04.022; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.extraction.ExtractingRequestHandler
+INFO  - 2013-12-29 16:21:04.023; org.apache.solr.core.RequestHandlers; created /update/extract: solr.extraction.ExtractingRequestHandler
+INFO  - 2013-12-29 16:21:04.023; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.FieldAnalysisRequestHandler
+INFO  - 2013-12-29 16:21:04.023; org.apache.solr.core.RequestHandlers; created /analysis/field: solr.FieldAnalysisRequestHandler
+INFO  - 2013-12-29 16:21:04.024; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.DocumentAnalysisRequestHandler
+INFO  - 2013-12-29 16:21:04.024; org.apache.solr.core.RequestHandlers; created /analysis/document: solr.DocumentAnalysisRequestHandler
+INFO  - 2013-12-29 16:21:04.026; org.apache.solr.core.RequestHandlers; created /admin/: solr.admin.AdminHandlers
+INFO  - 2013-12-29 16:21:04.029; org.apache.solr.core.RequestHandlers; created /admin/ping: solr.PingRequestHandler
+INFO  - 2013-12-29 16:21:04.031; org.apache.solr.core.RequestHandlers; created /debug/dump: solr.DumpRequestHandler
+INFO  - 2013-12-29 16:21:04.042; org.apache.solr.core.RequestHandlers; created /replication: solr.ReplicationHandler
+INFO  - 2013-12-29 16:21:04.043; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.SearchHandler
+INFO  - 2013-12-29 16:21:04.043; org.apache.solr.core.RequestHandlers; created /spell: solr.SearchHandler
+INFO  - 2013-12-29 16:21:04.043; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.SearchHandler
+INFO  - 2013-12-29 16:21:04.043; org.apache.solr.core.RequestHandlers; created /tvrh: solr.SearchHandler
+INFO  - 2013-12-29 16:21:04.043; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: org.apache.solr.handler.js.JavaScriptRequestHandler
+INFO  - 2013-12-29 16:21:04.044; org.apache.solr.core.RequestHandlers; created /js: org.apache.solr.handler.js.JavaScriptRequestHandler
+INFO  - 2013-12-29 16:21:04.044; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.SearchHandler
+INFO  - 2013-12-29 16:21:04.044; org.apache.solr.core.RequestHandlers; created /terms: solr.SearchHandler
+INFO  - 2013-12-29 16:21:04.044; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.SearchHandler
+INFO  - 2013-12-29 16:21:04.045; org.apache.solr.core.RequestHandlers; created /elevate: solr.SearchHandler
+INFO  - 2013-12-29 16:21:04.067; org.apache.solr.handler.loader.XMLLoader; xsltCacheLifetimeSeconds=60
+INFO  - 2013-12-29 16:21:04.070; org.apache.solr.handler.loader.XMLLoader; xsltCacheLifetimeSeconds=60
+INFO  - 2013-12-29 16:21:04.071; org.apache.solr.handler.loader.XMLLoader; xsltCacheLifetimeSeconds=60
+INFO  - 2013-12-29 16:21:04.095; org.apache.solr.update.CommitTracker; Hard AutoCommit: if uncommited for 15000ms; 
+INFO  - 2013-12-29 16:21:04.096; org.apache.solr.update.CommitTracker; Soft AutoCommit: disabled
+INFO  - 2013-12-29 16:21:04.156; org.apache.solr.core.SolrDeletionPolicy; SolrDeletionPolicy.onInit: commits: num=1
+	commit{dir=NRTCachingDirectory(org.apache.lucene.store.NIOFSDirectory@/Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index lockFactory=org.apache.lucene.store.NativeFSLockFactory@50c3d062; maxCacheMB=48.0 maxMergeSizeMB=4.0),segFN=segments_1,generation=1}
+INFO  - 2013-12-29 16:21:04.157; org.apache.solr.core.SolrDeletionPolicy; newest commit generation = 1
+INFO  - 2013-12-29 16:21:04.167; org.apache.solr.search.SolrIndexSearcher; Opening Searcher@1f48e23b main
+INFO  - 2013-12-29 16:21:04.173; org.apache.solr.handler.component.SpellCheckComponent; Initializing spell checkers
+INFO  - 2013-12-29 16:21:04.181; org.apache.solr.spelling.DirectSolrSpellChecker; init: {name=default,field=text,classname=solr.DirectSolrSpellChecker,distanceMeasure=internal,accuracy=0.5,maxEdits=2,minPrefix=1,maxInspections=5,minQueryLength=4,maxQueryFrequency=0.01}
+INFO  - 2013-12-29 16:21:04.189; org.apache.solr.handler.component.SpellCheckComponent; No queryConverter defined, using default converter
+INFO  - 2013-12-29 16:21:04.192; org.apache.solr.handler.component.QueryElevationComponent; Loading QueryElevation from: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/conf/elevate.xml
+INFO  - 2013-12-29 16:21:04.239; org.apache.solr.handler.ReplicationHandler; Commits will be reserved for  10000
+INFO  - 2013-12-29 16:21:04.240; org.apache.solr.core.QuerySenderListener; QuerySenderListener sending requests to Searcher@1f48e23b main{StandardDirectoryReader(segments_1:1:nrt)}
+INFO  - 2013-12-29 16:21:04.241; org.apache.solr.core.CoreContainer; registering core: collection1
+INFO  - 2013-12-29 16:21:04.300; org.apache.solr.servlet.SolrDispatchFilter; user.dir=/Users/childbamboo1980/git/samples/solr/example
+INFO  - 2013-12-29 16:21:04.304; org.apache.solr.core.SolrCore; [collection1] webapp=null path=null params={event=firstSearcher&q=static+firstSearcher+warming+in+solrconfig.xml&distrib=false} hits=0 status=0 QTime=61 
+INFO  - 2013-12-29 16:21:04.305; org.apache.solr.core.QuerySenderListener; QuerySenderListener done.
+INFO  - 2013-12-29 16:21:04.306; org.apache.solr.handler.component.SpellCheckComponent$SpellCheckerListener; Loading spell index for spellchecker: default
+INFO  - 2013-12-29 16:21:04.306; org.apache.solr.handler.component.SpellCheckComponent$SpellCheckerListener; Loading spell index for spellchecker: wordbreak
+INFO  - 2013-12-29 16:21:04.307; org.apache.solr.core.SolrCore; [collection1] Registered new searcher Searcher@1f48e23b main{StandardDirectoryReader(segments_1:1:nrt)}
+INFO  - 2013-12-29 16:21:04.307; org.apache.solr.servlet.SolrDispatchFilter; SolrDispatchFilter.init() done
+INFO  - 2013-12-29 16:21:04.371; org.eclipse.jetty.server.AbstractConnector; Started SocketConnector@0.0.0.0:8983
+INFO  - 2013-12-29 16:21:33.566; org.eclipse.jetty.server.Server; jetty-8.1.10.v20130312
+INFO  - 2013-12-29 16:21:33.600; org.eclipse.jetty.deploy.providers.ScanningAppProvider; Deployment monitor /Users/childbamboo1980/git/samples/solr/example/contexts at interval 0
+INFO  - 2013-12-29 16:21:33.608; org.eclipse.jetty.deploy.DeploymentManager; Deployable added: /Users/childbamboo1980/git/samples/solr/example/contexts/solr-jetty-context.xml
+INFO  - 2013-12-29 16:21:35.732; org.eclipse.jetty.webapp.StandardDescriptorProcessor; NO JSP Support for /solr, did not find org.apache.jasper.servlet.JspServlet
+INFO  - 2013-12-29 16:21:35.817; org.apache.solr.servlet.SolrDispatchFilter; SolrDispatchFilter.init()
+INFO  - 2013-12-29 16:21:35.838; org.apache.solr.core.SolrResourceLoader; JNDI not configured for solr (NoInitialContextEx)
+INFO  - 2013-12-29 16:21:35.838; org.apache.solr.core.SolrResourceLoader; solr home defaulted to 'solr/' (could not find system property or JNDI)
+INFO  - 2013-12-29 16:21:35.839; org.apache.solr.core.SolrResourceLoader; new SolrResourceLoader for directory: 'solr/'
+INFO  - 2013-12-29 16:21:35.992; org.apache.solr.core.ConfigSolr; Loading container configuration from /Users/childbamboo1980/git/samples/solr/example/solr/solr.xml
+INFO  - 2013-12-29 16:21:36.151; org.apache.solr.core.ConfigSolrXml; Config-defined core root directory: 
+INFO  - 2013-12-29 16:21:36.165; org.apache.solr.core.CoreContainer; New CoreContainer 278604369
+INFO  - 2013-12-29 16:21:36.166; org.apache.solr.core.CoreContainer; Loading cores into CoreContainer [instanceDir=solr/]
+INFO  - 2013-12-29 16:21:36.185; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting socketTimeout to: 0
+INFO  - 2013-12-29 16:21:36.186; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting urlScheme to: http://
+INFO  - 2013-12-29 16:21:36.186; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting connTimeout to: 0
+INFO  - 2013-12-29 16:21:36.187; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting maxConnectionsPerHost to: 20
+INFO  - 2013-12-29 16:21:36.190; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting corePoolSize to: 0
+INFO  - 2013-12-29 16:21:36.191; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting maximumPoolSize to: 2147483647
+INFO  - 2013-12-29 16:21:36.191; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting maxThreadIdleTime to: 5
+INFO  - 2013-12-29 16:21:36.192; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting sizeOfQueue to: -1
+INFO  - 2013-12-29 16:21:36.192; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting fairnessPolicy to: false
+INFO  - 2013-12-29 16:21:36.526; org.apache.solr.logging.LogWatcher; SLF4J impl is org.slf4j.impl.Log4jLoggerFactory
+INFO  - 2013-12-29 16:21:36.527; org.apache.solr.logging.LogWatcher; Registering Log Listener [Log4j (org.slf4j.impl.Log4jLoggerFactory)]
+INFO  - 2013-12-29 16:21:36.570; org.apache.solr.core.CorePropertiesLocator; Looking for core definitions underneath /Users/childbamboo1980/git/samples/solr/example/solr
+INFO  - 2013-12-29 16:21:36.593; org.apache.solr.core.CorePropertiesLocator; Found core collection1 in /Users/childbamboo1980/git/samples/solr/example/solr/collection1/
+INFO  - 2013-12-29 16:21:36.594; org.apache.solr.core.CorePropertiesLocator; Found 1 core definitions
+INFO  - 2013-12-29 16:21:36.596; org.apache.solr.core.CoreContainer; Creating SolrCore 'collection1' using instanceDir: /Users/childbamboo1980/git/samples/solr/example/solr/collection1
+INFO  - 2013-12-29 16:21:36.597; org.apache.solr.core.SolrResourceLoader; new SolrResourceLoader for directory: '/Users/childbamboo1980/git/samples/solr/example/solr/collection1/'
+INFO  - 2013-12-29 16:21:36.715; org.apache.solr.core.SolrConfig; Adding specified lib dirs to ClassLoader
+WARN  - 2013-12-29 16:21:36.716; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../contrib/extraction/lib (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../contrib/extraction/lib).
+WARN  - 2013-12-29 16:21:36.717; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../dist/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../dist).
+WARN  - 2013-12-29 16:21:36.718; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../contrib/clustering/lib/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../contrib/clustering/lib).
+WARN  - 2013-12-29 16:21:36.718; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../dist/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../dist).
+WARN  - 2013-12-29 16:21:36.719; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../contrib/langid/lib/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../contrib/langid/lib).
+WARN  - 2013-12-29 16:21:36.719; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../dist/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../dist).
+WARN  - 2013-12-29 16:21:36.720; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../contrib/velocity/lib (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../contrib/velocity/lib).
+WARN  - 2013-12-29 16:21:36.720; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../dist/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../dist).
+INFO  - 2013-12-29 16:21:36.924; org.apache.solr.update.SolrIndexConfig; IndexWriter infoStream solr logging is enabled
+INFO  - 2013-12-29 16:21:36.932; org.apache.solr.core.SolrConfig; Using Lucene MatchVersion: LUCENE_46
+INFO  - 2013-12-29 16:21:37.177; org.apache.solr.core.SolrConfig; Loaded SolrConfig: solrconfig.xml
+INFO  - 2013-12-29 16:21:37.186; org.apache.solr.schema.IndexSchema; Reading Solr Schema from schema.xml
+INFO  - 2013-12-29 16:21:37.364; org.apache.solr.schema.IndexSchema; [collection1] Schema name=example
+INFO  - 2013-12-29 16:21:38.355; org.apache.solr.schema.IndexSchema; unique key field: id
+INFO  - 2013-12-29 16:21:38.482; org.apache.solr.schema.FileExchangeRateProvider; Reloading exchange rates from file currency.xml
+INFO  - 2013-12-29 16:21:38.493; org.apache.solr.schema.FileExchangeRateProvider; Reloading exchange rates from file currency.xml
+INFO  - 2013-12-29 16:21:38.759; org.apache.solr.core.SolrCore; solr.NRTCachingDirectoryFactory
+INFO  - 2013-12-29 16:21:38.769; org.apache.solr.core.SolrCore; [collection1] Opening new SolrCore at /Users/childbamboo1980/git/samples/solr/example/solr/collection1/, dataDir=/Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/
+INFO  - 2013-12-29 16:21:38.770; org.apache.solr.core.JmxMonitoredMap; No JMX servers found, not exposing Solr information with JMX.
+INFO  - 2013-12-29 16:21:38.776; org.apache.solr.core.SolrCore; [collection1] Added SolrEventListener for newSearcher: org.apache.solr.core.QuerySenderListener{queries=[]}
+INFO  - 2013-12-29 16:21:38.776; org.apache.solr.core.SolrCore; [collection1] Added SolrEventListener for firstSearcher: org.apache.solr.core.QuerySenderListener{queries=[{q=static firstSearcher warming in solrconfig.xml}]}
+INFO  - 2013-12-29 16:21:38.793; org.apache.solr.core.CachingDirectoryFactory; return new directory for /Users/childbamboo1980/git/samples/solr/example/solr/collection1/data
+INFO  - 2013-12-29 16:21:38.793; org.apache.solr.core.SolrCore; New index directory detected: old=null new=/Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index/
+INFO  - 2013-12-29 16:21:38.794; org.apache.solr.core.CachingDirectoryFactory; return new directory for /Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index
+ERROR - 2013-12-29 16:21:38.821; org.apache.solr.core.SolrCore; [collection1] Solr index directory '/Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index/' is locked.  Throwing exception
+INFO  - 2013-12-29 16:21:38.821; org.apache.solr.core.SolrCore; [collection1]  CLOSING SolrCore org.apache.solr.core.SolrCore@27ed688f
+INFO  - 2013-12-29 16:21:38.821; org.apache.solr.update.SolrCoreState; Closing SolrCoreState
+INFO  - 2013-12-29 16:21:38.822; org.apache.solr.update.DefaultSolrCoreState; SolrCoreState ref count has reached 0 - closing IndexWriter
+INFO  - 2013-12-29 16:21:38.823; org.apache.solr.core.SolrCore; [collection1] Closing main searcher on request.
+INFO  - 2013-12-29 16:21:38.823; org.apache.solr.core.CachingDirectoryFactory; Closing NRTCachingDirectoryFactory - 2 directories currently being tracked
+INFO  - 2013-12-29 16:21:38.824; org.apache.solr.core.CachingDirectoryFactory; looking to close /Users/childbamboo1980/git/samples/solr/example/solr/collection1/data [CachedDir<<refCount=0;path=/Users/childbamboo1980/git/samples/solr/example/solr/collection1/data;done=false>>]
+INFO  - 2013-12-29 16:21:38.824; org.apache.solr.core.CachingDirectoryFactory; Closing directory: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/data
+INFO  - 2013-12-29 16:21:38.825; org.apache.solr.core.CachingDirectoryFactory; looking to close /Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index [CachedDir<<refCount=0;path=/Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index;done=false>>]
+INFO  - 2013-12-29 16:21:38.825; org.apache.solr.core.CachingDirectoryFactory; Closing directory: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index
+ERROR - 2013-12-29 16:21:38.827; org.apache.solr.core.CoreContainer; Unable to create core: collection1
+org.apache.solr.common.SolrException: Index locked for write for core collection1
+	at org.apache.solr.core.SolrCore.<init>(SolrCore.java:834)
+	at org.apache.solr.core.SolrCore.<init>(SolrCore.java:625)
+	at org.apache.solr.core.CoreContainer.createFromLocal(CoreContainer.java:557)
+	at org.apache.solr.core.CoreContainer.create(CoreContainer.java:592)
+	at org.apache.solr.core.CoreContainer$1.call(CoreContainer.java:271)
+	at org.apache.solr.core.CoreContainer$1.call(CoreContainer.java:263)
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:439)
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:895)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:918)
+	at java.lang.Thread.run(Thread.java:695)
+Caused by: org.apache.lucene.store.LockObtainFailedException: Index locked for write for core collection1
+	at org.apache.solr.core.SolrCore.initIndex(SolrCore.java:491)
+	at org.apache.solr.core.SolrCore.<init>(SolrCore.java:755)
+	... 13 more
+ERROR - 2013-12-29 16:21:38.830; org.apache.solr.common.SolrException; null:org.apache.solr.common.SolrException: Unable to create core: collection1
+	at org.apache.solr.core.CoreContainer.recordAndThrow(CoreContainer.java:977)
+	at org.apache.solr.core.CoreContainer.create(CoreContainer.java:601)
+	at org.apache.solr.core.CoreContainer$1.call(CoreContainer.java:271)
+	at org.apache.solr.core.CoreContainer$1.call(CoreContainer.java:263)
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:439)
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:895)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:918)
+	at java.lang.Thread.run(Thread.java:695)
+Caused by: org.apache.solr.common.SolrException: Index locked for write for core collection1
+	at org.apache.solr.core.SolrCore.<init>(SolrCore.java:834)
+	at org.apache.solr.core.SolrCore.<init>(SolrCore.java:625)
+	at org.apache.solr.core.CoreContainer.createFromLocal(CoreContainer.java:557)
+	at org.apache.solr.core.CoreContainer.create(CoreContainer.java:592)
+	... 10 more
+Caused by: org.apache.lucene.store.LockObtainFailedException: Index locked for write for core collection1
+	at org.apache.solr.core.SolrCore.initIndex(SolrCore.java:491)
+	at org.apache.solr.core.SolrCore.<init>(SolrCore.java:755)
+	... 13 more
+
+INFO  - 2013-12-29 16:21:38.831; org.apache.solr.servlet.SolrDispatchFilter; user.dir=/Users/childbamboo1980/git/samples/solr/example
+INFO  - 2013-12-29 16:21:38.831; org.apache.solr.servlet.SolrDispatchFilter; SolrDispatchFilter.init() done
+WARN  - 2013-12-29 16:21:38.882; org.eclipse.jetty.util.component.AbstractLifeCycle; FAILED SocketConnector@0.0.0.0:8983: java.net.BindException: Address already in use
+java.net.BindException: Address already in use
+	at java.net.PlainSocketImpl.socketBind(Native Method)
+	at java.net.PlainSocketImpl.socketBind(PlainSocketImpl.java:521)
+	at java.net.PlainSocketImpl.bind(PlainSocketImpl.java:414)
+	at java.net.ServerSocket.bind(ServerSocket.java:326)
+	at java.net.ServerSocket.<init>(ServerSocket.java:192)
+	at java.net.ServerSocket.<init>(ServerSocket.java:148)
+	at org.eclipse.jetty.server.bio.SocketConnector.newServerSocket(SocketConnector.java:96)
+	at org.eclipse.jetty.server.bio.SocketConnector.open(SocketConnector.java:85)
+	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:316)
+	at org.eclipse.jetty.server.bio.SocketConnector.doStart(SocketConnector.java:156)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:64)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:291)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:64)
+	at org.eclipse.jetty.xml.XmlConfiguration$1.run(XmlConfiguration.java:1259)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at org.eclipse.jetty.xml.XmlConfiguration.main(XmlConfiguration.java:1182)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.eclipse.jetty.start.Main.invokeMain(Main.java:473)
+	at org.eclipse.jetty.start.Main.start(Main.java:615)
+	at org.eclipse.jetty.start.Main.main(Main.java:96)
+WARN  - 2013-12-29 16:21:38.883; org.eclipse.jetty.util.component.AbstractLifeCycle; FAILED org.eclipse.jetty.server.Server@139ba1d8: java.net.BindException: Address already in use
+java.net.BindException: Address already in use
+	at java.net.PlainSocketImpl.socketBind(Native Method)
+	at java.net.PlainSocketImpl.socketBind(PlainSocketImpl.java:521)
+	at java.net.PlainSocketImpl.bind(PlainSocketImpl.java:414)
+	at java.net.ServerSocket.bind(ServerSocket.java:326)
+	at java.net.ServerSocket.<init>(ServerSocket.java:192)
+	at java.net.ServerSocket.<init>(ServerSocket.java:148)
+	at org.eclipse.jetty.server.bio.SocketConnector.newServerSocket(SocketConnector.java:96)
+	at org.eclipse.jetty.server.bio.SocketConnector.open(SocketConnector.java:85)
+	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:316)
+	at org.eclipse.jetty.server.bio.SocketConnector.doStart(SocketConnector.java:156)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:64)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:291)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:64)
+	at org.eclipse.jetty.xml.XmlConfiguration$1.run(XmlConfiguration.java:1259)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at org.eclipse.jetty.xml.XmlConfiguration.main(XmlConfiguration.java:1182)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.eclipse.jetty.start.Main.invokeMain(Main.java:473)
+	at org.eclipse.jetty.start.Main.start(Main.java:615)
+	at org.eclipse.jetty.start.Main.main(Main.java:96)
+INFO  - 2013-12-29 16:23:09.149; org.eclipse.jetty.server.Server; jetty-8.1.10.v20130312
+INFO  - 2013-12-29 16:23:09.182; org.eclipse.jetty.deploy.providers.ScanningAppProvider; Deployment monitor /Users/childbamboo1980/git/samples/solr/example/contexts at interval 0
+INFO  - 2013-12-29 16:23:09.189; org.eclipse.jetty.deploy.DeploymentManager; Deployable added: /Users/childbamboo1980/git/samples/solr/example/contexts/solr-jetty-context.xml
+INFO  - 2013-12-29 16:23:11.487; org.eclipse.jetty.webapp.StandardDescriptorProcessor; NO JSP Support for /solr, did not find org.apache.jasper.servlet.JspServlet
+INFO  - 2013-12-29 16:23:11.572; org.apache.solr.servlet.SolrDispatchFilter; SolrDispatchFilter.init()
+INFO  - 2013-12-29 16:23:11.593; org.apache.solr.core.SolrResourceLoader; JNDI not configured for solr (NoInitialContextEx)
+INFO  - 2013-12-29 16:23:11.593; org.apache.solr.core.SolrResourceLoader; solr home defaulted to 'solr/' (could not find system property or JNDI)
+INFO  - 2013-12-29 16:23:11.594; org.apache.solr.core.SolrResourceLoader; new SolrResourceLoader for directory: 'solr/'
+INFO  - 2013-12-29 16:23:11.820; org.apache.solr.core.ConfigSolr; Loading container configuration from /Users/childbamboo1980/git/samples/solr/example/solr/solr.xml
+INFO  - 2013-12-29 16:23:12.012; org.apache.solr.core.ConfigSolrXml; Config-defined core root directory: 
+INFO  - 2013-12-29 16:23:12.046; org.apache.solr.core.CoreContainer; New CoreContainer 2016197766
+INFO  - 2013-12-29 16:23:12.046; org.apache.solr.core.CoreContainer; Loading cores into CoreContainer [instanceDir=solr/]
+INFO  - 2013-12-29 16:23:12.067; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting socketTimeout to: 0
+INFO  - 2013-12-29 16:23:12.067; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting urlScheme to: http://
+INFO  - 2013-12-29 16:23:12.068; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting connTimeout to: 0
+INFO  - 2013-12-29 16:23:12.068; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting maxConnectionsPerHost to: 20
+INFO  - 2013-12-29 16:23:12.072; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting corePoolSize to: 0
+INFO  - 2013-12-29 16:23:12.072; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting maximumPoolSize to: 2147483647
+INFO  - 2013-12-29 16:23:12.072; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting maxThreadIdleTime to: 5
+INFO  - 2013-12-29 16:23:12.073; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting sizeOfQueue to: -1
+INFO  - 2013-12-29 16:23:12.073; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting fairnessPolicy to: false
+INFO  - 2013-12-29 16:23:12.469; org.apache.solr.logging.LogWatcher; SLF4J impl is org.slf4j.impl.Log4jLoggerFactory
+INFO  - 2013-12-29 16:23:12.470; org.apache.solr.logging.LogWatcher; Registering Log Listener [Log4j (org.slf4j.impl.Log4jLoggerFactory)]
+INFO  - 2013-12-29 16:23:12.533; org.apache.solr.core.CorePropertiesLocator; Looking for core definitions underneath /Users/childbamboo1980/git/samples/solr/example/solr
+INFO  - 2013-12-29 16:23:12.557; org.apache.solr.core.CorePropertiesLocator; Found core collection1 in /Users/childbamboo1980/git/samples/solr/example/solr/collection1/
+INFO  - 2013-12-29 16:23:12.557; org.apache.solr.core.CorePropertiesLocator; Found 1 core definitions
+INFO  - 2013-12-29 16:23:12.560; org.apache.solr.core.CoreContainer; Creating SolrCore 'collection1' using instanceDir: /Users/childbamboo1980/git/samples/solr/example/solr/collection1
+INFO  - 2013-12-29 16:23:12.561; org.apache.solr.core.SolrResourceLoader; new SolrResourceLoader for directory: '/Users/childbamboo1980/git/samples/solr/example/solr/collection1/'
+INFO  - 2013-12-29 16:23:12.707; org.apache.solr.core.SolrConfig; Adding specified lib dirs to ClassLoader
+WARN  - 2013-12-29 16:23:12.708; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../contrib/extraction/lib (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../contrib/extraction/lib).
+WARN  - 2013-12-29 16:23:12.709; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../dist/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../dist).
+WARN  - 2013-12-29 16:23:12.709; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../contrib/clustering/lib/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../contrib/clustering/lib).
+WARN  - 2013-12-29 16:23:12.710; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../dist/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../dist).
+WARN  - 2013-12-29 16:23:12.710; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../contrib/langid/lib/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../contrib/langid/lib).
+WARN  - 2013-12-29 16:23:12.711; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../dist/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../dist).
+WARN  - 2013-12-29 16:23:12.712; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../contrib/velocity/lib (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../contrib/velocity/lib).
+WARN  - 2013-12-29 16:23:12.713; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../dist/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../dist).
+INFO  - 2013-12-29 16:23:12.947; org.apache.solr.update.SolrIndexConfig; IndexWriter infoStream solr logging is enabled
+INFO  - 2013-12-29 16:23:12.955; org.apache.solr.core.SolrConfig; Using Lucene MatchVersion: LUCENE_46
+INFO  - 2013-12-29 16:23:13.190; org.apache.solr.core.SolrConfig; Loaded SolrConfig: solrconfig.xml
+INFO  - 2013-12-29 16:23:13.198; org.apache.solr.schema.IndexSchema; Reading Solr Schema from schema.xml
+INFO  - 2013-12-29 16:23:13.353; org.apache.solr.schema.IndexSchema; [collection1] Schema name=example
+INFO  - 2013-12-29 16:23:14.398; org.apache.solr.schema.IndexSchema; unique key field: id
+INFO  - 2013-12-29 16:23:14.512; org.apache.solr.schema.FileExchangeRateProvider; Reloading exchange rates from file currency.xml
+INFO  - 2013-12-29 16:23:14.526; org.apache.solr.schema.FileExchangeRateProvider; Reloading exchange rates from file currency.xml
+INFO  - 2013-12-29 16:23:14.787; org.apache.solr.core.SolrCore; solr.NRTCachingDirectoryFactory
+INFO  - 2013-12-29 16:23:14.796; org.apache.solr.core.SolrCore; [collection1] Opening new SolrCore at /Users/childbamboo1980/git/samples/solr/example/solr/collection1/, dataDir=/Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/
+INFO  - 2013-12-29 16:23:14.797; org.apache.solr.core.JmxMonitoredMap; No JMX servers found, not exposing Solr information with JMX.
+INFO  - 2013-12-29 16:23:14.803; org.apache.solr.core.SolrCore; [collection1] Added SolrEventListener for newSearcher: org.apache.solr.core.QuerySenderListener{queries=[]}
+INFO  - 2013-12-29 16:23:14.803; org.apache.solr.core.SolrCore; [collection1] Added SolrEventListener for firstSearcher: org.apache.solr.core.QuerySenderListener{queries=[{q=static firstSearcher warming in solrconfig.xml}]}
+INFO  - 2013-12-29 16:23:14.820; org.apache.solr.core.CachingDirectoryFactory; return new directory for /Users/childbamboo1980/git/samples/solr/example/solr/collection1/data
+INFO  - 2013-12-29 16:23:14.820; org.apache.solr.core.SolrCore; New index directory detected: old=null new=/Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index/
+INFO  - 2013-12-29 16:23:14.821; org.apache.solr.core.CachingDirectoryFactory; return new directory for /Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index
+INFO  - 2013-12-29 16:23:14.849; org.apache.solr.core.SolrCore; created json: solr.JSONResponseWriter
+INFO  - 2013-12-29 16:23:14.849; org.apache.solr.core.SolrCore; adding lazy queryResponseWriter: solr.VelocityResponseWriter
+INFO  - 2013-12-29 16:23:14.850; org.apache.solr.core.SolrCore; created velocity: solr.VelocityResponseWriter
+INFO  - 2013-12-29 16:23:14.854; org.apache.solr.core.SolrCore; created xslt: solr.XSLTResponseWriter
+INFO  - 2013-12-29 16:23:14.854; org.apache.solr.response.XSLTResponseWriter; xsltCacheLifetimeSeconds=5
+INFO  - 2013-12-29 16:23:14.961; org.apache.solr.core.SolrCore; no updateRequestProcessorChain defined as default, creating implicit default
+INFO  - 2013-12-29 16:23:14.985; org.apache.solr.core.RequestHandlers; created /select: solr.SearchHandler
+INFO  - 2013-12-29 16:23:14.985; org.apache.solr.core.RequestHandlers; created /query: solr.SearchHandler
+INFO  - 2013-12-29 16:23:14.987; org.apache.solr.core.RequestHandlers; created /get: solr.RealTimeGetHandler
+INFO  - 2013-12-29 16:23:14.988; org.apache.solr.core.RequestHandlers; created /browse: solr.SearchHandler
+INFO  - 2013-12-29 16:23:14.991; org.apache.solr.core.RequestHandlers; created /update: solr.UpdateRequestHandler
+WARN  - 2013-12-29 16:23:15.010; org.apache.solr.core.SolrResourceLoader; Solr loaded a deprecated plugin/analysis class [solr.JsonUpdateRequestHandler]. Please consult documentation how to replace it accordingly.
+INFO  - 2013-12-29 16:23:15.010; org.apache.solr.core.RequestHandlers; created /update/json: solr.JsonUpdateRequestHandler
+WARN  - 2013-12-29 16:23:15.012; org.apache.solr.core.SolrResourceLoader; Solr loaded a deprecated plugin/analysis class [solr.CSVRequestHandler]. Please consult documentation how to replace it accordingly.
+INFO  - 2013-12-29 16:23:15.013; org.apache.solr.core.RequestHandlers; created /update/csv: solr.CSVRequestHandler
+INFO  - 2013-12-29 16:23:15.013; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.extraction.ExtractingRequestHandler
+INFO  - 2013-12-29 16:23:15.014; org.apache.solr.core.RequestHandlers; created /update/extract: solr.extraction.ExtractingRequestHandler
+INFO  - 2013-12-29 16:23:15.014; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.FieldAnalysisRequestHandler
+INFO  - 2013-12-29 16:23:15.014; org.apache.solr.core.RequestHandlers; created /analysis/field: solr.FieldAnalysisRequestHandler
+INFO  - 2013-12-29 16:23:15.015; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.DocumentAnalysisRequestHandler
+INFO  - 2013-12-29 16:23:15.015; org.apache.solr.core.RequestHandlers; created /analysis/document: solr.DocumentAnalysisRequestHandler
+INFO  - 2013-12-29 16:23:15.017; org.apache.solr.core.RequestHandlers; created /admin/: solr.admin.AdminHandlers
+INFO  - 2013-12-29 16:23:15.020; org.apache.solr.core.RequestHandlers; created /admin/ping: solr.PingRequestHandler
+INFO  - 2013-12-29 16:23:15.023; org.apache.solr.core.RequestHandlers; created /debug/dump: solr.DumpRequestHandler
+INFO  - 2013-12-29 16:23:15.037; org.apache.solr.core.RequestHandlers; created /replication: solr.ReplicationHandler
+INFO  - 2013-12-29 16:23:15.037; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.SearchHandler
+INFO  - 2013-12-29 16:23:15.038; org.apache.solr.core.RequestHandlers; created /spell: solr.SearchHandler
+INFO  - 2013-12-29 16:23:15.038; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.SearchHandler
+INFO  - 2013-12-29 16:23:15.038; org.apache.solr.core.RequestHandlers; created /tvrh: solr.SearchHandler
+INFO  - 2013-12-29 16:23:15.038; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: org.apache.solr.handler.js.JavaScriptRequestHandler
+INFO  - 2013-12-29 16:23:15.039; org.apache.solr.core.RequestHandlers; created /js: org.apache.solr.handler.js.JavaScriptRequestHandler
+INFO  - 2013-12-29 16:23:15.039; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.SearchHandler
+INFO  - 2013-12-29 16:23:15.039; org.apache.solr.core.RequestHandlers; created /terms: solr.SearchHandler
+INFO  - 2013-12-29 16:23:15.039; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.SearchHandler
+INFO  - 2013-12-29 16:23:15.040; org.apache.solr.core.RequestHandlers; created /elevate: solr.SearchHandler
+INFO  - 2013-12-29 16:23:15.061; org.apache.solr.handler.loader.XMLLoader; xsltCacheLifetimeSeconds=60
+INFO  - 2013-12-29 16:23:15.064; org.apache.solr.handler.loader.XMLLoader; xsltCacheLifetimeSeconds=60
+INFO  - 2013-12-29 16:23:15.065; org.apache.solr.handler.loader.XMLLoader; xsltCacheLifetimeSeconds=60
+INFO  - 2013-12-29 16:23:15.085; org.apache.solr.update.CommitTracker; Hard AutoCommit: if uncommited for 15000ms; 
+INFO  - 2013-12-29 16:23:15.085; org.apache.solr.update.CommitTracker; Soft AutoCommit: disabled
+INFO  - 2013-12-29 16:23:15.130; org.apache.solr.core.SolrDeletionPolicy; SolrDeletionPolicy.onInit: commits: num=1
+	commit{dir=NRTCachingDirectory(org.apache.lucene.store.NIOFSDirectory@/Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index lockFactory=org.apache.lucene.store.NativeFSLockFactory@26e56ae; maxCacheMB=48.0 maxMergeSizeMB=4.0),segFN=segments_1,generation=1}
+INFO  - 2013-12-29 16:23:15.131; org.apache.solr.core.SolrDeletionPolicy; newest commit generation = 1
+INFO  - 2013-12-29 16:23:15.140; org.apache.solr.search.SolrIndexSearcher; Opening Searcher@38f8ff42 main
+INFO  - 2013-12-29 16:23:15.146; org.apache.solr.handler.component.SpellCheckComponent; Initializing spell checkers
+INFO  - 2013-12-29 16:23:15.157; org.apache.solr.spelling.DirectSolrSpellChecker; init: {name=default,field=text,classname=solr.DirectSolrSpellChecker,distanceMeasure=internal,accuracy=0.5,maxEdits=2,minPrefix=1,maxInspections=5,minQueryLength=4,maxQueryFrequency=0.01}
+INFO  - 2013-12-29 16:23:15.167; org.apache.solr.handler.component.SpellCheckComponent; No queryConverter defined, using default converter
+INFO  - 2013-12-29 16:23:15.172; org.apache.solr.handler.component.QueryElevationComponent; Loading QueryElevation from: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/conf/elevate.xml
+INFO  - 2013-12-29 16:23:15.219; org.apache.solr.handler.ReplicationHandler; Commits will be reserved for  10000
+INFO  - 2013-12-29 16:23:15.220; org.apache.solr.core.QuerySenderListener; QuerySenderListener sending requests to Searcher@38f8ff42 main{StandardDirectoryReader(segments_1:1:nrt)}
+INFO  - 2013-12-29 16:23:15.221; org.apache.solr.core.CoreContainer; registering core: collection1
+INFO  - 2013-12-29 16:23:15.248; org.apache.solr.servlet.SolrDispatchFilter; user.dir=/Users/childbamboo1980/git/samples/solr/example
+INFO  - 2013-12-29 16:23:15.248; org.apache.solr.servlet.SolrDispatchFilter; SolrDispatchFilter.init() done
+INFO  - 2013-12-29 16:23:15.290; org.apache.solr.core.SolrCore; [collection1] webapp=null path=null params={event=firstSearcher&q=static+firstSearcher+warming+in+solrconfig.xml&distrib=false} hits=0 status=0 QTime=67 
+INFO  - 2013-12-29 16:23:15.291; org.apache.solr.core.QuerySenderListener; QuerySenderListener done.
+INFO  - 2013-12-29 16:23:15.291; org.apache.solr.handler.component.SpellCheckComponent$SpellCheckerListener; Loading spell index for spellchecker: default
+INFO  - 2013-12-29 16:23:15.292; org.apache.solr.handler.component.SpellCheckComponent$SpellCheckerListener; Loading spell index for spellchecker: wordbreak
+INFO  - 2013-12-29 16:23:15.292; org.apache.solr.core.SolrCore; [collection1] Registered new searcher Searcher@38f8ff42 main{StandardDirectoryReader(segments_1:1:nrt)}
+INFO  - 2013-12-29 16:23:15.357; org.eclipse.jetty.server.AbstractConnector; Started SocketConnector@0.0.0.0:8983
+INFO  - 2013-12-29 16:23:26.926; org.eclipse.jetty.server.Server; jetty-8.1.10.v20130312
+INFO  - 2013-12-29 16:23:26.972; org.eclipse.jetty.deploy.providers.ScanningAppProvider; Deployment monitor /Users/childbamboo1980/git/samples/solr/example/contexts at interval 0
+INFO  - 2013-12-29 16:23:26.981; org.eclipse.jetty.deploy.DeploymentManager; Deployable added: /Users/childbamboo1980/git/samples/solr/example/contexts/solr-jetty-context.xml
+INFO  - 2013-12-29 16:23:29.342; org.eclipse.jetty.webapp.StandardDescriptorProcessor; NO JSP Support for /solr, did not find org.apache.jasper.servlet.JspServlet
+INFO  - 2013-12-29 16:23:29.426; org.apache.solr.servlet.SolrDispatchFilter; SolrDispatchFilter.init()
+INFO  - 2013-12-29 16:23:29.468; org.apache.solr.core.SolrResourceLoader; JNDI not configured for solr (NoInitialContextEx)
+INFO  - 2013-12-29 16:23:29.469; org.apache.solr.core.SolrResourceLoader; solr home defaulted to 'solr/' (could not find system property or JNDI)
+INFO  - 2013-12-29 16:23:29.470; org.apache.solr.core.SolrResourceLoader; new SolrResourceLoader for directory: 'solr/'
+INFO  - 2013-12-29 16:23:29.660; org.apache.solr.core.ConfigSolr; Loading container configuration from /Users/childbamboo1980/git/samples/solr/example/solr/solr.xml
+INFO  - 2013-12-29 16:23:29.834; org.apache.solr.core.ConfigSolrXml; Config-defined core root directory: 
+INFO  - 2013-12-29 16:23:29.848; org.apache.solr.core.CoreContainer; New CoreContainer 1328231241
+INFO  - 2013-12-29 16:23:29.849; org.apache.solr.core.CoreContainer; Loading cores into CoreContainer [instanceDir=solr/]
+INFO  - 2013-12-29 16:23:29.869; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting socketTimeout to: 0
+INFO  - 2013-12-29 16:23:29.869; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting urlScheme to: http://
+INFO  - 2013-12-29 16:23:29.870; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting connTimeout to: 0
+INFO  - 2013-12-29 16:23:29.873; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting maxConnectionsPerHost to: 20
+INFO  - 2013-12-29 16:23:29.877; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting corePoolSize to: 0
+INFO  - 2013-12-29 16:23:29.878; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting maximumPoolSize to: 2147483647
+INFO  - 2013-12-29 16:23:29.878; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting maxThreadIdleTime to: 5
+INFO  - 2013-12-29 16:23:29.879; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting sizeOfQueue to: -1
+INFO  - 2013-12-29 16:23:29.879; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting fairnessPolicy to: false
+INFO  - 2013-12-29 16:23:30.243; org.apache.solr.logging.LogWatcher; SLF4J impl is org.slf4j.impl.Log4jLoggerFactory
+INFO  - 2013-12-29 16:23:30.245; org.apache.solr.logging.LogWatcher; Registering Log Listener [Log4j (org.slf4j.impl.Log4jLoggerFactory)]
+INFO  - 2013-12-29 16:23:30.331; org.apache.solr.core.CorePropertiesLocator; Looking for core definitions underneath /Users/childbamboo1980/git/samples/solr/example/solr
+INFO  - 2013-12-29 16:23:30.354; org.apache.solr.core.CorePropertiesLocator; Found core collection1 in /Users/childbamboo1980/git/samples/solr/example/solr/collection1/
+INFO  - 2013-12-29 16:23:30.354; org.apache.solr.core.CorePropertiesLocator; Found 1 core definitions
+INFO  - 2013-12-29 16:23:30.357; org.apache.solr.core.CoreContainer; Creating SolrCore 'collection1' using instanceDir: /Users/childbamboo1980/git/samples/solr/example/solr/collection1
+INFO  - 2013-12-29 16:23:30.358; org.apache.solr.core.SolrResourceLoader; new SolrResourceLoader for directory: '/Users/childbamboo1980/git/samples/solr/example/solr/collection1/'
+INFO  - 2013-12-29 16:23:30.490; org.apache.solr.core.SolrConfig; Adding specified lib dirs to ClassLoader
+WARN  - 2013-12-29 16:23:30.491; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../contrib/extraction/lib (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../contrib/extraction/lib).
+WARN  - 2013-12-29 16:23:30.492; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../dist/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../dist).
+WARN  - 2013-12-29 16:23:30.493; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../contrib/clustering/lib/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../contrib/clustering/lib).
+WARN  - 2013-12-29 16:23:30.493; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../dist/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../dist).
+WARN  - 2013-12-29 16:23:30.494; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../contrib/langid/lib/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../contrib/langid/lib).
+WARN  - 2013-12-29 16:23:30.495; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../dist/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../dist).
+WARN  - 2013-12-29 16:23:30.495; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../contrib/velocity/lib (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../contrib/velocity/lib).
+WARN  - 2013-12-29 16:23:30.496; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../dist/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../dist).
+INFO  - 2013-12-29 16:23:30.717; org.apache.solr.update.SolrIndexConfig; IndexWriter infoStream solr logging is enabled
+INFO  - 2013-12-29 16:23:30.725; org.apache.solr.core.SolrConfig; Using Lucene MatchVersion: LUCENE_46
+INFO  - 2013-12-29 16:23:30.984; org.apache.solr.core.SolrConfig; Loaded SolrConfig: solrconfig.xml
+INFO  - 2013-12-29 16:23:30.992; org.apache.solr.schema.IndexSchema; Reading Solr Schema from schema.xml
+INFO  - 2013-12-29 16:23:31.179; org.apache.solr.schema.IndexSchema; [collection1] Schema name=example
+INFO  - 2013-12-29 16:23:32.175; org.apache.solr.schema.IndexSchema; unique key field: id
+INFO  - 2013-12-29 16:23:32.308; org.apache.solr.schema.FileExchangeRateProvider; Reloading exchange rates from file currency.xml
+INFO  - 2013-12-29 16:23:32.319; org.apache.solr.schema.FileExchangeRateProvider; Reloading exchange rates from file currency.xml
+INFO  - 2013-12-29 16:23:32.625; org.apache.solr.core.SolrCore; solr.NRTCachingDirectoryFactory
+INFO  - 2013-12-29 16:23:32.634; org.apache.solr.core.SolrCore; [collection1] Opening new SolrCore at /Users/childbamboo1980/git/samples/solr/example/solr/collection1/, dataDir=/Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/
+INFO  - 2013-12-29 16:23:32.636; org.apache.solr.core.JmxMonitoredMap; No JMX servers found, not exposing Solr information with JMX.
+INFO  - 2013-12-29 16:23:32.641; org.apache.solr.core.SolrCore; [collection1] Added SolrEventListener for newSearcher: org.apache.solr.core.QuerySenderListener{queries=[]}
+INFO  - 2013-12-29 16:23:32.641; org.apache.solr.core.SolrCore; [collection1] Added SolrEventListener for firstSearcher: org.apache.solr.core.QuerySenderListener{queries=[{q=static firstSearcher warming in solrconfig.xml}]}
+INFO  - 2013-12-29 16:23:32.658; org.apache.solr.core.CachingDirectoryFactory; return new directory for /Users/childbamboo1980/git/samples/solr/example/solr/collection1/data
+INFO  - 2013-12-29 16:23:32.658; org.apache.solr.core.SolrCore; New index directory detected: old=null new=/Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index/
+INFO  - 2013-12-29 16:23:32.659; org.apache.solr.core.CachingDirectoryFactory; return new directory for /Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index
+ERROR - 2013-12-29 16:23:32.684; org.apache.solr.core.SolrCore; [collection1] Solr index directory '/Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index/' is locked.  Throwing exception
+INFO  - 2013-12-29 16:23:32.684; org.apache.solr.core.SolrCore; [collection1]  CLOSING SolrCore org.apache.solr.core.SolrCore@3e5646a5
+INFO  - 2013-12-29 16:23:32.684; org.apache.solr.update.SolrCoreState; Closing SolrCoreState
+INFO  - 2013-12-29 16:23:32.685; org.apache.solr.update.DefaultSolrCoreState; SolrCoreState ref count has reached 0 - closing IndexWriter
+INFO  - 2013-12-29 16:23:32.685; org.apache.solr.core.SolrCore; [collection1] Closing main searcher on request.
+INFO  - 2013-12-29 16:23:32.686; org.apache.solr.core.CachingDirectoryFactory; Closing NRTCachingDirectoryFactory - 2 directories currently being tracked
+INFO  - 2013-12-29 16:23:32.686; org.apache.solr.core.CachingDirectoryFactory; looking to close /Users/childbamboo1980/git/samples/solr/example/solr/collection1/data [CachedDir<<refCount=0;path=/Users/childbamboo1980/git/samples/solr/example/solr/collection1/data;done=false>>]
+INFO  - 2013-12-29 16:23:32.687; org.apache.solr.core.CachingDirectoryFactory; Closing directory: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/data
+INFO  - 2013-12-29 16:23:32.687; org.apache.solr.core.CachingDirectoryFactory; looking to close /Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index [CachedDir<<refCount=0;path=/Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index;done=false>>]
+INFO  - 2013-12-29 16:23:32.688; org.apache.solr.core.CachingDirectoryFactory; Closing directory: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index
+ERROR - 2013-12-29 16:23:32.689; org.apache.solr.core.CoreContainer; Unable to create core: collection1
+org.apache.solr.common.SolrException: Index locked for write for core collection1
+	at org.apache.solr.core.SolrCore.<init>(SolrCore.java:834)
+	at org.apache.solr.core.SolrCore.<init>(SolrCore.java:625)
+	at org.apache.solr.core.CoreContainer.createFromLocal(CoreContainer.java:557)
+	at org.apache.solr.core.CoreContainer.create(CoreContainer.java:592)
+	at org.apache.solr.core.CoreContainer$1.call(CoreContainer.java:271)
+	at org.apache.solr.core.CoreContainer$1.call(CoreContainer.java:263)
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:439)
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:895)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:918)
+	at java.lang.Thread.run(Thread.java:695)
+Caused by: org.apache.lucene.store.LockObtainFailedException: Index locked for write for core collection1
+	at org.apache.solr.core.SolrCore.initIndex(SolrCore.java:491)
+	at org.apache.solr.core.SolrCore.<init>(SolrCore.java:755)
+	... 13 more
+ERROR - 2013-12-29 16:23:32.691; org.apache.solr.common.SolrException; null:org.apache.solr.common.SolrException: Unable to create core: collection1
+	at org.apache.solr.core.CoreContainer.recordAndThrow(CoreContainer.java:977)
+	at org.apache.solr.core.CoreContainer.create(CoreContainer.java:601)
+	at org.apache.solr.core.CoreContainer$1.call(CoreContainer.java:271)
+	at org.apache.solr.core.CoreContainer$1.call(CoreContainer.java:263)
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:439)
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:895)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:918)
+	at java.lang.Thread.run(Thread.java:695)
+Caused by: org.apache.solr.common.SolrException: Index locked for write for core collection1
+	at org.apache.solr.core.SolrCore.<init>(SolrCore.java:834)
+	at org.apache.solr.core.SolrCore.<init>(SolrCore.java:625)
+	at org.apache.solr.core.CoreContainer.createFromLocal(CoreContainer.java:557)
+	at org.apache.solr.core.CoreContainer.create(CoreContainer.java:592)
+	... 10 more
+Caused by: org.apache.lucene.store.LockObtainFailedException: Index locked for write for core collection1
+	at org.apache.solr.core.SolrCore.initIndex(SolrCore.java:491)
+	at org.apache.solr.core.SolrCore.<init>(SolrCore.java:755)
+	... 13 more
+
+INFO  - 2013-12-29 16:23:32.692; org.apache.solr.servlet.SolrDispatchFilter; user.dir=/Users/childbamboo1980/git/samples/solr/example
+INFO  - 2013-12-29 16:23:32.693; org.apache.solr.servlet.SolrDispatchFilter; SolrDispatchFilter.init() done
+WARN  - 2013-12-29 16:23:32.749; org.eclipse.jetty.util.component.AbstractLifeCycle; FAILED SocketConnector@0.0.0.0:8983: java.net.BindException: Address already in use
+java.net.BindException: Address already in use
+	at java.net.PlainSocketImpl.socketBind(Native Method)
+	at java.net.PlainSocketImpl.socketBind(PlainSocketImpl.java:521)
+	at java.net.PlainSocketImpl.bind(PlainSocketImpl.java:414)
+	at java.net.ServerSocket.bind(ServerSocket.java:326)
+	at java.net.ServerSocket.<init>(ServerSocket.java:192)
+	at java.net.ServerSocket.<init>(ServerSocket.java:148)
+	at org.eclipse.jetty.server.bio.SocketConnector.newServerSocket(SocketConnector.java:96)
+	at org.eclipse.jetty.server.bio.SocketConnector.open(SocketConnector.java:85)
+	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:316)
+	at org.eclipse.jetty.server.bio.SocketConnector.doStart(SocketConnector.java:156)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:64)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:291)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:64)
+	at org.eclipse.jetty.xml.XmlConfiguration$1.run(XmlConfiguration.java:1259)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at org.eclipse.jetty.xml.XmlConfiguration.main(XmlConfiguration.java:1182)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.eclipse.jetty.start.Main.invokeMain(Main.java:473)
+	at org.eclipse.jetty.start.Main.start(Main.java:615)
+	at org.eclipse.jetty.start.Main.main(Main.java:96)
+WARN  - 2013-12-29 16:23:32.750; org.eclipse.jetty.util.component.AbstractLifeCycle; FAILED org.eclipse.jetty.server.Server@4f549ceb: java.net.BindException: Address already in use
+java.net.BindException: Address already in use
+	at java.net.PlainSocketImpl.socketBind(Native Method)
+	at java.net.PlainSocketImpl.socketBind(PlainSocketImpl.java:521)
+	at java.net.PlainSocketImpl.bind(PlainSocketImpl.java:414)
+	at java.net.ServerSocket.bind(ServerSocket.java:326)
+	at java.net.ServerSocket.<init>(ServerSocket.java:192)
+	at java.net.ServerSocket.<init>(ServerSocket.java:148)
+	at org.eclipse.jetty.server.bio.SocketConnector.newServerSocket(SocketConnector.java:96)
+	at org.eclipse.jetty.server.bio.SocketConnector.open(SocketConnector.java:85)
+	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:316)
+	at org.eclipse.jetty.server.bio.SocketConnector.doStart(SocketConnector.java:156)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:64)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:291)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:64)
+	at org.eclipse.jetty.xml.XmlConfiguration$1.run(XmlConfiguration.java:1259)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at org.eclipse.jetty.xml.XmlConfiguration.main(XmlConfiguration.java:1182)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.eclipse.jetty.start.Main.invokeMain(Main.java:473)
+	at org.eclipse.jetty.start.Main.start(Main.java:615)
+	at org.eclipse.jetty.start.Main.main(Main.java:96)
+INFO  - 2013-12-29 16:24:23.296; org.apache.solr.servlet.SolrDispatchFilter; [admin] webapp=null path=/admin/cores params={indexInfo=false&_=1388301863261&wt=json} status=0 QTime=2 
+INFO  - 2013-12-29 16:24:23.403; org.apache.solr.servlet.SolrDispatchFilter; [admin] webapp=null path=/admin/info/system params={_=1388301863327&wt=json} status=0 QTime=61 
+INFO  - 2013-12-29 16:24:34.614; org.eclipse.jetty.server.Server; Graceful shutdown SocketConnector@0.0.0.0:8983
+INFO  - 2013-12-29 16:24:34.616; org.eclipse.jetty.server.Server; Graceful shutdown o.e.j.w.WebAppContext{/solr,file:/Users/childbamboo1980/git/samples/solr/example/solr-webapp/webapp/},/Users/childbamboo1980/git/samples/solr/example/webapps/solr.war
+INFO  - 2013-12-29 16:24:35.654; org.apache.solr.core.CoreContainer; Shutting down CoreContainer instance=2016197766
+INFO  - 2013-12-29 16:24:35.660; org.apache.solr.core.SolrCore; [collection1]  CLOSING SolrCore org.apache.solr.core.SolrCore@5e35dc95
+INFO  - 2013-12-29 16:24:35.662; org.apache.solr.update.DirectUpdateHandler2; closing DirectUpdateHandler2{commits=0,autocommit maxTime=15000ms,autocommits=0,soft autocommits=0,optimizes=0,rollbacks=0,expungeDeletes=0,docsPending=0,adds=0,deletesById=0,deletesByQuery=0,errors=0,cumulative_adds=0,cumulative_deletesById=0,cumulative_deletesByQuery=0,cumulative_errors=0}
+INFO  - 2013-12-29 16:24:35.663; org.apache.solr.update.SolrCoreState; Closing SolrCoreState
+INFO  - 2013-12-29 16:24:35.663; org.apache.solr.update.DefaultSolrCoreState; SolrCoreState ref count has reached 0 - closing IndexWriter
+INFO  - 2013-12-29 16:24:35.663; org.apache.solr.update.DefaultSolrCoreState; closing IndexWriter with IndexWriterCloser
+INFO  - 2013-12-29 16:24:35.666; org.apache.solr.core.SolrCore; [collection1] Closing main searcher on request.
+INFO  - 2013-12-29 16:24:35.668; org.apache.solr.core.CachingDirectoryFactory; Closing NRTCachingDirectoryFactory - 2 directories currently being tracked
+INFO  - 2013-12-29 16:24:35.669; org.apache.solr.core.CachingDirectoryFactory; looking to close /Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index [CachedDir<<refCount=0;path=/Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index;done=false>>]
+INFO  - 2013-12-29 16:24:35.669; org.apache.solr.core.CachingDirectoryFactory; Closing directory: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index
+INFO  - 2013-12-29 16:24:35.669; org.apache.solr.core.CachingDirectoryFactory; looking to close /Users/childbamboo1980/git/samples/solr/example/solr/collection1/data [CachedDir<<refCount=0;path=/Users/childbamboo1980/git/samples/solr/example/solr/collection1/data;done=false>>]
+INFO  - 2013-12-29 16:24:35.670; org.apache.solr.core.CachingDirectoryFactory; Closing directory: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/data
+INFO  - 2013-12-29 16:24:35.673; org.eclipse.jetty.server.handler.ContextHandler; stopped o.e.j.w.WebAppContext{/solr,file:/Users/childbamboo1980/git/samples/solr/example/solr-webapp/webapp/},/Users/childbamboo1980/git/samples/solr/example/webapps/solr.war
+INFO  - 2013-12-29 16:24:48.567; org.eclipse.jetty.server.Server; jetty-8.1.10.v20130312
+INFO  - 2013-12-29 16:24:48.609; org.eclipse.jetty.deploy.providers.ScanningAppProvider; Deployment monitor /Users/childbamboo1980/git/samples/solr/example/contexts at interval 0
+INFO  - 2013-12-29 16:24:48.617; org.eclipse.jetty.deploy.DeploymentManager; Deployable added: /Users/childbamboo1980/git/samples/solr/example/contexts/solr-jetty-context.xml
+INFO  - 2013-12-29 16:24:51.337; org.eclipse.jetty.webapp.StandardDescriptorProcessor; NO JSP Support for /solr, did not find org.apache.jasper.servlet.JspServlet
+INFO  - 2013-12-29 16:24:51.424; org.apache.solr.servlet.SolrDispatchFilter; SolrDispatchFilter.init()
+INFO  - 2013-12-29 16:24:51.446; org.apache.solr.core.SolrResourceLoader; JNDI not configured for solr (NoInitialContextEx)
+INFO  - 2013-12-29 16:24:51.447; org.apache.solr.core.SolrResourceLoader; solr home defaulted to 'solr/' (could not find system property or JNDI)
+INFO  - 2013-12-29 16:24:51.448; org.apache.solr.core.SolrResourceLoader; new SolrResourceLoader for directory: 'solr/'
+INFO  - 2013-12-29 16:24:51.646; org.apache.solr.core.ConfigSolr; Loading container configuration from /Users/childbamboo1980/git/samples/solr/example/solr/solr.xml
+INFO  - 2013-12-29 16:24:51.841; org.apache.solr.core.ConfigSolrXml; Config-defined core root directory: 
+INFO  - 2013-12-29 16:24:51.856; org.apache.solr.core.CoreContainer; New CoreContainer 1485988078
+INFO  - 2013-12-29 16:24:51.856; org.apache.solr.core.CoreContainer; Loading cores into CoreContainer [instanceDir=solr/]
+INFO  - 2013-12-29 16:24:51.875; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting socketTimeout to: 0
+INFO  - 2013-12-29 16:24:51.876; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting urlScheme to: http://
+INFO  - 2013-12-29 16:24:51.876; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting connTimeout to: 0
+INFO  - 2013-12-29 16:24:51.877; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting maxConnectionsPerHost to: 20
+INFO  - 2013-12-29 16:24:51.880; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting corePoolSize to: 0
+INFO  - 2013-12-29 16:24:51.880; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting maximumPoolSize to: 2147483647
+INFO  - 2013-12-29 16:24:51.881; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting maxThreadIdleTime to: 5
+INFO  - 2013-12-29 16:24:51.881; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting sizeOfQueue to: -1
+INFO  - 2013-12-29 16:24:51.882; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting fairnessPolicy to: false
+INFO  - 2013-12-29 16:24:52.394; org.apache.solr.logging.LogWatcher; SLF4J impl is org.slf4j.impl.Log4jLoggerFactory
+INFO  - 2013-12-29 16:24:52.396; org.apache.solr.logging.LogWatcher; Registering Log Listener [Log4j (org.slf4j.impl.Log4jLoggerFactory)]
+INFO  - 2013-12-29 16:24:52.460; org.apache.solr.core.CorePropertiesLocator; Looking for core definitions underneath /Users/childbamboo1980/git/samples/solr/example/solr
+INFO  - 2013-12-29 16:24:52.502; org.apache.solr.core.CorePropertiesLocator; Found core collection1 in /Users/childbamboo1980/git/samples/solr/example/solr/collection1/
+INFO  - 2013-12-29 16:24:52.503; org.apache.solr.core.CorePropertiesLocator; Found 1 core definitions
+INFO  - 2013-12-29 16:24:52.506; org.apache.solr.core.CoreContainer; Creating SolrCore 'collection1' using instanceDir: /Users/childbamboo1980/git/samples/solr/example/solr/collection1
+INFO  - 2013-12-29 16:24:52.507; org.apache.solr.core.SolrResourceLoader; new SolrResourceLoader for directory: '/Users/childbamboo1980/git/samples/solr/example/solr/collection1/'
+INFO  - 2013-12-29 16:24:52.651; org.apache.solr.core.SolrConfig; Adding specified lib dirs to ClassLoader
+WARN  - 2013-12-29 16:24:52.652; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../contrib/extraction/lib (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../contrib/extraction/lib).
+WARN  - 2013-12-29 16:24:52.653; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../dist/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../dist).
+WARN  - 2013-12-29 16:24:52.654; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../contrib/clustering/lib/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../contrib/clustering/lib).
+WARN  - 2013-12-29 16:24:52.654; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../dist/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../dist).
+WARN  - 2013-12-29 16:24:52.655; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../contrib/langid/lib/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../contrib/langid/lib).
+WARN  - 2013-12-29 16:24:52.655; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../dist/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../dist).
+WARN  - 2013-12-29 16:24:52.656; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../contrib/velocity/lib (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../contrib/velocity/lib).
+WARN  - 2013-12-29 16:24:52.656; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../dist/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../dist).
+INFO  - 2013-12-29 16:24:52.888; org.apache.solr.update.SolrIndexConfig; IndexWriter infoStream solr logging is enabled
+INFO  - 2013-12-29 16:24:52.896; org.apache.solr.core.SolrConfig; Using Lucene MatchVersion: LUCENE_46
+INFO  - 2013-12-29 16:24:53.157; org.apache.solr.core.SolrConfig; Loaded SolrConfig: solrconfig.xml
+INFO  - 2013-12-29 16:24:53.166; org.apache.solr.schema.IndexSchema; Reading Solr Schema from schema.xml
+INFO  - 2013-12-29 16:24:53.340; org.apache.solr.schema.IndexSchema; [collection1] Schema name=example
+INFO  - 2013-12-29 16:24:54.273; org.apache.solr.schema.IndexSchema; unique key field: id
+INFO  - 2013-12-29 16:24:54.402; org.apache.solr.schema.FileExchangeRateProvider; Reloading exchange rates from file currency.xml
+INFO  - 2013-12-29 16:24:54.414; org.apache.solr.schema.FileExchangeRateProvider; Reloading exchange rates from file currency.xml
+INFO  - 2013-12-29 16:24:54.736; org.apache.solr.core.SolrCore; solr.NRTCachingDirectoryFactory
+INFO  - 2013-12-29 16:24:54.745; org.apache.solr.core.SolrCore; [collection1] Opening new SolrCore at /Users/childbamboo1980/git/samples/solr/example/solr/collection1/, dataDir=/Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/
+INFO  - 2013-12-29 16:24:54.747; org.apache.solr.core.JmxMonitoredMap; No JMX servers found, not exposing Solr information with JMX.
+INFO  - 2013-12-29 16:24:54.753; org.apache.solr.core.SolrCore; [collection1] Added SolrEventListener for newSearcher: org.apache.solr.core.QuerySenderListener{queries=[]}
+INFO  - 2013-12-29 16:24:54.754; org.apache.solr.core.SolrCore; [collection1] Added SolrEventListener for firstSearcher: org.apache.solr.core.QuerySenderListener{queries=[{q=static firstSearcher warming in solrconfig.xml}]}
+INFO  - 2013-12-29 16:24:54.776; org.apache.solr.core.CachingDirectoryFactory; return new directory for /Users/childbamboo1980/git/samples/solr/example/solr/collection1/data
+INFO  - 2013-12-29 16:24:54.776; org.apache.solr.core.SolrCore; New index directory detected: old=null new=/Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index/
+INFO  - 2013-12-29 16:24:54.777; org.apache.solr.core.CachingDirectoryFactory; return new directory for /Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index
+INFO  - 2013-12-29 16:24:54.790; org.apache.solr.core.SolrCore; created json: solr.JSONResponseWriter
+INFO  - 2013-12-29 16:24:54.791; org.apache.solr.core.SolrCore; adding lazy queryResponseWriter: solr.VelocityResponseWriter
+INFO  - 2013-12-29 16:24:54.791; org.apache.solr.core.SolrCore; created velocity: solr.VelocityResponseWriter
+INFO  - 2013-12-29 16:24:54.795; org.apache.solr.core.SolrCore; created xslt: solr.XSLTResponseWriter
+INFO  - 2013-12-29 16:24:54.796; org.apache.solr.response.XSLTResponseWriter; xsltCacheLifetimeSeconds=5
+INFO  - 2013-12-29 16:24:54.928; org.apache.solr.core.SolrCore; no updateRequestProcessorChain defined as default, creating implicit default
+INFO  - 2013-12-29 16:24:54.940; org.apache.solr.core.RequestHandlers; created /select: solr.SearchHandler
+INFO  - 2013-12-29 16:24:54.940; org.apache.solr.core.RequestHandlers; created /query: solr.SearchHandler
+INFO  - 2013-12-29 16:24:54.942; org.apache.solr.core.RequestHandlers; created /get: solr.RealTimeGetHandler
+INFO  - 2013-12-29 16:24:54.942; org.apache.solr.core.RequestHandlers; created /browse: solr.SearchHandler
+INFO  - 2013-12-29 16:24:54.962; org.apache.solr.core.RequestHandlers; created /update: solr.UpdateRequestHandler
+WARN  - 2013-12-29 16:24:54.982; org.apache.solr.core.SolrResourceLoader; Solr loaded a deprecated plugin/analysis class [solr.JsonUpdateRequestHandler]. Please consult documentation how to replace it accordingly.
+INFO  - 2013-12-29 16:24:54.982; org.apache.solr.core.RequestHandlers; created /update/json: solr.JsonUpdateRequestHandler
+WARN  - 2013-12-29 16:24:54.985; org.apache.solr.core.SolrResourceLoader; Solr loaded a deprecated plugin/analysis class [solr.CSVRequestHandler]. Please consult documentation how to replace it accordingly.
+INFO  - 2013-12-29 16:24:54.985; org.apache.solr.core.RequestHandlers; created /update/csv: solr.CSVRequestHandler
+INFO  - 2013-12-29 16:24:54.985; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.extraction.ExtractingRequestHandler
+INFO  - 2013-12-29 16:24:54.987; org.apache.solr.core.RequestHandlers; created /update/extract: solr.extraction.ExtractingRequestHandler
+INFO  - 2013-12-29 16:24:54.987; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.FieldAnalysisRequestHandler
+INFO  - 2013-12-29 16:24:54.987; org.apache.solr.core.RequestHandlers; created /analysis/field: solr.FieldAnalysisRequestHandler
+INFO  - 2013-12-29 16:24:54.987; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.DocumentAnalysisRequestHandler
+INFO  - 2013-12-29 16:24:54.988; org.apache.solr.core.RequestHandlers; created /analysis/document: solr.DocumentAnalysisRequestHandler
+INFO  - 2013-12-29 16:24:54.990; org.apache.solr.core.RequestHandlers; created /admin/: solr.admin.AdminHandlers
+INFO  - 2013-12-29 16:24:54.993; org.apache.solr.core.RequestHandlers; created /admin/ping: solr.PingRequestHandler
+INFO  - 2013-12-29 16:24:54.995; org.apache.solr.core.RequestHandlers; created /debug/dump: solr.DumpRequestHandler
+INFO  - 2013-12-29 16:24:55.007; org.apache.solr.core.RequestHandlers; created /replication: solr.ReplicationHandler
+INFO  - 2013-12-29 16:24:55.007; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.SearchHandler
+INFO  - 2013-12-29 16:24:55.007; org.apache.solr.core.RequestHandlers; created /spell: solr.SearchHandler
+INFO  - 2013-12-29 16:24:55.007; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.SearchHandler
+INFO  - 2013-12-29 16:24:55.008; org.apache.solr.core.RequestHandlers; created /tvrh: solr.SearchHandler
+INFO  - 2013-12-29 16:24:55.008; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: org.apache.solr.handler.js.JavaScriptRequestHandler
+INFO  - 2013-12-29 16:24:55.008; org.apache.solr.core.RequestHandlers; created /js: org.apache.solr.handler.js.JavaScriptRequestHandler
+INFO  - 2013-12-29 16:24:55.008; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.SearchHandler
+INFO  - 2013-12-29 16:24:55.009; org.apache.solr.core.RequestHandlers; created /terms: solr.SearchHandler
+INFO  - 2013-12-29 16:24:55.009; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.SearchHandler
+INFO  - 2013-12-29 16:24:55.009; org.apache.solr.core.RequestHandlers; created /elevate: solr.SearchHandler
+INFO  - 2013-12-29 16:24:55.032; org.apache.solr.handler.loader.XMLLoader; xsltCacheLifetimeSeconds=60
+INFO  - 2013-12-29 16:24:55.035; org.apache.solr.handler.loader.XMLLoader; xsltCacheLifetimeSeconds=60
+INFO  - 2013-12-29 16:24:55.036; org.apache.solr.handler.loader.XMLLoader; xsltCacheLifetimeSeconds=60
+INFO  - 2013-12-29 16:24:55.060; org.apache.solr.update.CommitTracker; Hard AutoCommit: if uncommited for 15000ms; 
+INFO  - 2013-12-29 16:24:55.060; org.apache.solr.update.CommitTracker; Soft AutoCommit: disabled
+INFO  - 2013-12-29 16:24:55.122; org.apache.solr.core.SolrDeletionPolicy; SolrDeletionPolicy.onInit: commits: num=1
+	commit{dir=NRTCachingDirectory(org.apache.lucene.store.NIOFSDirectory@/Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index lockFactory=org.apache.lucene.store.NativeFSLockFactory@1c39bf12; maxCacheMB=48.0 maxMergeSizeMB=4.0),segFN=segments_1,generation=1}
+INFO  - 2013-12-29 16:24:55.123; org.apache.solr.core.SolrDeletionPolicy; newest commit generation = 1
+INFO  - 2013-12-29 16:24:55.132; org.apache.solr.search.SolrIndexSearcher; Opening Searcher@6ca02839 main
+INFO  - 2013-12-29 16:24:55.138; org.apache.solr.handler.component.SpellCheckComponent; Initializing spell checkers
+INFO  - 2013-12-29 16:24:55.147; org.apache.solr.spelling.DirectSolrSpellChecker; init: {name=default,field=text,classname=solr.DirectSolrSpellChecker,distanceMeasure=internal,accuracy=0.5,maxEdits=2,minPrefix=1,maxInspections=5,minQueryLength=4,maxQueryFrequency=0.01}
+INFO  - 2013-12-29 16:24:55.160; org.apache.solr.handler.component.SpellCheckComponent; No queryConverter defined, using default converter
+INFO  - 2013-12-29 16:24:55.163; org.apache.solr.handler.component.QueryElevationComponent; Loading QueryElevation from: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/conf/elevate.xml
+INFO  - 2013-12-29 16:24:55.208; org.apache.solr.handler.ReplicationHandler; Commits will be reserved for  10000
+INFO  - 2013-12-29 16:24:55.210; org.apache.solr.core.QuerySenderListener; QuerySenderListener sending requests to Searcher@6ca02839 main{StandardDirectoryReader(segments_1:1:nrt)}
+INFO  - 2013-12-29 16:24:55.240; org.apache.solr.core.CoreContainer; registering core: collection1
+INFO  - 2013-12-29 16:24:55.269; org.apache.solr.servlet.SolrDispatchFilter; user.dir=/Users/childbamboo1980/git/samples/solr/example
+INFO  - 2013-12-29 16:24:55.270; org.apache.solr.servlet.SolrDispatchFilter; SolrDispatchFilter.init() done
+INFO  - 2013-12-29 16:24:55.353; org.apache.solr.core.SolrCore; [collection1] webapp=null path=null params={event=firstSearcher&q=static+firstSearcher+warming+in+solrconfig.xml&distrib=false} hits=0 status=0 QTime=140 
+INFO  - 2013-12-29 16:24:55.359; org.apache.solr.core.QuerySenderListener; QuerySenderListener done.
+INFO  - 2013-12-29 16:24:55.374; org.eclipse.jetty.server.AbstractConnector; Started SocketConnector@0.0.0.0:8983
+INFO  - 2013-12-29 16:24:55.359; org.apache.solr.handler.component.SpellCheckComponent$SpellCheckerListener; Loading spell index for spellchecker: default
+INFO  - 2013-12-29 16:24:55.375; org.apache.solr.handler.component.SpellCheckComponent$SpellCheckerListener; Loading spell index for spellchecker: wordbreak
+INFO  - 2013-12-29 16:24:55.376; org.apache.solr.core.SolrCore; [collection1] Registered new searcher Searcher@6ca02839 main{StandardDirectoryReader(segments_1:1:nrt)}
+INFO  - 2013-12-29 16:25:02.900; org.apache.solr.servlet.SolrDispatchFilter; [admin] webapp=null path=/admin/cores params={indexInfo=false&_=1388301902887&wt=json} status=0 QTime=2 
+INFO  - 2013-12-29 16:25:03.024; org.apache.solr.servlet.SolrDispatchFilter; [admin] webapp=null path=/admin/info/system params={_=1388301902934&wt=json} status=0 QTime=78 
+INFO  - 2013-12-29 16:25:24.234; org.eclipse.jetty.server.Server; Graceful shutdown SocketConnector@0.0.0.0:8983
+INFO  - 2013-12-29 16:25:24.235; org.eclipse.jetty.server.Server; Graceful shutdown o.e.j.w.WebAppContext{/solr,file:/Users/childbamboo1980/git/samples/solr/example/solr-webapp/webapp/},/Users/childbamboo1980/git/samples/solr/example/webapps/solr.war
+INFO  - 2013-12-29 16:25:25.251; org.apache.solr.core.CoreContainer; Shutting down CoreContainer instance=1485988078
+INFO  - 2013-12-29 16:25:25.254; org.apache.solr.core.SolrCore; [collection1]  CLOSING SolrCore org.apache.solr.core.SolrCore@2224ea85
+INFO  - 2013-12-29 16:25:25.255; org.apache.solr.update.DirectUpdateHandler2; closing DirectUpdateHandler2{commits=0,autocommit maxTime=15000ms,autocommits=0,soft autocommits=0,optimizes=0,rollbacks=0,expungeDeletes=0,docsPending=0,adds=0,deletesById=0,deletesByQuery=0,errors=0,cumulative_adds=0,cumulative_deletesById=0,cumulative_deletesByQuery=0,cumulative_errors=0}
+INFO  - 2013-12-29 16:25:25.256; org.apache.solr.update.SolrCoreState; Closing SolrCoreState
+INFO  - 2013-12-29 16:25:25.256; org.apache.solr.update.DefaultSolrCoreState; SolrCoreState ref count has reached 0 - closing IndexWriter
+INFO  - 2013-12-29 16:25:25.257; org.apache.solr.update.DefaultSolrCoreState; closing IndexWriter with IndexWriterCloser
+INFO  - 2013-12-29 16:25:25.262; org.apache.solr.core.SolrCore; [collection1] Closing main searcher on request.
+INFO  - 2013-12-29 16:25:25.264; org.apache.solr.core.CachingDirectoryFactory; Closing NRTCachingDirectoryFactory - 2 directories currently being tracked
+INFO  - 2013-12-29 16:25:25.266; org.apache.solr.core.CachingDirectoryFactory; looking to close /Users/childbamboo1980/git/samples/solr/example/solr/collection1/data [CachedDir<<refCount=0;path=/Users/childbamboo1980/git/samples/solr/example/solr/collection1/data;done=false>>]
+INFO  - 2013-12-29 16:25:25.266; org.apache.solr.core.CachingDirectoryFactory; Closing directory: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/data
+INFO  - 2013-12-29 16:25:25.267; org.apache.solr.core.CachingDirectoryFactory; looking to close /Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index [CachedDir<<refCount=0;path=/Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index;done=false>>]
+INFO  - 2013-12-29 16:25:25.267; org.apache.solr.core.CachingDirectoryFactory; Closing directory: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index
+INFO  - 2013-12-29 16:25:25.270; org.eclipse.jetty.server.handler.ContextHandler; stopped o.e.j.w.WebAppContext{/solr,file:/Users/childbamboo1980/git/samples/solr/example/solr-webapp/webapp/},/Users/childbamboo1980/git/samples/solr/example/webapps/solr.war
+INFO  - 2013-12-29 16:25:35.400; org.eclipse.jetty.server.Server; jetty-8.1.10.v20130312
+INFO  - 2013-12-29 16:25:35.432; org.eclipse.jetty.deploy.providers.ScanningAppProvider; Deployment monitor /Users/childbamboo1980/git/samples/solr/example/contexts at interval 0
+INFO  - 2013-12-29 16:25:35.439; org.eclipse.jetty.deploy.DeploymentManager; Deployable added: /Users/childbamboo1980/git/samples/solr/example/contexts/solr-jetty-context.xml
+INFO  - 2013-12-29 16:25:37.808; org.eclipse.jetty.webapp.StandardDescriptorProcessor; NO JSP Support for /solr, did not find org.apache.jasper.servlet.JspServlet
+INFO  - 2013-12-29 16:25:37.927; org.apache.solr.servlet.SolrDispatchFilter; SolrDispatchFilter.init()
+INFO  - 2013-12-29 16:25:37.950; org.apache.solr.core.SolrResourceLoader; JNDI not configured for solr (NoInitialContextEx)
+INFO  - 2013-12-29 16:25:37.951; org.apache.solr.core.SolrResourceLoader; solr home defaulted to 'solr/' (could not find system property or JNDI)
+INFO  - 2013-12-29 16:25:37.952; org.apache.solr.core.SolrResourceLoader; new SolrResourceLoader for directory: 'solr/'
+INFO  - 2013-12-29 16:25:38.133; org.apache.solr.core.ConfigSolr; Loading container configuration from /Users/childbamboo1980/git/samples/solr/example/solr/solr.xml
+INFO  - 2013-12-29 16:25:38.286; org.apache.solr.core.ConfigSolrXml; Config-defined core root directory: 
+INFO  - 2013-12-29 16:25:38.300; org.apache.solr.core.CoreContainer; New CoreContainer 281794780
+INFO  - 2013-12-29 16:25:38.300; org.apache.solr.core.CoreContainer; Loading cores into CoreContainer [instanceDir=solr/]
+INFO  - 2013-12-29 16:25:38.318; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting socketTimeout to: 0
+INFO  - 2013-12-29 16:25:38.319; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting urlScheme to: http://
+INFO  - 2013-12-29 16:25:38.319; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting connTimeout to: 0
+INFO  - 2013-12-29 16:25:38.320; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting maxConnectionsPerHost to: 20
+INFO  - 2013-12-29 16:25:38.323; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting corePoolSize to: 0
+INFO  - 2013-12-29 16:25:38.323; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting maximumPoolSize to: 2147483647
+INFO  - 2013-12-29 16:25:38.324; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting maxThreadIdleTime to: 5
+INFO  - 2013-12-29 16:25:38.324; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting sizeOfQueue to: -1
+INFO  - 2013-12-29 16:25:38.325; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting fairnessPolicy to: false
+INFO  - 2013-12-29 16:25:38.664; org.apache.solr.logging.LogWatcher; SLF4J impl is org.slf4j.impl.Log4jLoggerFactory
+INFO  - 2013-12-29 16:25:38.665; org.apache.solr.logging.LogWatcher; Registering Log Listener [Log4j (org.slf4j.impl.Log4jLoggerFactory)]
+INFO  - 2013-12-29 16:25:38.709; org.apache.solr.core.CorePropertiesLocator; Looking for core definitions underneath /Users/childbamboo1980/git/samples/solr/example/solr
+INFO  - 2013-12-29 16:25:38.733; org.apache.solr.core.CorePropertiesLocator; Found core collection1 in /Users/childbamboo1980/git/samples/solr/example/solr/collection1/
+INFO  - 2013-12-29 16:25:38.734; org.apache.solr.core.CorePropertiesLocator; Found 1 core definitions
+INFO  - 2013-12-29 16:25:38.736; org.apache.solr.core.CoreContainer; Creating SolrCore 'collection1' using instanceDir: /Users/childbamboo1980/git/samples/solr/example/solr/collection1
+INFO  - 2013-12-29 16:25:38.738; org.apache.solr.core.SolrResourceLoader; new SolrResourceLoader for directory: '/Users/childbamboo1980/git/samples/solr/example/solr/collection1/'
+INFO  - 2013-12-29 16:25:38.891; org.apache.solr.core.SolrConfig; Adding specified lib dirs to ClassLoader
+WARN  - 2013-12-29 16:25:38.892; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../contrib/extraction/lib (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../contrib/extraction/lib).
+WARN  - 2013-12-29 16:25:38.893; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../dist/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../dist).
+WARN  - 2013-12-29 16:25:38.893; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../contrib/clustering/lib/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../contrib/clustering/lib).
+WARN  - 2013-12-29 16:25:38.894; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../dist/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../dist).
+WARN  - 2013-12-29 16:25:38.894; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../contrib/langid/lib/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../contrib/langid/lib).
+WARN  - 2013-12-29 16:25:38.895; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../dist/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../dist).
+WARN  - 2013-12-29 16:25:38.895; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../contrib/velocity/lib (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../contrib/velocity/lib).
+WARN  - 2013-12-29 16:25:38.896; org.apache.solr.core.SolrResourceLoader; Can't find (or read) directory to add to classloader: ../../../dist/ (resolved as: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/../../../dist).
+INFO  - 2013-12-29 16:25:39.105; org.apache.solr.update.SolrIndexConfig; IndexWriter infoStream solr logging is enabled
+INFO  - 2013-12-29 16:25:39.113; org.apache.solr.core.SolrConfig; Using Lucene MatchVersion: LUCENE_46
+INFO  - 2013-12-29 16:25:39.355; org.apache.solr.core.SolrConfig; Loaded SolrConfig: solrconfig.xml
+INFO  - 2013-12-29 16:25:39.365; org.apache.solr.schema.IndexSchema; Reading Solr Schema from schema.xml
+INFO  - 2013-12-29 16:25:39.555; org.apache.solr.schema.IndexSchema; [collection1] Schema name=example
+INFO  - 2013-12-29 16:25:40.525; org.apache.solr.schema.IndexSchema; unique key field: id
+INFO  - 2013-12-29 16:25:40.644; org.apache.solr.schema.FileExchangeRateProvider; Reloading exchange rates from file currency.xml
+INFO  - 2013-12-29 16:25:40.657; org.apache.solr.schema.FileExchangeRateProvider; Reloading exchange rates from file currency.xml
+INFO  - 2013-12-29 16:25:41.003; org.apache.solr.core.SolrCore; solr.NRTCachingDirectoryFactory
+INFO  - 2013-12-29 16:25:41.013; org.apache.solr.core.SolrCore; [collection1] Opening new SolrCore at /Users/childbamboo1980/git/samples/solr/example/solr/collection1/, dataDir=/Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/
+INFO  - 2013-12-29 16:25:41.015; org.apache.solr.core.JmxMonitoredMap; No JMX servers found, not exposing Solr information with JMX.
+INFO  - 2013-12-29 16:25:41.020; org.apache.solr.core.SolrCore; [collection1] Added SolrEventListener for newSearcher: org.apache.solr.core.QuerySenderListener{queries=[]}
+INFO  - 2013-12-29 16:25:41.021; org.apache.solr.core.SolrCore; [collection1] Added SolrEventListener for firstSearcher: org.apache.solr.core.QuerySenderListener{queries=[{q=static firstSearcher warming in solrconfig.xml}]}
+INFO  - 2013-12-29 16:25:41.040; org.apache.solr.core.CachingDirectoryFactory; return new directory for /Users/childbamboo1980/git/samples/solr/example/solr/collection1/data
+INFO  - 2013-12-29 16:25:41.040; org.apache.solr.core.SolrCore; New index directory detected: old=null new=/Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index/
+INFO  - 2013-12-29 16:25:41.041; org.apache.solr.core.CachingDirectoryFactory; return new directory for /Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index
+INFO  - 2013-12-29 16:25:41.055; org.apache.solr.core.SolrCore; created json: solr.JSONResponseWriter
+INFO  - 2013-12-29 16:25:41.055; org.apache.solr.core.SolrCore; adding lazy queryResponseWriter: solr.VelocityResponseWriter
+INFO  - 2013-12-29 16:25:41.056; org.apache.solr.core.SolrCore; created velocity: solr.VelocityResponseWriter
+INFO  - 2013-12-29 16:25:41.061; org.apache.solr.core.SolrCore; created xslt: solr.XSLTResponseWriter
+INFO  - 2013-12-29 16:25:41.061; org.apache.solr.response.XSLTResponseWriter; xsltCacheLifetimeSeconds=5
+INFO  - 2013-12-29 16:25:41.196; org.apache.solr.core.SolrCore; no updateRequestProcessorChain defined as default, creating implicit default
+INFO  - 2013-12-29 16:25:41.219; org.apache.solr.core.RequestHandlers; created /select: solr.SearchHandler
+INFO  - 2013-12-29 16:25:41.223; org.apache.solr.core.RequestHandlers; created /query: solr.SearchHandler
+INFO  - 2013-12-29 16:25:41.226; org.apache.solr.core.RequestHandlers; created /get: solr.RealTimeGetHandler
+INFO  - 2013-12-29 16:25:41.226; org.apache.solr.core.RequestHandlers; created /browse: solr.SearchHandler
+INFO  - 2013-12-29 16:25:41.230; org.apache.solr.core.RequestHandlers; created /update: solr.UpdateRequestHandler
+WARN  - 2013-12-29 16:25:41.248; org.apache.solr.core.SolrResourceLoader; Solr loaded a deprecated plugin/analysis class [solr.JsonUpdateRequestHandler]. Please consult documentation how to replace it accordingly.
+INFO  - 2013-12-29 16:25:41.249; org.apache.solr.core.RequestHandlers; created /update/json: solr.JsonUpdateRequestHandler
+WARN  - 2013-12-29 16:25:41.251; org.apache.solr.core.SolrResourceLoader; Solr loaded a deprecated plugin/analysis class [solr.CSVRequestHandler]. Please consult documentation how to replace it accordingly.
+INFO  - 2013-12-29 16:25:41.251; org.apache.solr.core.RequestHandlers; created /update/csv: solr.CSVRequestHandler
+INFO  - 2013-12-29 16:25:41.251; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.extraction.ExtractingRequestHandler
+INFO  - 2013-12-29 16:25:41.252; org.apache.solr.core.RequestHandlers; created /update/extract: solr.extraction.ExtractingRequestHandler
+INFO  - 2013-12-29 16:25:41.252; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.FieldAnalysisRequestHandler
+INFO  - 2013-12-29 16:25:41.253; org.apache.solr.core.RequestHandlers; created /analysis/field: solr.FieldAnalysisRequestHandler
+INFO  - 2013-12-29 16:25:41.253; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.DocumentAnalysisRequestHandler
+INFO  - 2013-12-29 16:25:41.253; org.apache.solr.core.RequestHandlers; created /analysis/document: solr.DocumentAnalysisRequestHandler
+INFO  - 2013-12-29 16:25:41.255; org.apache.solr.core.RequestHandlers; created /admin/: solr.admin.AdminHandlers
+INFO  - 2013-12-29 16:25:41.258; org.apache.solr.core.RequestHandlers; created /admin/ping: solr.PingRequestHandler
+INFO  - 2013-12-29 16:25:41.260; org.apache.solr.core.RequestHandlers; created /debug/dump: solr.DumpRequestHandler
+INFO  - 2013-12-29 16:25:41.272; org.apache.solr.core.RequestHandlers; created /replication: solr.ReplicationHandler
+INFO  - 2013-12-29 16:25:41.272; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.SearchHandler
+INFO  - 2013-12-29 16:25:41.272; org.apache.solr.core.RequestHandlers; created /spell: solr.SearchHandler
+INFO  - 2013-12-29 16:25:41.273; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.SearchHandler
+INFO  - 2013-12-29 16:25:41.273; org.apache.solr.core.RequestHandlers; created /tvrh: solr.SearchHandler
+INFO  - 2013-12-29 16:25:41.273; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: org.apache.solr.handler.js.JavaScriptRequestHandler
+INFO  - 2013-12-29 16:25:41.273; org.apache.solr.core.RequestHandlers; created /js: org.apache.solr.handler.js.JavaScriptRequestHandler
+INFO  - 2013-12-29 16:25:41.273; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.SearchHandler
+INFO  - 2013-12-29 16:25:41.274; org.apache.solr.core.RequestHandlers; created /terms: solr.SearchHandler
+INFO  - 2013-12-29 16:25:41.274; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.SearchHandler
+INFO  - 2013-12-29 16:25:41.274; org.apache.solr.core.RequestHandlers; created /elevate: solr.SearchHandler
+INFO  - 2013-12-29 16:25:41.297; org.apache.solr.handler.loader.XMLLoader; xsltCacheLifetimeSeconds=60
+INFO  - 2013-12-29 16:25:41.300; org.apache.solr.handler.loader.XMLLoader; xsltCacheLifetimeSeconds=60
+INFO  - 2013-12-29 16:25:41.301; org.apache.solr.handler.loader.XMLLoader; xsltCacheLifetimeSeconds=60
+INFO  - 2013-12-29 16:25:41.322; org.apache.solr.update.CommitTracker; Hard AutoCommit: if uncommited for 15000ms; 
+INFO  - 2013-12-29 16:25:41.323; org.apache.solr.update.CommitTracker; Soft AutoCommit: disabled
+INFO  - 2013-12-29 16:25:41.384; org.apache.solr.core.SolrDeletionPolicy; SolrDeletionPolicy.onInit: commits: num=1
+	commit{dir=NRTCachingDirectory(org.apache.lucene.store.NIOFSDirectory@/Users/childbamboo1980/git/samples/solr/example/solr/collection1/data/index lockFactory=org.apache.lucene.store.NativeFSLockFactory@6487cd5c; maxCacheMB=48.0 maxMergeSizeMB=4.0),segFN=segments_1,generation=1}
+INFO  - 2013-12-29 16:25:41.385; org.apache.solr.core.SolrDeletionPolicy; newest commit generation = 1
+INFO  - 2013-12-29 16:25:41.394; org.apache.solr.search.SolrIndexSearcher; Opening Searcher@20edbca8 main
+INFO  - 2013-12-29 16:25:41.401; org.apache.solr.handler.component.SpellCheckComponent; Initializing spell checkers
+INFO  - 2013-12-29 16:25:41.409; org.apache.solr.spelling.DirectSolrSpellChecker; init: {name=default,field=text,classname=solr.DirectSolrSpellChecker,distanceMeasure=internal,accuracy=0.5,maxEdits=2,minPrefix=1,maxInspections=5,minQueryLength=4,maxQueryFrequency=0.01}
+INFO  - 2013-12-29 16:25:41.417; org.apache.solr.handler.component.SpellCheckComponent; No queryConverter defined, using default converter
+INFO  - 2013-12-29 16:25:41.420; org.apache.solr.handler.component.QueryElevationComponent; Loading QueryElevation from: /Users/childbamboo1980/git/samples/solr/example/solr/collection1/conf/elevate.xml
+INFO  - 2013-12-29 16:25:41.463; org.apache.solr.handler.ReplicationHandler; Commits will be reserved for  10000
+INFO  - 2013-12-29 16:25:41.463; org.apache.solr.core.QuerySenderListener; QuerySenderListener sending requests to Searcher@20edbca8 main{StandardDirectoryReader(segments_1:1:nrt)}
+INFO  - 2013-12-29 16:25:41.466; org.apache.solr.core.CoreContainer; registering core: collection1
+INFO  - 2013-12-29 16:25:41.523; org.apache.solr.servlet.SolrDispatchFilter; user.dir=/Users/childbamboo1980/git/samples/solr/example
+INFO  - 2013-12-29 16:25:41.524; org.apache.solr.servlet.SolrDispatchFilter; SolrDispatchFilter.init() done
+INFO  - 2013-12-29 16:25:41.527; org.apache.solr.core.SolrCore; [collection1] webapp=null path=null params={event=firstSearcher&q=static+firstSearcher+warming+in+solrconfig.xml&distrib=false} hits=0 status=0 QTime=60 
+INFO  - 2013-12-29 16:25:41.528; org.apache.solr.core.QuerySenderListener; QuerySenderListener done.
+INFO  - 2013-12-29 16:25:41.528; org.apache.solr.handler.component.SpellCheckComponent$SpellCheckerListener; Loading spell index for spellchecker: default
+INFO  - 2013-12-29 16:25:41.529; org.apache.solr.handler.component.SpellCheckComponent$SpellCheckerListener; Loading spell index for spellchecker: wordbreak
+INFO  - 2013-12-29 16:25:41.570; org.apache.solr.core.SolrCore; [collection1] Registered new searcher Searcher@20edbca8 main{StandardDirectoryReader(segments_1:1:nrt)}
+INFO  - 2013-12-29 16:25:41.592; org.eclipse.jetty.server.AbstractConnector; Started SocketConnector@0.0.0.0:8983
+INFO  - 2013-12-29 16:25:44.956; org.apache.solr.servlet.SolrDispatchFilter; [admin] webapp=null path=/admin/cores params={indexInfo=false&_=1388301944927&wt=json} status=0 QTime=2 
+INFO  - 2013-12-29 16:25:45.191; org.apache.solr.servlet.SolrDispatchFilter; [admin] webapp=null path=/admin/info/system params={_=1388301945123&wt=json} status=0 QTime=53 
