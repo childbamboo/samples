@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="http://fb.me/react-0.13.3.js"></script>
+    <script src="http://fb.me/JSXTransformer-0.13.3.js"></script>
+  </head>
+  <body>
+    <div id="app"></div><!-- ←ここに埋め込まれる -->
+
+    <!-- 以下、Reactのプログラム -->
+    <!-- (jsxを使っているのでtext/jsxと書く) -->
+    <script type="text/jsx">
+     var HelloWorld = React.createClass({
+       // <HelloWorld />をレンダリング（表示）
+       render: function() {
+         return (
+           <p>Hello!World!</p>
+         );
+       }
+     });
+
+     // id='app'に<HelloWorld />を埋め込む（マウント）
+     var m = React.render(<HelloWorld />, document.getElementById('app'));
+    </script>
+  </body>
+</html>
