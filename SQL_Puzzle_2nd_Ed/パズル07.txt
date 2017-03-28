@@ -1,0 +1,121 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■問題文
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Portfolios
+(file_id INTEGER NOT NULL PRIMARY KEY,
+ issue_date DATE NOT NULL,
+ superseded_file_id INTEGER NOT NULL
+   REFERENCES Portfolios(file_id),
+ supersedes_file_id INTEGER NOT NULL
+   REFERENCES Portfolios(file_id));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Portfolios
+(file_id INTEGER NOT NULL PRIMARY KEY,
+ そのほかの列 ...);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Succession
+(chain INTEGER NOT NULL,
+ next INTEGER DEFAULT 0 NOT NULL CHECK (next >= 0),
+ file_id INTEGER NOT NULL REFERENCES Portfolios(file_id),
+ suc_date DATE NOT NULL,
+ PRIMARY KEY(chain, next));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Portfolios
+(file_id INTEGER NOT NULL PRIMARY KEY,
+ stuff CHAR(15) NOT NULL);  -- ファイルの名前
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO Portfolios
+VALUES (222, 'stuff'),
+       (223, 'old stuff'),
+       (224, 'new stuff'),
+       (225, 'borrowed stuff'),
+       (322, 'blue stuff'),
+       (323, 'purple stuff'),
+       (324, 'red stuff'),
+       (325, 'green stuff'),
+       (999, 'yellow stuff');
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Succession
+(chain INTEGER NOT NULL,
+ next INTEGER NOT NULL,
+ file_id INTEGER NOT NULL REFERENCES Portfolios(file_id),
+ suc_date DATE NOT NULL,
+ PRIMARY KEY(chain, next));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO Succession
+VALUES (1, 0, 222, '2007-11-01'),
+       (1, 1, 223, '2007-11-02'),
+       (1, 2, 224, '2007-11-04'),
+       (1, 3, 225, '2007-11-05'),
+       (1, 4, 999, '2007-11-25'),
+       (2, 0, 322, '2007-11-01'),
+       (2, 1, 323, '2007-11-02'),
+       (2, 2, 324, '2007-11-04'),
+       (2, 3, 322, '2007-11-05'),
+       (2, 4, 323, '2007-11-12'),
+       (2, 5, 999, '2007-11-25');
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT DISTINCT P1.file_id, stuff, suc_date
+  FROM Portfolios AS P1, Succession AS S1
+ WHERE P1.file_id = S1.file_id
+   AND next = (SELECT MAX(next)
+                 FROM Succession AS S2
+                WHERE S1.chain = S2.chain);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT chain, next, P1.file_id, stuff, suc_date
+  FROM Portfolios AS P1, Succession AS S1
+ WHERE S1.file_id = P1.file_id
+ ORDER BY chain, next;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT S1.file_id, ' superseded ', S2.file_id,
+       ' on ', S1.suc_date
+  FROM Succession AS S1, Succession AS S2
+ WHERE S1.chain = S2.chain
+   AND S1.next = S2.next + 1
+   AND S1.file_id = :my_file_id; -- すべてのバージョンについて調べたいのなら、この条件は削除する
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+BEGIN
+-- 新規バージョンのための行を作る
+INSERT INTO Portfolios VALUES (1000, 'sticky stuff');
+
+-- 連鎖の中の任意のold_file_idをnew_file_idとして追加する
+INSERT INTO Succession (chain, next, file_id, suc_date)
+VALUES ((SELECT DISTINCT chain
+           FROM Succession AS S1
+          WHERE S1.file_id = :old_file_id),
+        (SELECT MAX(next) + 1
+           FROM Succession AS S1
+          WHERE S1.chain = (SELECT DISTINCT chain
+                              FROM Succession AS S2
+                             WHERE file_id = :old_file_id)),
+       :new_file_id, :new_suc_date);
+END;
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.024 - 028, Copyright Elsevier 2006.

@@ -1,0 +1,118 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■問題文
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE FUNCTION Barcode_CheckSum(IN my_barcode CHAR(12))
+RETURNS INTEGER
+  BEGIN
+  DECLARE barcode_checkres INTEGER;
+  DECLARE idx INTEGER;
+  DECLARE sgn INTEGER;
+
+  SET barcode_checkres = 0;
+
+  -- 与えられたバーコードが数値かチェックする
+  IF IsNumeric(my_barcode) = 0
+  THEN RETURN -1;
+  END IF;
+
+  -- バーコードの長さをチェックする
+  IF CHAR_LENGTH(TRIM(BOTH ' ' FROM my_barcode)) <> 12
+  THEN RETURN -2;
+  END IF;
+
+  -- バーコードのチェックサムを計算する
+  SET idx = 1;
+  WHILE idx <= 12
+  DO -- 数字の符号を求める
+
+    IF MOD(idx, 2) = 0
+       THEN SET sgn = -1;
+       ELSE SET sgn = +1;
+    END IF;
+
+    SET barcode_checkres = barcode_checkres +
+        CAST(SUBSTRING(my_barcode FROM idx FOR 1)
+             AS INTEGER) * sgn;
+    SET idx = idx + 1;
+  END WHILE;
+
+  -- チェックディジット
+  RETURN ABS(MOD(barcode_checkres, 10));
+END;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE FUNCTION Barcode_CheckSum(IN barcode CHAR(12))
+RETURNS INTEGER
+BEGIN
+  IF barcode SIMILAR TO '%[^0-9]%'
+  THEN RETURN -1;
+  ELSE RETURN
+    (SELECT ABS(MOD(SUM(CAST(
+            SUBSTRING(barcode FROM S.seq FOR 1) AS INTEGER)
+            * CASE MOD(S.seq, 2) WHEN 0 THEN 1 ELSE -1 END), 10))
+       FROM Sequence AS S
+      WHERE S.seq <= 12);
+  END IF;
+END;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその3
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE FUNCTION Barcode_CheckSum(IN barcode CHAR(12))
+RETURNS INTEGER
+RETURN
+  (SELECT ABS(MOD(SUM(CAST(
+          SUBSTRING(barcode FROM S.seq FOR 1) AS INTEGER)
+          * CASE MOD(S.seq, 2) WHEN 0 THEN 1 ELSE -1 END), 10))
+     FROM Sequence AS S
+    WHERE S.seq <= 12
+      AND barcode NOT SIMILAR TO '%[^0-9]%');
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE FUNCTION Barcode_CheckSum(IN barcode CHAR(12))
+RETURNS INTEGER
+RETURN
+  (SELECT ABS(MOD(SUM(CAST(
+          SUBSTRING(barcode FROM Weights.seq FOR 1) AS INTEGER)
+          * Weights.wgt), 10))
+     FROM (VALUES (CAST(1 AS INTEGER), CAST(-1 AS INTEGER)),
+                  (2, +1), (3, -1), (4, +1), (5, -1),
+                  (6, +1), (7, -1), (8, +1), (9, -1),
+                  (10, +1), (11, -1), (12, +1)
+          ) AS weights(seq, wgt)
+    WHERE barcode NOT SIMILAR TO '%[^0-9]%');
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその4
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Products
+(...
+  barcode CHAR(13) NOT NULL
+  CONSTRAINT all_numeric_checkdigit
+    CHECK (barcode NOT SIMILAR TO '%[^0-9]%')
+  CONSTRAINT valid_checkdigit
+    CHECK ((SELECT ABS(MOD(SUM(CAST(
+                   SUBSTRING(barcode FROM Weights.seq FOR 1)
+                   AS INTEGER) * Weights.wgt), 10))
+              FROM (VALUES (CAST(1 AS INTEGER),
+                            CAST(-1 AS INTEGER)),
+                            (2, +1), (3, -1), (4, +1), (5, -1),
+                            (6, +1), (7, -1), (8, +1), (9, -1),
+                            (10, +1), (11,-1), (12, +1)
+                   ) AS weights(seq, wgt))
+          = CAST(SUBSTRING(barcode FROM 13 FOR 1) AS INTEGER)),
+ ...
+);
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.237 - 241, Copyright Elsevier 2006.

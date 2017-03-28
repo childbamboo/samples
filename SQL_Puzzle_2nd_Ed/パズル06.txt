@@ -1,0 +1,76 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■問題文
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Hotel
+(room_nbr INTEGER NOT NULL,
+ arrival_date DATE NOT NULL,
+ departure_date DATE NOT NULL,
+ guest_name CHAR(30) NOT NULL,
+ PRIMARY KEY (room_nbr, arrival_date),
+ CHECK (departure_date >= arrival_date));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Hotel
+(room_nbr INTEGER NOT NULL,
+ arrival_date DATE NOT NULL,
+ departure_date DATE NOT NULL,
+ guest_name CHAR(30),
+ PRIMARY KEY (room_nbr, arrival_date),
+ CHECK (departure_date >= arrival_date),
+ CHECK (NOT EXISTS
+         (SELECT *
+            FROM Hotel AS H1, Hotel AS H2
+           WHERE H1.room_nbr = H2.room_nbr
+             AND H1.arrival_date BETWEEN H2.arrival_date
+                                     AND H2.departure_date)));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Hotel
+(room_nbr INTEGER NOT NULL,
+ occupy_date DATE NOT NULL,
+ guest_name CHAR(30) NOT NULL,
+ PRIMARY KEY (room_nbr, occupy_date, guest_name));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその3
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE VIEW HotelStays
+(room_nbr, arrival_date, departure_date, guest_name)
+AS SELECT room_nbr, arrival_date, departure_date, guest_name
+     FROM Hotel AS H1
+    WHERE NOT EXISTS
+               (SELECT *
+                  FROM Hotel AS H2
+                 WHERE H1.room_nbr = H2.room_nbr
+                   AND H2.arrival_date < H1.arrival_date
+                   AND H1.arrival_date < H2.departure_date)
+     WITH CHECK OPTION;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO HotelStays
+VALUES (1, '2008-01-01', '2008-01-03', 'Coe');
+-- HotelStaysビューにはCoe氏だけが表示される
+
+INSERT INTO HotelStays
+VALUES (1, '2008-01-03', '2008-01-05', 'Doe');
+-- HotelStaysビューにはCoe氏のほか、Doe氏も表示される
+
+INSERT INTO HotelStays
+VALUES (1, '2008-01-02', '2008-01-05', 'Roe');
+-- Roe氏の予約（INSERT）は失敗し、
+-- HotelStaysビューにはCoe氏しか表示されない
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.021 - 023, Copyright Elsevier 2006.

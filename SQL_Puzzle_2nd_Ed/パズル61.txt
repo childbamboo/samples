@@ -1,0 +1,31 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE SortMeFast
+(unsorted_string CHAR(7) NOT NULL PRIMARY KEY,
+ sorted_string CHAR(7) NOT NULL);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ3
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+BEGIN
+DECLARE instring CHAR(7);
+SET instring = 'DCCBABA';
+
+REPLICATE('A', (CHARACTER_LENGTH(instring) -
+  CHARACTER_LENGTH(REPLACE(instring, 'A', '')))) ||
+REPLICATE('B', (CHARACTER_LENGTH(instring) -
+  CHARACTER_LENGTH(REPLACE(instring, 'B', '')))) ||
+REPLICATE('C', (CHARACTER_LENGTH(instring) -
+  CHARACTER_LENGTH(REPLACE(instring, 'C', '')))) ||
+REPLICATE('D', (CHARACTER_LENGTH(instring) -
+  CHARACTER_LENGTH(REPLACE(instring, 'D', ''))))
+END;
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.242 - 243, Copyright Elsevier 2006.

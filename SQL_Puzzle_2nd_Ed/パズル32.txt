@@ -1,0 +1,107 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ñ‚ëËï∂
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE TaxAuthorities
+(tax_authority CHAR(10) NOT NULL,
+ tax_area CHAR(10) NOT NULL,
+ PRIMARY KEY (tax_authority, tax_area));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE TaxRates
+(tax_authority CHAR(10) NOT NULL,
+ effect_date DATE NOT NULL,
+ tax_rate DECIMAL (8,2) NOT NULL,
+ PRIMARY KEY (tax_authority, effect_date));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+(SELECT tax_authority
+   FROM TaxAuthorities AS A1
+  WHERE A1.tax_area = 'city2')
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+(SELECT tax_authority, tax_rate
+   FROM TaxRates AS R1
+  WHERE R1.effect_date = (SELECT MAX(R2.effect_date)
+                            FROM TaxRates AS R2
+                           WHERE R2.effect_date <= '1994-11-01'))
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT 'city2' AS city, '1994-11-01' AS effect_date,
+       SUM(tax_rate) AS total_taxes
+  FROM TaxRates AS R1
+ WHERE R1.effect_date =
+       (SELECT MAX(R2.effect_date)
+          FROM TaxRates AS R2
+         WHERE R2.effect_date <= '1994-11-01'
+           AND R1.tax_authority = R2.tax_authority)
+   AND R1.tax_authority IN
+       (SELECT tax_authority
+          FROM TaxAuthorities AS A1
+         WHERE A1.tax_area = 'city2')
+GROUP BY tax_authority, effect_date;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT 'city2' AS city, '1994-11-01' AS effective_date,
+       SUM(tax_rate) AS total_taxes
+  FROM TaxRates AS R1
+ WHERE R1.effect_date =
+       (SELECT MAX(R2.effect_date)
+          FROM TaxRates AS R2
+         WHERE R2.effect_date <= '1994-11-01'
+           AND R1.tax_authority = R2.tax_authority
+           AND R2.tax_authority IN
+               (SELECT tax_authority
+                  FROM TaxAuthorities AS A1
+                 WHERE A1.tax_area = 'city2'))
+ GROUP BY tax_authority, effect_date;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT SUM(T2.tax_rate)
+  FROM TaxAuthorities AS T1, TaxRates AS T2
+ WHERE T1.tax_area = 'city2'
+   AND T2.tax_authority = T1.tax_authority
+   AND T2.effect_date =
+       (SELECT MAX(effect_date)
+          FROM TaxRates
+         WHERE tax_authority = T2.tax_authority
+           AND effect_date <= '1994-11-01');
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ3
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE TaxRates
+(tax_authority CHAR(10) NOT NULL,
+ lft INTEGER NOT NULL CHECK (lft > 0),
+ rgt INTEGER NOT NULL,
+   CHECK (lft < rgt),
+ start_date DATE NOT NULL,
+ end_date DATE, -- NULLÇ»ÇÁÇŒåªç›ÇÃê≈ó¶Çà”ñ°Ç∑ÇÈ
+ tax_rate DECIMAL(8,2) NOT NULL,
+ PRIMARY KEY (tax_authority, start_date));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT SUM(DISTINCT T2.tax_rate)
+  FROM TaxRates AS T1, TaxRates AS T2
+ WHERE T1.tax_authority = :my_location
+   AND :my_date BETWEEN T2.start_date
+                    AND COALESCE (T2.end_date, CURRENT_DATE)
+   AND T1.lft BETWEEN T2.lft AND T2.rgt;
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.132 - 136, Copyright Elsevier 2006.

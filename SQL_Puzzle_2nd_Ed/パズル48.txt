@@ -1,0 +1,150 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■問題文
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Inventory
+(goods CHAR(10) NOT NULL PRIMARY KEY,
+ pieces INTEGER NOT NULL CHECK (pieces >= 0));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE WorkingTable1 -- 主キーを設定できない！
+(goods CHAR(10) NOT NULL,
+ pieces INTEGER NOT NULL);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE WorkingTable2
+(goods CHAR(10) NOT NULL,
+ pieces INTEGER NOT NULL);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Answer
+(goods CHAR(10) NOT NULL,
+ pieces INTEGER NOT NULL);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO Answer
+SELECT * FROM Inventory WHERE pieces = 1;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO WorkingTable1
+SELECT * FROM Inventory WHERE pieces > 1;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO WorkingTable2
+SELECT goods, FLOOR(pieces / 2.0)
+  FROM WorkingTable1
+ WHERE pieces > 1
+UNION ALL
+SELECT goods, CEILING(pieces / 2.0)
+  FROM WorkingTable1
+ WHERE pieces > 1;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO Answer
+SELECT *
+  FROM WorkingTable2
+ WHERE pieces = 1;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+DELETE FROM WorkingTable1;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその3
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Sequence (seq INTEGER PRIMARY KEY);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO Sequence VALUES (1), (2), ..., (n);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO Sequence(seq)
+WITH Digits (digit)
+AS (VALUES (0),(1),(2),(3),(4),(5),(6),(7),(8),(9))
+SELECT D1.digit + 10*D2.digit + 100*D3.digit + ...
+  FROM Digits AS D1, Digits AS D2, ...
+ WHERE D1.digit + 10*D2.digit + 100*D3.digit + ... > 0;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT goods, 1 AS tally, seq
+  FROM Inventory AS I1, Sequence AS S1
+ WHERE I1.pieces >= S1.seq;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその4
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+BEGIN
+DECLARE maxnum INTEGER NOT NULL;
+DECLARE increment INTEGER NOT NULL;
+
+INSERT INTO Sequence VALUES (1), (2);
+
+-- Sequenceテーブルの行数はループのたびに倍になる
+SET maxnum = (SELECT MAX(pieces) FROM Inventory);
+SET increment = 2;
+
+WHILE increment < maxnum
+  DO INSERT INTO Sequence
+     SELECT seq + increment FROM Sequence;
+        SET increment = increment + increment;
+  END WHILE;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT goods, 1 AS tally, seq
+  FROM Inventory AS I1, Sequence AS S1
+ WHERE I1.pieces >= S1.seq
+   AND S1.seq BETWEEN 1
+                  AND (SELECT MAX(pieces) FROM Inventory);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT goods, 1 AS tally, seq
+  FROM Inventory AS I1, Sequence AS S1
+ WHERE I1.pieces >= S1.seq
+   AND (SELECT MAX(pieces) FROM Inventory)
+       <= (SELECT MAX(seq) FROM Sequence);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその5
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Repetitions --主キーなし
+(pieces INTEGER NOT NULL,
+ one INTEGER DEFAULT 1 NOT NULL
+     CHECK (one = 1));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO Repetitions
+VALUES (2,1), (2,1), (3,1), (3,1), (3,1)..;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO WorkingTable
+SELECT goods, one
+  FROM Repetitions AS R1
+       CROSS JOIN
+       Inventory AS I1
+ WHERE I1.pieces = R1.pieces
+   AND I1.pieces > 1;
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.192 - 199, Copyright Elsevier 2006.

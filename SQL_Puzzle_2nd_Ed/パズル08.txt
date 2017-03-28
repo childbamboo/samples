@@ -1,0 +1,97 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■問題文
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE PrinterControl
+(user_id CHAR(10), -- NULLは空きプリンタを意味する
+ printer_name CHAR(4) NOT NULL PRIMARY KEY,
+ printer_description CHAR(40) NOT NULL);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE PrinterControl
+(user_id_start  CHAR(10) NOT NULL,
+ user_id_finish CHAR(10) NOT NULL,
+ printer_name   CHAR(4) NOT NULL,
+ printer_description CHAR(40) NOT NULL,
+ PRIMARY KEY (user_id_start, user_id_finish));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT MIN(printer_name)
+  FROM PrinterControl
+ WHERE :my_id BETWEEN user_id_start AND user_id_finish;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT COALESCE(MIN(printer_name),
+       (SELECT MIN(printer_name)
+          FROM PrinterControl AS P2
+         WHERE user_id IS NULL))
+  FROM PrinterControl AS P1
+ WHERE user_id = :user_id;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT col
+  FROM SomeTable WHERE 1 = 2;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT MAX(col)
+  FROM SomeTable WHERE 1 = 2;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT COALESCE(MAX(col), something_else)
+  FROM SomeTable
+ WHERE 1 = 2;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその3
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT COALESCE(MIN(printer_name),
+       (SELECT DISTINCT CASE
+                        WHEN :user_id < 'n'
+                        THEN 'LPT4'
+                        ELSE 'LPT5' END
+          FROM PrinterControl
+         WHERE user_id IS NULL))
+  FROM PrinterControl
+ WHERE user_id = :user_id;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE PrinterControl
+(user_id CHAR(10), -- NULLは空きプリンタを意味する
+ printer_name CHAR(4) NOT NULL PRIMARY KEY,
+ assignable_flag CHAR(1) DEFAULT 'Y' NOT NULL
+       CHECK (assignable_flag IN ('Y', 'N')),
+ printer_description CHAR(40) NOT NULL);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+UPDATE PrinterControl
+   SET user_id = :guest_id
+ WHERE printer_name
+       = (SELECT MIN(printer_name)
+            FROM PrinterControl
+           WHERE assignable_flag = 'Y'
+             AND user_id IS NULL);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+UPDATE PrinterControl
+   SET user_id = NULL
+ WHERE assignable_flag = 'Y';
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.029 - 033, Copyright Elsevier 2006.

@@ -1,0 +1,117 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■問題文
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE ServicesSchedule
+(shop_id CHAR(3) NOT NULL,
+ order_nbr CHAR(10) NOT NULL,
+ sch_seq INTEGER NOT NULL CHECK (sch_seq IN (1,2,3)),
+ service_type CHAR(2) NOT NULL,
+ sch_date DATE,
+ PRIMARY KEY (shop_id, order_nbr, sch_seq));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT DISTINCT S1.order_nbr, S1.sch_date,  S2.sch_date,
+                S3.sch_date
+  FROM ServicesSchedule S1, ServicesSchedule S2,
+       ServicesSchedule S3
+ WHERE S1.service_type = :my_tos  -- 業務コードをセットする
+   AND S1.order_nbr = :my_order   -- 注文番号をセットする
+   AND S1.sch_seq = 1
+   AND S2.order_nbr = S1.order_nbr
+   AND S2.sch_seq = 2
+   AND S3.order_nbr = S1.order_nbr
+   AND S3.sch_seq = 3;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT DISTINCT S0.order_nbr,
+      (SELECT sch_date
+         FROM ServicesSchedule AS S1
+        WHERE S1.sch_seq = 1
+          AND S1.order_nbr = S0.order_nbr) AS processed,
+      (SELECT sch_date
+         FROM ServicesSchedule AS S2
+        WHERE S2.sch_seq = 2
+          AND S2.order_nbr = S0.order_nbr) AS completed,
+      (SELECT sch_date
+         FROM ServicesSchedule AS S3
+        WHERE S3.sch_seq =3
+          AND S3.order_nbr = S0.order_nbr) AS confirmed
+  FROM ServicesSchedule AS S0
+ WHERE service_type = :my_tos ; -- 業務コードをセットする
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその3
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO Work (order_nbr, processed, completed, confirmed)
+SELECT order_nbr, sch_date, NULL, NULL
+  FROM ServicesSchedule AS S1
+ WHERE S1.sch_seq = 1
+   AND S1.order_nbr = :my_order
+   AND service_type = :my_tos   -- 業務コードをセット
+UNION ALL
+SELECT order_nbr, NULL, sch_date, NULL
+  FROM ServicesSchedule AS S2
+ WHERE S2.sch_seq = 2
+   AND S2.order_nbr = :my_order
+   AND service_type = :my_tos   -- 業務コードをセット
+UNION ALL
+SELECT order_nbr, NULL, NULL, sch_date
+  FROM ServicesSchedule AS S3
+ WHERE S3.sch_seq = 3
+   AND S3.order_nbr = :my_order
+   AND service_type = :my_tos;  -- 業務コードをセット
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT order_nbr, MAX(processed), MAX(completed), MAX(confirmed)
+  FROM Work
+ GROUP BY order_nbr;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその4
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT order_nbr,
+       (CASE WHEN sch_seq = 1
+             THEN sch_date
+             ELSE NULL END) AS processed,
+       (CASE WHEN sch_seq = 2
+             THEN sch_date
+             ELSE NULL END) AS completed,
+       (CASE WHEN sch_seq = 3
+             THEN sch_date
+             ELSE NULL END) AS confirmed
+  FROM ServicesSchedule
+ WHERE service_type = :my_tos
+   AND order_nbr = :my_order;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT order_nbr,
+       MAX(CASE WHEN sch_seq = 1
+                THEN sch_date
+                ELSE NULL END) AS processed,
+       MAX(CASE WHEN sch_seq = 2
+                THEN sch_date
+                ELSE NULL END) AS completed,
+       MAX(CASE WHEN sch_seq = 3
+                THEN sch_date
+                ELSE NULL END) AS confirmed
+  FROM ServicesSchedule
+ WHERE service_type = :my_tos
+   AND order_nbr = :my_order
+ GROUP BY order_nbr, service_type;
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.107 - 111, Copyright Elsevier 2006.

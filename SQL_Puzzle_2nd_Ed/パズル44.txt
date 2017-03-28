@@ -1,0 +1,98 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ñ‚ëËï∂
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE SalesSlips
+(item_a INTEGER NOT NULL,
+ item_b INTEGER NOT NULL,
+ PRIMARY KEY(item_a, item_b),
+ pair_tally INTEGER NOT NULL);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT S0.item_a, S0.item_b,
+       SUM(S0.pair_tally + S1.pair_tally) AS pair_tally
+  FROM SalesSlips AS S0, SalesSlips AS S1
+ WHERE S0.item_b = S1.item_a
+   AND S0.item_a = S1.item_b
+ GROUP BY S0.item_a, S0.item_b, S1.item_a, S1.item_b;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT S0.item_a, S0.item_b,
+       SUM(S0.pair_tally + S1.pair_tally) AS pair_tally
+  FROM SalesSlips AS S0, SalesSlips AS S1
+ WHERE S0.item_a <= S0.item_b
+   AND S0.item_a = S1.item_b
+   AND S0.item_b = S1.item_a
+ GROUP BY S0.item_a, S0.item_b, S1.item_a, S1.item_b;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT CASE WHEN item_a <= item_b
+            THEN item_a
+            ELSE item_b END AS s1,
+       CASE WHEN item_a <= item_b
+            THEN item_b
+            ELSE item_a END AS s2,
+       SUM (pair_tally)
+  FROM SalesSlips
+ GROUP BY s1, s2;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT s1, s2, SUM(pair_tally)
+  FROM (SELECT CASE WHEN item_a <= item_b
+                    THEN item_a
+                    ELSE item_b END,
+               CASE WHEN item_a <= item_b
+                    THEN item_b
+                    ELSE item_a END,
+               pair_tally
+          FROM SalesSlips) AS Report (s1, s2, pair_tally)
+ GROUP BY s1, s2;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE VIEW Report (s1, s2, pair_tally)
+AS SELECT CASE WHEN item_a <= item_b
+               THEN item_a
+               ELSE item_b END,
+          CASE WHEN item_a <= item_b
+               THEN item_b
+               ELSE item_a END,
+          pair_tally
+     FROM SalesSlips;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT s1, s2, SUM(pair_tally)
+  FROM Report
+GROUP BY s1, s2;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ3
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+UPDATE SalesSlips
+   SET item_a = item_b,
+       item_b = item_a
+ WHERE item_a > item_b;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE SalesSlips
+(item_a INTEGER NOT NULL,
+ item_b INTEGER NOT NULL,
+   CHECK (item_a <= item_b)
+ pair_tally INTEGER NOT NULL);
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.179 - 182, Copyright Elsevier 2006.

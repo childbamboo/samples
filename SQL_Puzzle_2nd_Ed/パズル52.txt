@@ -1,0 +1,34 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ñ‚ëËï∂
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT dept_id, COUNT(*)
+  FROM Personnel
+ GROUP BY dept_id;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE VIEW DeptView (dept_id, tally)
+AS SELECT dept_id, COUNT(*)
+     FROM Personnel
+    GROUP BY dept_id;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT AVG(tally) FROM DeptView;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT AVG(DISTINCT dept_id)
+  FROM Personnel;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT COUNT(*) / COUNT(DISTINCT dept_id)
+  FROM Personnel;
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.212 - 214, Copyright Elsevier 2006.

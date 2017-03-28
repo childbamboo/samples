@@ -1,0 +1,81 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ñ‚ëËï∂
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Machines
+(machine_name CHAR(20) NOT NULL PRIMARY KEY,
+ purchase_date DATE NOT NULL,
+ initial_cost DECIMAL(10,2) NOT NULL,
+ lifespan INTEGER NOT NULL);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE ManufactCosts
+(machine_name CHAR(20) NOT NULL
+   REFERENCES Machines(machine_name),
+ manu_date DATE NOT NULL,
+ batch_nbr INTEGER NOT NULL,
+ manu_cost DECIMAL(6,2) NOT NULL,
+ PRIMARY KEY (machine_name, manu_date, batch_nbr));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE ManufactHrs
+(machine_name CHAR(20) NOT NULL REFERENCES Machines,
+ manu_date DATE NOT NULL,
+ batch_nbr INTEGER NOT NULL,
+ manu_hrs DECIMAL(4,2) NOT NULL,
+ PRIMARY KEY (machine_name, manu_date, batch_nbr));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE ManufactHrsCosts
+(machine_name CHAR(20) NOT NULL
+   REFERENCES Machines(machine_name),
+ manu_date DATE NOT NULL,
+ batch_nbr INTEGER NOT NULL,
+ manu_hrs DECIMAL(4,2) NOT NULL,
+ manu_cost DECIMAL(6,2) NOT NULL,
+ PRIMARY KEY (machine_name, manu_date, batch_nbr));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE VIEW TotHrsCosts
+(machine_name, manu_date, day_cost, day_hrs)
+AS SELECT machine_name, manu_date, SUM(manu_cost), SUM(manu_hrs)
+     FROM ManufactHrsCosts
+    GROUP BY machine_name, manu_date;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT :mydate, M1.machine_name,
+        (SELECT ((initial_cost / lifespan)
+                  * (:mydate - M1.purchase_date + 1)
+                  + SUM(THC.day_cost)) / SUM(THC.day_hrs)
+            FROM TotHrsCosts AS THC
+           WHERE M1.machine_name = THC.machine_name
+             AND :mydate >= M1.purchase_date
+             AND :mydate >= THC.manu_date) AS hourly_cost
+  FROM Machines AS M1;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT :mydate AS my_date, F.machine_name,
+       (MAX((initial_cost / lifespan)
+            * (:mydate - purchase_date + 1)) + SUM(manu_cost))
+        / SUM(manu_hrs) AS average_hour
+  FROM ManufactHrsCosts AS F, Machines AS M
+ WHERE M.machine_name = F.machine_name
+   AND purchase_date <= :mydate
+   AND manu_date <= :mydate
+ GROUP BY F.machine_name;
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.137 - 140, Copyright Elsevier 2006.

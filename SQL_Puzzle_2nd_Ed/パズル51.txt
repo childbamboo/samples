@@ -1,0 +1,70 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ñ‚ëËï∂
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Budgeted
+(task INTEGER NOT NULL PRIMARY KEY,
+ category INTEGER NOT NULL,
+ est_cost DECIMAL(8,2) NOT NULL);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Actual
+(voucher INTEGER NOT NULL PRIMARY KEY,
+ task INTEGER NOT NULL REFERENCES Budgeted(task),
+ act_cost DECIMAL(8,2) NOT NULL);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT category, SUM(est_cost) AS estimated,
+       SUM(act_cost) AS spent
+  FROM (Budgeted LEFT OUTER JOIN Actual
+        ON Budgeted.task = Actual.task)
+ GROUP BY category;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE VIEW cat_costs (category, est_cost, act_cost)
+AS SELECT category, est_cost, 0.00
+     FROM Budgeted
+   UNION
+   SELECT category, 0.00, act_cost
+     FROM Budgeted, Actual
+    WHERE Budgeted.task = Actual.task;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT category, SUM(est_cost), SUM(act_cost)
+  FROM cat_costs
+ GROUP BY category;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT B1.category, SUM(est_cost), SUM(spent)
+  FROM Budgeted AS B1
+       LEFT OUTER JOIN
+       (SELECT task, SUM(act_cost) AS spent
+          FROM Actual
+         GROUP BY task) AS A1
+       ON A1.task = B1.task
+ GROUP BY B1.category;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT category, SUM(B1.est_cost) AS estimated,
+       (SELECT SUM(T1.act_cost)
+          FROM Actual AS T1
+         WHERE T1.task BETWEEN MIN(B1.task)
+                           AND MAX(B1.task)) AS spent
+  FROM Budgeted AS B1
+ GROUP BY category;
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.208 - 211, Copyright Elsevier 2006.

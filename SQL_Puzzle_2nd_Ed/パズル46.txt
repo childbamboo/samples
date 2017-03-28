@@ -1,0 +1,107 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ñ‚ëËï∂
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Promotions
+(promo_name CHAR(25) NOT NULL PRIMARY KEY,
+ start_date DATE NOT NULL,
+ end_date DATE NOT NULL,
+ CHECK (start_date <= end_date));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Sales
+(ticket_nbr INTEGER NOT NULL PRIMARY KEY,
+ clerk_name CHAR (15) NOT NULL,
+ sale_date DATE NOT NULL,
+ sale_amt DECIMAL (8,2) NOT NULL);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT S1.clerk_name, P1.promo_name,
+       SUM(S1.sale_amt) AS sales_tot
+  FROM Sales AS S1, Promotions AS P1
+ WHERE S1.sale_date BETWEEN P1.start_date AND P1.end_date
+ GROUP BY S1.clerk_name, P1.promo_name
+HAVING SUM(sale_amt) >= ALL(
+         SELECT SUM(sale_amt)
+           FROM Sales AS S2
+          WHERE S2.clerk_name <> S1.clerk_name
+            AND S2.sale_date
+                BETWEEN (SELECT start_date
+                           FROM Promotions AS P2
+                          WHERE P2.promo_name = P1.promo_name)
+                    AND (SELECT end_date
+                           FROM Promotions AS P3
+                          WHERE P3.promo_name = P1.promo_name)
+          GROUP BY S2.clerk_name);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT S1.clerk_name, P1.promo_name,
+       SUM(S1.sale_amt) AS sales_tot
+  FROM Sales AS S1, Promotions AS P1
+ WHERE S1.sale_date BETWEEN P1.start_date AND P1.end_date
+ GROUP BY S1.clerk_name, P1.promo_name
+HAVING SUM(sale_amt) >= ALL (
+         SELECT SUM(sale_amt)
+           FROM Sales AS S2
+          WHERE S2.clerk_name <> S1.clerk_name
+            AND S2.sale_date
+                BETWEEN P1.start_date
+                AND P1.end_date -- ÉGÉâÅ[ÅI
+          GROUP BY S2.clerk_name);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT S1.clerk_name, P1.promo_name,
+       SUM(S1.sale_amt) AS sales_tot
+  FROM Sales AS S1, Promotions AS P1
+ WHERE S1.sale_date BETWEEN P1.start_date AND P1.end_date
+ GROUP BY P1.promo_name, P1.start_date, P1.end_date,
+          S1.clerk_name
+HAVING SUM(S1.sale_amt) >= ALL (
+         SELECT SUM(S2.sale_amt)
+           FROM Sales AS S2
+          WHERE S2.sale_date
+                BETWEEN P1.start_date AND P1.end_date
+                    AND S2.clerk_name <> S1.clerk_name
+ GROUP BY S2.clerk_name);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+...
+HAVING SUM(S1.sale_amt) >= ALL (
+         SELECT SUM(S2.sale_amt)
+           FROM Sales AS S2
+          WHERE S2.sale_date
+                BETWEEN P1.start_date
+                    AND P1.end_date
+          GROUP BY S2.clerk_name);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ3
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+WITH ClerksTotals (clerk_name, promo_name, sales_tot)
+AS
+(SELECT S1.clerk_name, P1.promo_name, SUM(S1.sale_amt)
+   FROM Sales AS S1, Promotions AS P1
+  WHERE S1.sale_date BETWEEN P1.start_date AND P1.end_date
+  GROUP BY S1.clerk_name, P1.promo_name)
+SELECT C1.clerk_name, C1.promo_name, C1.sales_tot
+  FROM ClerksTotals AS C1
+ WHERE C1.sales_tot
+        = (SELECT MAX(C2.sales_tot)
+             FROM ClerksTotals AS C2
+            WHERE C1.promo_name = C2.promo_name);
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.186 - 189, Copyright Elsevier 2006.

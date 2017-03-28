@@ -1,0 +1,69 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+¡–â‘è•¶
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Categories
+(credit_cat CHAR(1) NOT NULL,
+ rqd_credits INTEGER NOT NULL);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE CreditsEarned  --ŽåƒL[‚È‚µ
+(student_name CHAR(10) NOT NULL,
+ credit_cat CHAR(1) NOT NULL,
+ credits INTEGER NOT NULL);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO Categories
+VALUES ('A', 10),
+       ('B', 3),
+       ('C', 5);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO CreditsEarned
+VALUES ('Joe', 'A', 3), ('Joe', 'A', 2), ('Joe', 'A', 3),
+       ('Joe', 'A', 3), ('Joe', 'B', 3), ('Joe', 'C', 3),
+       ('Joe', 'C', 2), ('Joe', 'C', 3),
+       ('Bob', 'A', 2), ('Bob', 'C', 2), ('Bob', 'A', 12),
+       ('Bob', 'C', 4),
+       ('John', 'A', 1), ('John', 'B', 1),
+       ('Mary', 'A', 1), ('Mary', 'A', 1), ('Mary', 'A', 1),
+       ('Mary', 'A', 1), ('Mary', 'A', 1), ('Mary', 'A', 1),
+       ('Mary', 'A', 1), ('Mary', 'A', 1), ('Mary', 'A', 1),
+       ('Mary', 'A', 1), ('Mary', 'A', 1), ('Mary', 'B', 1),
+       ('Mary', 'B', 1), ('Mary', 'B', 1), ('Mary', 'B', 1),
+       ('Mary', 'B', 1), ('Mary', 'B', 1), ('Mary', 'B', 1),
+       ('Mary', 'C', 1), ('Mary', 'C', 1), ('Mary', 'C', 1),
+       ('Mary', 'C', 1), ('Mary', 'C', 1), ('Mary', 'C', 1),
+       ('Mary', 'C', 1), ('Mary', 'C', 1);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+¡“š‚¦‚»‚Ì1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT X.student_name,
+       CASE WHEN COUNT(C1.credit_cat)
+                 >= (SELECT COUNT(*) FROM Categories)
+            THEN 'X'
+            ELSE ' ' END AS grad,
+       CASE WHEN COUNT(C1.credit_cat)
+                 < (SELECT COUNT(*) FROM Categories)
+            THEN 'X'
+            ELSE ' ' END AS nograd
+  FROM (SELECT student_name, credit_cat,
+               SUM(credits) AS cat_credits
+          FROM CreditsEarned
+         GROUP BY student_name, credit_cat) AS X
+       LEFT OUTER JOIN
+       Categories AS C1
+         ON X.credit_cat = C1.credit_cat
+        AND X.cat_credits >= C1.rqd_credits
+ GROUP BY X.student_name;
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.176 - 178, Copyright Elsevier 2006.

@@ -1,0 +1,90 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■問題文
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT DISTINCT SUM(A.calc_rslt_val + A.calc_adj_val),
+       SUM(A.unit_rslt_val + A.unit_adj_val),
+       SUM(OT1.calc_rslt_val + OT1.calc_adj_val),
+       SUM(OT1.unit_rslt_val + OT1.unit_adj_val),
+       SUM(OT2.calc_rslt_val + OT2.calc_adj_val),
+       SUM(OT2.unit_rslt_val + OT2.unit_adj_val)
+  FROM Table1 AS A, Table1 AS OT1, Table1 AS OT2, Table2 AS B
+ WHERE OT1.emp_id = A.emp_id
+   AND OT2.emp_id = A.emp_id
+   AND OT1.pin_num = B.pin_num
+   AND OT2.pin_num = B.pin_num
+   AND A.empl_rcd = 0
+   AND A.pin_num = B.pin_num
+   AND A.emp_id = 'xxxxxx'
+   AND B.pin_num IN ('52636','52751','52768')
+   AND A.pin_num = '52636'
+   AND OT1.pin_num = '52751'
+   AND OT2.pin_num = '52768'
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT SUM(A_val1),   SUM(A_val2),   SUM(OT1_val1),
+       SUM(OT1_val2), SUM(OT2_val1), SUM(OT2_val2)
+       ((SELECT DISTINCT
+                SUM(A.calc_rslt_val + A.calc_adj_val) AS A_val1,
+                SUM(A.unit_rslt_val + A.unit_adj_val) AS A_val2,
+                0 AS OT1_val1, 0 AS OT1_val2,
+                0 AS OT2_val1, 0 AS OT2_val2
+           FROM Table1 AS A,Table1 AS OT1,
+                Table1 AS OT2, Table2 AS B
+          WHERE -- Aテーブルの選択条件のみが入る
+UNION
+SELECT DISTINCT 0, 0, 
+                SUM(OT1.calc_rslt_val + OT1.calc_adj_val),
+                SUM(OT1.unit_rslt_val + OT1.unit_adj_val),
+                0, 0
+  FROM Table1 AS A, Table1 AS OT1, Table1 AS OT2, Table2 AS B
+ WHERE -- OT1テーブルの選択条件のみが入る
+UNION
+SELECT DISTINCT 0, 0,
+                0, 0,
+                SUM(OT2.calc_rslt_val + OT2.calc_adj_val),
+                SUM(OT2.unit_rslt_val + OT2.unit_adj_val)
+  FROM Table1 AS A, Table1 AS OT1, Table1 AS OT2, Table2 AS B
+WHERE -- OT2テーブルの選択条件のみが入る
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT DISTINCT 
+       SUM(F1.calc_rslt_val + F1.calc_adj_val) AS calc_1,
+       SUM(F1.unit_rslt_val + F1.unit_adj_val) AS unit_1,
+       SUM(F2.calc_rslt_val + F2.calc_adj_val) AS calc_2,
+       SUM(F2.unit_rslt_val + F2.unit_adj_val) AS unit_2,
+       SUM(F3.calc_rslt_val + F3.calc_adj_val) AS calc_3,
+       SUM(F3.unit_rslt_val + F3.unit_adj_val) AS unit_3
+  FROM Foobar AS F1, Foobar AS F2, Foobar AS F3
+ WHERE F1.empl_id = 'xxxxxx'
+   AND F2.empl_id = 'xxxxxx'
+   AND F3.empl_id = 'xxxxxx'
+   AND F1.empl_rcd = 0
+   AND F1.pin_nbr = '52636'
+   AND F2.pin_nbr = '52751'
+   AND F3.pin_nbr = '52768';
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその3
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT F1.pin_nbr,
+       SUM(F1.calc_rslt_val + F1.calc_adj_val) AS calc_val,
+       SUM(F1.unit_rslt_val + F1.unit_adj_val) AS unit_val
+  FROM Foobar AS F1
+ WHERE F1.empl_id = 'xxxxxx'
+   AND F1.empl_rcd = 0
+   AND F1.pin_nbr IN ('52636', '52751', '52768')
+ GROUP BY F1.pin_nbr;
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.297 - 299, Copyright Elsevier 2006.

@@ -1,0 +1,285 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ñ‚ëËï∂
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Names
+(name VARCHAR(15) NOT NULL PRIMARY KEY);
+
+INSERT INTO Names
+VALUES ('Al'), ('Ben'), ('Charlie'),
+       ('David'), ('Ed'), ('Frank'),
+       ('Greg'), ('Howard'), ('Ida'),
+       ('Joe'), ('Ken'), ('Larry'),
+       ('Mike'), ('Neal');
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT N1.name AS name1, MIN(N2.name) AS name2
+  FROM Names AS N1
+       LEFT OUTER JOIN
+       Names AS N2
+       ON N1.name < N2.name
+ WHERE N1.name
+          IN (SELECT A.name
+                FROM Names AS A
+                     INNER JOIN
+                     Names AS B
+                     ON A.name <= B.name
+               GROUP BY A.name
+              HAVING MOD(COUNT(B.name), 2) =
+                     (SELECT MOD(COUNT(*), 2) FROM Names))
+ GROUP BY N1.name
+ ORDER BY N1.name;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT A.name
+  FROM Names AS A
+       INNER JOIN
+       Names AS B
+       ON A.name <= B.name
+ GROUP BY A.name;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT N1.name,
+       MIN(N2.name) AS name2,
+       MIN(N3.name) AS name3,
+       MIN(N4.name) AS name4,
+       MIN(N5.name) AS name5
+  FROM (Names AS N1
+        LEFT OUTER JOIN
+        Names AS N2
+        ON N1.name < N2.name)
+          LEFT OUTER JOIN
+          Names AS N3
+          ON N1.name < N2.name
+             AND N2.name < N3.name
+            LEFT OUTER JOIN
+            Names AS N4
+            ON N1.name < N2.name
+               AND N2.name < N3.name
+               AND N3.name < N4.name
+              LEFT OUTER JOIN
+              Names AS N5
+              ON N1.name < N2.name
+                 AND N2.name < N3.name
+                 AND N3.name < N4.name
+                 AND N4.name < N5.name
+ WHERE N1.name IN (SELECT A.name
+                     FROM  Names AS A
+                           INNER JOIN
+                           Names AS B
+                           ON A.name <= B.name
+                    GROUP BY A.name
+                   HAVING MOD(COUNT(B.name), 5) =
+                          (SELECT MOD(COUNT(*), 5)
+                             FROM Names))
+ GROUP BY N1.name;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT N3.name, MIN(N4.name), MIN(N5.name), MIN(N6.name),
+       MIN(N7.name)
+  FROM (SELECT N1.name
+          FROM Names AS N1
+               INNER JOIN
+               Names AS N2
+               ON N1.name >= N2.name
+         GROUP BY N1.name
+        HAVING MOD(COUNT(*), 5) = 1) AS N3(name)
+       LEFT OUTER JOIN
+       Names AS N4
+       ON N3.name < N4.name
+         LEFT OUTER JOIN
+         Names AS N5
+         ON N4.name < N5.name
+           LEFT OUTER JOIN
+           Names AS N6
+           ON N5.name < N6.name
+             LEFT OUTER JOIN
+             Names AS N7
+             ON N6.name < N7.name
+ GROUP BY N3.name;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ3
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- Ç±ÇÍÇÊÇËè„ÇÕìöÇ¶ÇªÇÃ1Ç∆ìØÇ∂
+FROM (Names AS N1
+      LEFT OUTER JOIN
+      Names AS N2
+      ON N1.name < N2.name)
+    LEFT OUTER JOIN
+    Names AS N3
+    ON N2.name < N3.name
+      LEFT OUTER JOIN
+      Names AS N4
+      ON N3.name < N4.name
+        LEFT OUTER JOIN
+        Names AS N5
+        ON N4.name < N5.name
+-- Ç±ÇÍÇÊÇËâ∫Ç‡ìöÇ¶ÇªÇÃ1Ç∆ìØÇ∂
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ4
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+...
+ WHERE N1.name IN (SELECT A.name
+                     FROM  Names AS A
+                           INNER JOIN
+                           Names AS B
+                           ON A.name >= B.name
+                    GROUP BY A.name
+                   HAVING MOD(COUNT(B.name), 5) = 1)
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ5
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT MAX(name1), MAX(name2), MAX(name3), MAX(name4), MAX(name5)
+  FROM ( -- ãêëÂÇ»ïõñ‚Ç¢çáÇÌÇπÇÃénÇ‹ÇË
+         SELECT (COUNT(*) - 1) / 5,
+                (SELECT MAX(N1.name)
+                   FROM Names AS N3
+                  WHERE N1.name <= N3.name
+                 HAVING MOD(COUNT(*), 5)
+                        = (SELECT MOD(COUNT(*), 5)
+                             FROM Names)),
+                (SELECT MAX(N1.name)
+                   FROM Names AS N3
+                  WHERE N1.name <= N3.name
+                 HAVING MOD(COUNT(*), 5)
+                        = (SELECT MOD((COUNT(*) - 1), 5)
+                             FROM Names)),
+                (SELECT MAX(N1.name)
+                   FROM Names AS N3
+                  WHERE N1.name <= N3.name
+                 HAVING MOD(COUNT(*), 5)
+                        = (SELECT MOD((COUNT(*) - 2), 5)
+                             FROM Names)),
+                (SELECT MAX(N1.name)
+                   FROM Names AS N3
+                  WHERE N1.name <= N3.name
+                 HAVING MOD(COUNT(*), 5)
+                        = (SELECT MOD((COUNT(*) - 3), 5)
+                             FROM Names)),
+                (SELECT MAX(N1.name)
+                   FROM Names AS N3
+                  WHERE N1.name <= N3.name
+                 HAVING MOD(COUNT(*), 5)
+                        = (SELECT MOD((COUNT(*) - 4), 5)
+                             FROM Names))
+           FROM Names AS N1
+                INNER JOIN
+                Names AS N2
+                ON N1.name >= N2.name
+          GROUP BY N1.name
+       ) AS X0(cnt, name1, name2, name3, name4, name5)
+ GROUP BY cnt;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ6
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+--3óÒÇÃèÍçá
+SELECT FirstCol.name AS name1,
+       MAX(CASE WHEN OtherCols.cnt = 2
+                THEN OtherCols.final_name
+                ELSE NULL END) AS name2,
+       MAX(CASE WHEN OtherCols.cnt = 3
+                THEN OtherCols.final_name
+                ELSE NULL END) AS name3
+  FROM (SELECT N1.name
+          FROM Names AS N1, Names AS N2
+         WHERE N1.name >= N2.name
+         GROUP BY N1.name
+        HAVING MOD(COUNT(*), 3) = 1) AS FirstCol(name)
+        LEFT OUTER JOIN
+        (SELECT N3.name, N5.name, COUNT(*)
+           FROM Names AS N3, Names AS N4, Names AS N5
+          WHERE N3.name < N5.name
+            AND N4.name BETWEEN N3.name AND N5.name
+          GROUP BY N3.name, N5.name)
+          AS OtherCols(name,final_name, cnt)
+        ON FirstCol.name = OtherCols.name
+ GROUP BY FirstCol.name
+ ORDER BY FirstCol.name;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+--5óÒÇÃèÍçá
+SELECT FirstCol.name AS name1,
+       MAX(CASE WHEN OtherCols.cnt = 2
+                THEN OtherCols.final_name
+                ELSE NULL END) AS name2,
+       MAX(CASE WHEN OtherCols.cnt = 3
+                THEN OtherCols.final_name
+                ELSE NULL END) AS name3,
+       MAX(CASE WHEN OtherCols.cnt = 4
+                THEN OtherCols.final_name
+                ELSE NULL END) AS name4,
+       MAX(CASE WHEN OtherCols.cnt = 5
+                THEN OtherCols.final_name
+                ELSE NULL END) AS name5
+  FROM (SELECT N1.name
+          FROM Names AS N1, Names AS N2
+         WHERE N1.name >= N2.name
+         GROUP BY N1.name
+        HAVING MOD(COUNT(*), 5) = 1) AS FirstCol(name)
+        LEFT OUTER JOIN
+        (SELECT N3.name, N5.name, COUNT(*)
+           FROM Names AS N3, Names AS N4, Names AS N5
+          WHERE N3.name < N5.name
+            AND N4.name BETWEEN N3.name AND N5.name
+          GROUP BY N3.name, N5.name)
+          AS OtherCols(name,final_name, cnt)
+        ON FirstCol.name = OtherCols.name
+GROUP BY FirstCol.name
+ORDER BY FirstCol.name;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+--6óÒÇÃèÍçá
+SELECT FirstCol.name AS name1,
+       MAX(CASE WHEN OtherCols.cnt = 2
+                THEN OtherCols.final_name
+                ELSE NULL END) AS name2,
+       MAX(CASE WHEN OtherCols.cnt = 3
+                THEN OtherCols.final_name
+                ELSE NULL END) AS name3,
+       MAX(CASE WHEN OtherCols.cnt = 4
+                THEN OtherCols.final_name
+                ELSE NULL END) AS name4,
+       MAX(CASE WHEN OtherCols.cnt = 5
+                THEN OtherCols.final_name
+                ELSE NULL END) AS name5,
+       MAX(CASE WHEN OtherCols.cnt = 6
+                THEN OtherCols.final_name
+                ELSE NULL END) AS name6
+  FROM (SELECT N1.name
+          FROM Names AS N1, Names AS N2
+         WHERE N1.name >= N2.name
+         GROUP BY N1.name
+        HAVING MOD(COUNT(*), 6) = 1) AS FirstCol
+        LEFT OUTER JOIN
+        (SELECT N3.name, N5.name AS final_name, COUNT(*) AS cnt
+           FROM Names AS N3, Names AS N4, Names AS N5
+          WHERE N3.name < N5.name
+            AND N4.name BETWEEN N3.name AND N5.name
+          GROUP BY N3.name, N5.name) AS OtherCols
+        ON FirstCol.name = OtherCols.name
+ GROUP BY FirstCol.name
+ ORDER BY FirstCol.name;
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.244 - 253, Copyright Elsevier 2006.

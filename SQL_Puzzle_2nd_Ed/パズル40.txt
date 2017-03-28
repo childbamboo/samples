@@ -1,0 +1,153 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ñ‚ëËï∂
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT x, y
+  FROM BigX CROSS JOIN BigY;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Elements
+(i INTEGER NOT NULL PRIMARY KEY);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO Elements
+VALUES (1), (2), (3), (4), (5), (6), (7);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT E1.i, E2.i, E3.i, E4.i, E5.i, E6.i, E7.i
+  FROM Elements AS E1, Elements AS E2, Elements AS E3,
+       Elements AS E4, Elements AS E5, Elements AS E6,
+       Elements AS E7
+ WHERE E1.i NOT IN (E2.i, E3.i, E4.i, E5.i, E6.i, E7.i)
+   AND E2.i NOT IN (E1.i, E3.i, E4.i, E5.i, E6.i, E7.i)
+   AND E3.i NOT IN (E1.i, E2.i, E4.i, E5.i, E6.i, E7.i)
+   AND E4.i NOT IN (E1.i, E2.i, E3.i, E5.i, E6.i, E7.i)
+   AND E5.i NOT IN (E1.i, E2.i, E3.i, E4.i, E6.i, E7.i)
+   AND E6.i NOT IN (E1.i, E2.i, E3.i, E4.i, E5.i, E7.i)
+   AND E7.i NOT IN (E1.i, E2.i, E3.i, E4.i, E5.i, E6.i);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT E1.i, E2.i, E3.i, E4.i, E5.i, E6.i, E7.i
+  FROM Elements AS E1, Elements AS E2, Elements AS E3,
+       Elements AS E4, Elements AS E5, Elements AS E6,
+       Elements AS E7
+ WHERE (E1.i + E2.i + E3.i + E4.i + E5.i + E6.i + E7.i) = 28
+   AND E1.i NOT IN (E2.i, E3.i, E4.i, E5.i, E6.i, E7.i)
+   AND E2.i NOT IN (E1.i, E3.i, E4.i, E5.i, E6.i, E7.i)
+   AND E3.i NOT IN (E1.i, E2.i, E4.i, E5.i, E6.i, E7.i)
+   AND E4.i NOT IN (E1.i, E2.i, E3.i, E5.i, E6.i, E7.i)
+   AND E5.i NOT IN (E1.i, E2.i, E3.i, E4.i, E6.i, E7.i)
+   AND E6.i NOT IN (E1.i, E2.i, E3.i, E4.i, E5.i, E7.i)
+   AND E7.i NOT IN (E1.i, E2.i, E3.i, E4.i, E5.i, E6.i);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ3
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Elements
+(i INTEGER NOT NULL,
+ wgt INTEGER NOT NULL);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO Elements
+VALUES (1, 1), (2, 2), (3, 4), (4, 8), (5, 16), (6, 32), (7, 64);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT E1.i, E2.i, E3.i, E4.i, E5.i, E6.i, E7.i
+  FROM Elements AS E1, Elements AS E2, Elements AS E3,
+       Elements AS E4, Elements AS E5, Elements AS E6,
+       Elements AS E7
+ WHERE (E1.wgt + E2.wgt + E3.wgt + E4.wgt + E5.wgt +
+        E6.wgt + E7.wgt) = 127;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ4
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT E1.i, E2.i, E3.i, E4.i, E5.i, E6.i,
+       (28 - E1.i - E2.i - E3.i - E4.i - E5.i - E6.i) AS i
+  FROM Elements AS E1, Elements AS E2, Elements AS E3,
+       Elements AS E4, Elements AS E5, Elements AS E6
+ WHERE E2.i NOT IN (E1.i)
+   AND E3.i NOT IN (E1.i, E2.i)
+   AND E4.i NOT IN (E1.i, E2.i, E3.i)
+   AND E5.i NOT IN (E1.i, E2.i, E3.i, E4.i)
+   AND E6.i NOT IN (E1.i, E2.i, E3.i, E4.i, E5.i);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT a || c
+  FROM (SELECT a || SUBSTRING(c FROM i FOR 1),
+               STUFF(c, i, 1, '')
+          FROM Elements,
+           (SELECT a || SUBSTRING(c FROM i FOR 1),
+                   STUFF(c, i, 1, '')
+              FROM Elements,
+               (SELECT a || SUBSTRING(c FROM i FOR 1),
+                       STUFF(c, i, 1, '')
+                  FROM Elements,
+                   (SELECT a || SUBSTRING(c FROM i FOR 1),
+                           STUFF(c, i, 1, '')
+                      FROM Elements,
+                       (SELECT a || SUBSTRING(c FROM i FOR 1),
+                               STUFF(c, i, 1, '')
+                          FROM Elements,
+                           (SELECT SUBSTRING('1234567' FROM i
+                                             FOR 1),
+                                   STUFF('1234567', i, 1, '')
+                              FROM Elements
+                             WHERE i <= 7) AS T1 (a,c)
+                         WHERE i <= 6) AS T2 (a,c)
+                     WHERE i <= 5) AS T3 (a,c)
+                 WHERE i <= 4) AS T4 (a,c)
+             WHERE i <= 3) AS T5 (a,c)
+         WHERE i <= 2) AS T6 (a,c);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ5
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT
+  SUBSTRING('1234567',
+    a, 1) ||
+  SUBSTRING(STUFF('1234567',
+    a, 1, ''), b, 1) ||
+  SUBSTRING(STUFF(STUFF('1234567',
+    a, 1, ''), b, 1, ''), c, 1) ||
+  SUBSTRING(STUFF(STUFF(STUFF('1234567',
+    a, 1, ''), b, 1, ''), c, 1, ''), d, 1) ||
+  SUBSTRING(STUFF(STUFF(STUFF(STUFF('1234567',
+    a, 1, ''), b, 1, ''), c, 1, ''), d, 1, ''), e, 1) ||
+  SUBSTRING(STUFF(STUFF(STUFF(STUFF(STUFF('1234567',
+    a, 1, ''), b, 1, ''), c, 1, ''), d, 1, ''), e, 1,''),f, 1) ||
+  STUFF(STUFF(STUFF(STUFF(STUFF(STUFF('1234567',
+    a, 1, ''), b, 1, ''), c, 1, ''), d, 1, ''), e, 1, ''), f, 1,
+    '')
+  FROM (SELECT i FROM Elements
+         WHERE i <= 7) AS T1 (a),
+       (SELECT i FROM Elements
+         WHERE i <= 6) AS T2 (b),
+       (SELECT i FROM Elements
+         WHERE i <= 5) AS T3 (c),
+       (SELECT i FROM Elements
+         WHERE i <= 4) AS T4 (d),
+       (SELECT i FROM Elements
+         WHERE i <= 3) AS T5 (e),
+       (SELECT i FROM Elements
+         WHERE i <= 2) AS T6 (f);
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.163 - 168, Copyright Elsevier 2006.

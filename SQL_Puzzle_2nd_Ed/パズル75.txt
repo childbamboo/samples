@@ -1,0 +1,67 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ñ‚ëËï∂
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE PubMap
+(pub_id CHAR(5) NOT NULL PRIMARY KEY,
+ x INTEGER NOT NULL,
+ y INTEGER NOT NULL);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT B.pub_id, B.x, B.y
+  FROM PubMap AS A,
+       PubMap AS B
+ WHERE A.pub_id = :my_pub
+   AND :my_pub <> B.pub_id
+   AND SQRT (POWER((A.x - B.x), 2) + POWER((A.y - B.y), 2))
+       <= :crawl_distance;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT B.pub_id, B.x, B.y
+  FROM PubMap AS A,
+       PubMap AS B
+ WHERE :my_pub = A.pub_id
+   AND :my_pub <> B.pub_id
+   AND (POWER((A.x - B.x), 2) + POWER((A.y - B.y), 2))
+       <= POWER(:crawl_distance, 2);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT A.pub_id, B.pub_id
+  FROM PubMap AS A, PubMap AS B
+ WHERE :my_pub <> B.pub_id
+   AND :my_pub = A.pub_id
+   AND ABS(A.x - B.x) <= :distance
+   AND ABS(A.y - B.y) <= :distance;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ3
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE PubMap
+(pub_id CHAR(5) NOT NULL PRIMARY KEY,
+ x INTEGER NOT NULL,
+ y INTEGER NOT NULL,
+ cell_x INTEGER NOT NULL,
+ cell_y INTEGER NOT NULL);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT N2.pub_id, N2.x, N2.y
+  FROM PubMap AS N1, PubMap AS N2
+ WHERE :my_pub <> N2.pub_id
+   AND :my_pub =  N1.pub_id
+   AND N2.cell_x IN (N1.cell_x-1, N1.cell_x, N1.cell_x+1)
+   AND N2.cell_y IN (N1.cell_y-1, N1.cell_y, N1.cell_y+1);
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.309 - 311, Copyright Elsevier 2006.

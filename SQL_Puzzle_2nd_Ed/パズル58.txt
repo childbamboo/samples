@@ -1,0 +1,110 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■問題文
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Tickets
+(buyer_name CHAR(5) NOT NULL,
+ ticket_nbr INTEGER DEFAULT 1 NOT NULL
+            CHECK (ticket_nbr > 0),
+ PRIMARY KEY (buyer_name, ticket_nbr));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO Tickets
+VALUES ('a', 2), ('a', 3), ('a', 4),
+       ('b', 4),
+       ('c', 1), ('c', 2), ('c', 3), ('c', 4), ('c', 5),
+       ('d', 1), ('d', 6), ('d', 7), ('d', 9),
+       ('e', 10);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT buyer_name
+  FROM Tickets
+ GROUP BY buyer_name
+HAVING NOT (MAX(ticket_nbr) - MIN(ticket_nbr) <= COUNT(*));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT DISTINCT T1.buyer_name, S1.seq
+  FROM Tickets AS T1, Sequence AS S1  -- Sequence：連番テーブル
+ WHERE seq <= (SELECT MAX(ticket_nbr) -- 集合の範囲を設定する
+                 FROM Tickets AS T2
+                WHERE T1.buyer_name = T2.buyer_name)
+   AND seq NOT IN (SELECT ticket_nbr  -- 欠番を求める
+                     FROM Tickets AS T3
+                    WHERE T1.buyer_name = T3.buyer_name);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT DISTINCT T1.buyer_name, S1.seq
+  FROM Tickets AS T1, Sequence AS S1
+ WHERE NOT EXISTS
+       (SELECT *
+          FROM Tickets AS T2
+         WHERE T2.buyer_name = T1.buyer_name
+           AND T2.ticket_nbr = S1.seq)
+   AND S1.seq <= (SELECT MAX(ticket_nbr)
+                    FROM Tickets AS T3
+                   WHERE T3.buyer_name = T1.buyer_name);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその3
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT DISTINCT T2.buyer_name, T2.ticket_nbr
+  FROM (SELECT T1.buyer_name, S1.seq AS ticket_nbr
+          FROM (SELECT buyer_name, MAX(ticket_nbr)
+                  FROM Tickets
+                 GROUP BY buyer_name) AS T1(buyer_name, max_nbr),
+               Sequence AS S1
+         WHERE S1.seq <= max_nbr) AS T2
+       LEFT OUTER JOIN Tickets AS T3
+       ON T2.buyer_name = T3.buyer_name
+       AND T2.ticket_nbr = T3.ticket_nbr
+ WHERE T3.ticket_nbr IS NULL;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその4
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT buyer_name, (prev_nbr + 1) AS gap_start,
+       (ticket_nbr - 1) AS gap_end
+  FROM (SELECT buyer_name, ticket_nbr,
+               COALESCE(MIN(ticket_nbr) OVER (
+                 PARTITION BY buyer_name
+                 ORDER BY ticket_nbr
+                 ROWS BETWEEN 1 PRECEDING AND 1 PRECEDING), 0)
+          FROM Tickets) AS DT(buyer_name, ticket_nbr, prev_nbr)
+ WHERE (ticket_nbr - prev_nbr) > 1;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその5
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+WITH CTE(buyer_name, ticket_nbr)
+AS
+(SELECT buyer_name, MAX(ticket_nbr)
+   FROM Tickets
+  GROUP BY buyer_name
+ UNION ALL
+ SELECT buyer_name, ticket_nbr - 1
+   FROM CTE
+  WHERE ticket_nbr - 1 >= 0)
+SELECT A.buyer_name, A.ticket_nbr
+  FROM CTE AS A
+       LEFT OUTER JOIN
+       Tickets AS B
+       ON A.buyer_name = B.buyer_name
+      AND A.ticket_nbr = B.ticket_nbr
+ WHERE B.buyer_name IS NULL;
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.230 - 233, Copyright Elsevier 2006.

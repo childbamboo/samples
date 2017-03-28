@@ -1,0 +1,75 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT cust_id, '0-30 days = ' AS age, SUM(pizza_amt)
+  FROM FriendsOfPepperoni
+ WHERE bill_date BETWEEN (CURRENT_DATE - INTERVAL '30' DAY)
+   AND CURRENT_DATE
+ GROUP BY cust_id
+UNION ALL
+SELECT cust_id, '31-60 days = ' AS age, SUM(pizza_amt)
+  FROM FriendsOfPepperoni
+ WHERE bill_date BETWEEN (CURRENT_DATE - INTERVAL '60' DAY)
+   AND (CURRENT_DATE - INTERVAL '31' DAY)
+ GROUP BY cust_id
+UNION ALL
+SELECT cust_id, '61-90 days = ' AS age, SUM(pizza_amt)
+  FROM FriendsOfPepperoni
+ WHERE bill_date BETWEEN (CURRENT_DATE - INTERVAL '90' DAY)
+   AND (CURRENT_DATE - INTERVAL '61' DAY)
+ GROUP BY cust_id
+UNION ALL
+SELECT cust_id, '90+ days = ' AS age, SUM(pizza_amt)
+  FROM FriendsOfPepperoni
+ WHERE bill_date < CURRENT_DATE - INTERVAL '90' DAY
+ GROUP BY cust_id
+ ORDER BY cust_id, age;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT cust_id,
+       SUM(CASE WHEN bill_date
+                     BETWEEN CURRENT_DATE - INTERVAL '30' DAY
+                         AND CURRENT_DATE
+                THEN pizza_amt ELSE 0.00 END) AS age1,
+       SUM(CASE WHEN bill_date
+                     BETWEEN CURRENT_DATE - INTERVAL '60' DAY
+                         AND CURRENT_DATE - INTERVAL '31' DAY
+                THEN pizza_amt ELSE 0.00 END) AS age2,
+       SUM(CASE WHEN bill_date
+                     BETWEEN CURRENT_DATE - INTERVAL '90' DAY
+                         AND CURRENT_DATE - INTERVAL '61' DAY
+                THEN pizza_amt ELSE 0.00 END) AS age3,
+       SUM(CASE WHEN bill_date < CURRENT_DATE - INTERVAL '91' DAY
+                THEN pizza_amt ELSE 0.00 END) AS age4
+  FROM FriendsOfPepperoni
+ GROUP BY cust_id
+ ORDER BY cust_id;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ3
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+WITH ReportRanges(day_count, start_cnt, end_cnt)
+AS (VALUES ('under Thirty days', 00, 30),
+   ('Sixty days', 31, 60),
+   ('Ninty days', 61, 90))
+SELECT F1.cust_id, COALESCE(R1.day_count, 'Over Ninety days'),
+       SUM(pizza_amt)
+  FROM FriendsOfPepperoni AS F1
+       LEFT OUTER JOIN
+       ReportRanges AS R1
+       ON F1.bill_date
+          BETWEEN CURRENT_DATE - end_cnt
+              AND CURRENT_DATE - start_cnt
+ GROUP BY F1.cust_id, R1.day_count
+ ORDER BY F1.cust_id, R1.day_count;
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.183 - 185, Copyright Elsevier 2006.

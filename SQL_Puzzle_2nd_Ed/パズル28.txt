@@ -1,0 +1,10 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Sine(x REAL NOT NULL, sin REAL NOT NULL);- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -INSERT INTO SineVALUES (0.00, 0.0000), ...       (0.75, 0.6816),       (0.76, 0.6889) ... ;- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -Å°ìöÇ¶ÇªÇÃ2- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -INSERT INTO Sine VALUES (0.75, 0.6816);INSERT INTO Sine VALUES (0.76, 0.6889);- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -SELECT A.sin + (:myvalue - A.x)       * ((B.sin - A.sin) / (B.x - A.x))  FROM Sine AS A, Sine AS B WHERE A.x = (SELECT MAX(x) FROM Sine WHERE x <= :myvalue)   AND B.x = (SELECT MIN(x) FROM Sine WHERE x >= :myvalue);
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.121 - 122, Copyright Elsevier 2006.

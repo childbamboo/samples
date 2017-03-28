@@ -1,0 +1,141 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■問題文
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE AnthologyContributors
+(isbn CHAR(10) NOT NULL,
+ contributor CHAR(20) NOT NULL,
+ category INTEGER NOT NULL,
+ ...,
+ PRIMARY KEY (isbn, contributor));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT isbn, contributor, :cat_1, :cat_2, :cat_3
+  FROM AnthologyContributors AS A1
+ WHERE A1.category IN (:cat_1, :cat_2, :cat_3)
+ GROUP BY isbn, contributor
+HAVING COUNT(*) = 2;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT contributor, :cat_1, :cat_2, :cat_3
+  FROM AnthologyContributors AS A1
+ WHERE A1.category IN (:cat_1, :cat_2, :cat_3)
+ GROUP BY contributor
+HAVING COUNT(DISTINCT A1.category) = 2;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT A1.isbn, A1.contributor, :cat_1, :cat_2
+  FROM AnthologyContributors AS A1,
+       AnthologyContributors AS A2
+ WHERE A1.contributor = A2.contributor -- 自己結合
+   AND A1.category = :cat_1 -- 1：分野1
+   AND A2.category = :cat_2 -- 2：分野2
+   AND NOT EXISTS (SELECT * -- 3：しかし、分野3には執筆していない
+                     FROM AnthologyContributors AS A3
+                    WHERE A1.contributor = A3.contributor
+                      AND A3.category = :cat_3);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその3
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT isbn, contributor, :cat_1, :cat_2, :cat_3
+  FROM AnthologyContributors AS A1
+ WHERE A1.category IN (:cat_1, :cat_2, :cat_3)
+   AND EXISTS
+       (SELECT *
+          FROM AnthologyContributors AS A2
+         WHERE A2.category IN (:cat_1, :cat_2, :cat_3)
+           AND A1.category < A2.category
+           AND A1.contributor = A2.contributor
+           AND NOT EXISTS
+               (SELECT *
+                  FROM AnthologyContributors AS A3
+                 WHERE A3.category IN (:cat_1, :cat_2, :cat_3)
+                   AND A1.contributor = A3.contributor
+                   AND A1.category <> A3.category
+                   AND A2.category <> A3.category));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT isbn, contributor, :cat_1
+  FROM AnthologyContributors AS A1
+ WHERE A1.category = :cat_1
+   AND NOT EXISTS
+       (SELECT *
+          FROM AnthologyContributors AS A2
+         WHERE A2.category IN (:cat_2, :cat_3)
+           AND A1.isbn = A2.isbn
+           AND A1.category <> A2.category);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその4
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT DISTINCT contributor, :cat_1, :cat_2, :cat_3
+  FROM AnthologyContributors AS A1
+ WHERE 2 = (SELECT COUNT(DISTINCT A2.category)
+              FROM AnthologyContributors AS A2
+             WHERE A1.contributor = A2.contributor
+               AND A2.category IN (:cat_1, :cat_2, :cat_3));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその5
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT DISTINCT contributor, :cat_1, :cat_2
+  FROM AnthologyContributors AS A1
+ WHERE (SELECT SUM(DISTINCT
+                     CASE WHEN category = :cat_1
+                          THEN 1
+                          WHEN category = :cat_2
+                          THEN 2
+                          WHEN category = :cat_3
+                          THEN -3 ELSE NULL END)
+          FROM AnthologyContributors AS A2
+         WHERE A1.contributor = A2.contributor
+           AND A2.category IN (:cat_1, :cat_2, :cat_3)) = 3;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT contributor, :cat_1, :cat_2, :cat_3
+  FROM AnthologyContributors AS A1
+ WHERE A1.category IN (:cat_1, :cat_2, :cat_3)
+ GROUP BY contributor
+HAVING (SELECT SUM(DISTINCT
+                   CASE WHEN category = :cat_1
+                        THEN 1
+                        WHEN category = :cat_2
+                        THEN 2
+                        WHEN category = :cat_3
+                        THEN -3 ELSE NULL END)) = 3;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその6
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT DISTINCT contributor, :cat_1, :cat_2, :cat_3
+  FROM AnthologyContributors AS A1
+ WHERE (SELECT COUNT(DISTINCT A2.category)
+          FROM AnthologyContributors AS A2
+         WHERE A1.contributor = A2.contributor
+           AND A2.category IN (:cat_1, :cat_2, :cat_3)) = 3;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT DISTINCT contributor, :cat_1, :cat_2, :cat_3
+  FROM AnthologyContributors AS A1
+ WHERE category IN (:cat_1, :cat_2, :cat_3);
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.203 - 207, Copyright Elsevier 2006.

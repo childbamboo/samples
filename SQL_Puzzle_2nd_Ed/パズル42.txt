@@ -1,0 +1,103 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ñ‚ëËï∂
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Samples
+(sample_id INTEGER NOT NULL,
+ fish_name CHAR(20) NOT NULL,
+ found_tally INTEGER NOT NULL,
+ PRIMARY KEY (sample_id, fish_name));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO Samples
+VALUES (1, 'minnow', 18),
+       (1, 'pike', 7),
+       (2, 'pike', 4),
+       (2, 'carp', 3),
+       (3, 'carp', 9),
+        ... ;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE SampleGroups
+(group_id INTEGER NOT NULL,
+ group_descr CHAR(20) NOT NULL,
+ sample_id INTEGER NOT NULL,
+ PRIMARY KEY (group_id, sample_id));
+INSERT INTO SampleGroups
+VALUES (1, 'muddy water', 1),
+       (1, 'muddy water', 2),
+       (2, 'fresh water', 1),
+       (2, 'fresh water', 2),
+       (2, 'fresh water', 3),
+       ...;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO SampleGroups
+VALUES (1, 'muddy water', 1),
+       (1, 'muddy water', 2),
+       (2, 'fresh water', 1),
+       (2, 'fresh water', 2),
+       (2, 'fresh water', 3),
+       ...;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT fish_name, AVG(found_tally)
+  FROM Samples
+ WHERE sample_id IN (SELECT sample_id
+                       FROM SampleGroups
+                      WHERE group_id = :my_group)
+   AND fish_name = :my_fish_name
+ GROUP BY fish_name;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO Samples
+SELECT DISTINCT M1.sample_id, M2.fish_name, 0
+  FROM Samples AS M1, Samples AS M2
+ WHERE NOT EXISTS
+       (SELECT *
+          FROM Samples AS M3
+         WHERE M1.sample_id = M3.sample_id
+           AND M2.fish_name = M3.fish_name);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT fish_name, SUM(found_tally) /
+            (SELECT COUNT(sample_id)
+               FROM SampleGroups
+              WHERE group_id = :my_group) AS X
+  FROM Samples SA
+       INNER JOIN
+       SampleGroups SG
+       ON SA.sample_id = SG.sample_id
+ WHERE fish_name = :my_fish_name
+   AND group_id = :my_group
+ GROUP BY fish_name;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ3
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT COALESCE(fish_name, :my_fish_name),
+       AVG(COALESCE(found_tally, 0))
+  FROM Samples AS SA
+       RIGHT OUTER JOIN
+       SampleGroups AS SG
+       ON SA.sample_id = SG.sample_id
+       AND SA.fish_name = :my_fish_name
+ WHERE SG.group_id = :my_group
+ GROUP BY COALESCE(fish_name, :my_fish_name);
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.172 - 175, Copyright Elsevier 2006.

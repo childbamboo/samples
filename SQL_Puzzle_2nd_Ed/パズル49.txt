@@ -1,0 +1,89 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ñ‚ëËï∂
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Production
+(production_center INTEGER NOT NULL,
+ wk_date DATE NOT NULL,
+ batch_nbr INTEGER NOT NULL,
+ widget_cnt INTEGER NOT NULL,
+ PRIMARY KEY (production_center, wk_date, batch_nbr));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT production_center, wk_date, COUNT(batch_nbr),
+       AVG(widget_cnt)
+  FROM Production
+ GROUP BY production_center, wk_date;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE VIEW Prod3 (production_center, wk_date, widget_cnt, third)
+AS SELECT production_center, wk_date, widget_cnt,
+          CASE WHEN batch_nbr <= (SELECT MAX(batch_nbr) / 3
+                                    FROM Production AS P2
+                                   WHERE P1.production_center
+                                         = P2.production_center
+                                     AND P1.wk_date = P2.wk_date)
+               THEN 1
+               WHEN batch_nbr > (SELECT MAX(batch_nbr * 2) / 3
+                                    FROM Production AS P2
+                                   WHERE P1.production_center
+                                         = P2.production_center
+                                     AND P1.wk_date = P2.wk_date)
+               THEN 3
+               ELSE 2
+           END
+     FROM Production AS P1;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE VIEW Prod3
+(production_center, wk_date, third, batch_nbr, widget_cnt)
+AS SELECT production_center, wk_date, 1, batch_nbr, widget_cnt
+     FROM Production AS P1
+    WHERE batch_nbr <= (SELECT MAX(batch_nbr) / 3
+                          FROM Production AS P2
+                         WHERE P1.production_center =
+                               P2.production_center
+                           AND P1.wk_date = P2.wk_date)
+    UNION
+    SELECT production_center, wk_date, 2, batch_nbr, widget_cnt
+      FROM Production AS P1
+     WHERE batch_nbr > (SELECT MAX(batch_nbr) / 3
+                          FROM Production AS P2
+                         WHERE P1.production_center =
+                               P2.production_center
+                           AND P1.wk_date = P2.wk_date)
+       AND batch_nbr <= (SELECT 2 * MAX(batch_nbr) / 3
+                           FROM Production AS P2
+                          WHERE P1.production_center =
+                                P2.production_center
+                            AND P1.wk_date = P2.wk_date)
+    UNION
+    SELECT production_center, wk_date, 3, batch_nbr, widget_cnt
+      FROM Production AS P1
+     WHERE batch_nbr > (SELECT 2 * MAX(batch_nbr) / 3
+                          FROM Production AS P2
+                         WHERE P1.production_center =
+                               P2.production_center
+                           AND P1.wk_date = P2.wk_date);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT production_center, wk_date, third, COUNT(*),
+       AVG(widget_cnt)
+  FROM Prod3
+ GROUP BY production_center, wk_date, third;
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.200 - 202, Copyright Elsevier 2006.

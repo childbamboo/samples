@@ -1,0 +1,79 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■問題文
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Numbers (seq INTEGER NOT NULL PRIMARY KEY);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO Numbers
+VALUES (2), (3), (5), (7), (8), (14), (20);
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT CASE WHEN COUNT(*) = MAX(seq)
+            THEN 'Sequence'
+            ELSE 'Not Sequence' END
+  FROM Numbers;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT CASE WHEN COUNT(*) + MIN(seq) - 1 = MAX(seq)
+            THEN 'Sequence'
+            ELSE 'Not Sequence' END
+  FROM Numbers;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT N1.seq + 1 AS gap_start, N2.seq - 1 AS gap_end
+  FROM Numbers AS N1, Numbers AS N2
+ WHERE N1.seq +1 < N2.seq
+   AND (SELECT SUM(seq)
+          FROM Numbers AS Num3
+         WHERE Num3.seq BETWEEN N1.seq AND N2.seq)
+       = (N1.seq + N2.seq);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- ギャップの最初の値のみを見つける：うまくいかない
+SELECT N1.seq + 1
+  FROM Numbers AS N1
+       LEFT OUTER JOIN
+       Numbers AS N2
+       ON N1.seq = N2.seq - 1
+ WHERE N2.seq IS NULL;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+--最初のギャップを見つける
+SELECT CASE WHEN MAX(seq) = COUNT(*)
+            THEN MAX(seq) + 1
+            WHEN MIN(seq) > 1
+            THEN 1
+            WHEN MAX(seq) <> COUNT(*)
+            THEN (SELECT MIN(seq) + 1
+                    FROM Numbers
+                   WHERE (seq + 1)
+                         NOT IN (SELECT seq FROM Numbers))
+            ELSE NULL END
+  FROM Numbers;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその3
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT seq FROM Sequence
+ WHERE seq <= (SELECT MAX(seq) FROM Numbers)
+EXCEPT ALL
+SELECT seq FROM Numbers;
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.227 - 229, Copyright Elsevier 2006.

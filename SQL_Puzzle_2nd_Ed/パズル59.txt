@@ -1,0 +1,97 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ñ‚ëËï∂
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Timesheets
+(task_id CHAR(10) NOT NULL PRIMARY KEY,
+ start_date DATE NOT NULL,
+ end_date DATE NOT NULL,
+          CHECK(start_date <= end_date));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO Timesheets
+VALUES (1, '1997-01-01', '1997-01-03'),
+       (2, '1997-01-02', '1997-01-04'),
+       (3, '1997-01-04', '1997-01-05'),
+       (4, '1997-01-06', '1997-01-09'),
+       (5, '1997-01-09', '1997-01-09'),
+       (6, '1997-01-09', '1997-01-09'),
+       (7, '1997-01-12', '1997-01-15'),
+       (8, '1997-01-13', '1997-01-14'),
+       (9, '1997-01-14', '1997-01-14'),
+       (10, '1997-01-17', '1997-01-17');
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT T1.start_date, MAX(T2.end_date)
+  FROM Timesheets AS T1, Timesheets AS T2
+ WHERE T1.start_date <= T2.end_date
+   AND NOT EXISTS
+       (SELECT *
+          FROM Timesheets AS T3, Timesheets AS T4
+         WHERE T3.end_date < T4.start_date
+           AND T3.start_date >= T1.start_date
+           AND T3.end_date <= T2.end_date
+           AND T4.start_date >= T1.start_date
+           AND T4.end_date <= T2.end_date
+           AND NOT EXISTS
+               (SELECT *
+                  FROM Timesheets AS T5
+                 WHERE T5.start_date
+                       BETWEEN T3.start_date AND T3.end_date
+                   AND T5.end_date
+                       BETWEEN T4.start_date AND T4.end_date))
+ GROUP BY T1.start_date
+HAVING t1.start_date = MIN(t2.start_date);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT X.start_date, MIN(Y.end_date) AS end_date
+  FROM (SELECT T1.start_date
+          FROM Timesheets AS T1
+               LEFT OUTER JOIN
+               Timesheets AS T2
+               ON T1.start_date > T2.start_date
+              AND T1.start_date <= T2.end_date
+         GROUP BY T1.start_date
+        HAVING COUNT(T2.start_date) = 0) AS X(start_date)
+        INNER JOIN
+       (SELECT T3.end_date
+          FROM Timesheets AS T3
+               LEFT OUTER JOIN
+               Timesheets AS T4
+               ON T3.end_date >= T4.start_date
+              AND T3.end_date < T4.end_date
+         GROUP BY T3.end_date
+        HAVING COUNT(T4.start_date) = 0) AS Y(end_date)
+       ON X.start_date <= Y.end_date
+ GROUP BY X.start_date;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ3
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT X.start_date, MIN(X.end_date) AS end_date
+  FROM (SELECT T1.start_date, T2.end_date
+          FROM Timesheets AS T1, Timesheets AS T2,
+               Timesheets AS T3
+         WHERE T1.end_date <= T2.end_date
+         GROUP BY T1.start_date, T2.end_date
+        HAVING MAX(CASE WHEN (T1.start_date > T3.start_date
+                               AND T1.start_date <= T3.end_date)
+                               OR
+                               (T2.end_date >= T3.start_date
+                               AND T2.end_date < T3.end_date)
+                        THEN 1 ELSE 0 END) = 0) AS X
+ GROUP BY X.start_date;
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.234 - 236, Copyright Elsevier 2006.

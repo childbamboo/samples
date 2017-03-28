@@ -1,0 +1,86 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ñ‚ëËï∂
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Foobar
+(lvl INTEGER NOT NULL PRIMARY KEY,
+ color VARCHAR(10),
+ length INTEGER,
+ width INTEGER,
+ hgt INTEGER);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO Foobar
+VALUES (1, 'RED', 8, 10, 12),
+       (2, NULL, NULL, NULL, 20),
+       (3, NULL, 9, 82, 25),
+       (4, 'BLUE', NULL, 67, NULL),
+       (5, 'GRAY', NULL, NULL, NULL);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT (SELECT color FROM Foobar WHERE lvl = M.lc) AS color,
+       (SELECT length FROM Foobar WHERE lvl = M.ll) AS length,
+       (SELECT width FROM Foobar WHERE lvl = M.lw) AS width,
+       (SELECT hgt FROM Foobar WHERE lvl = M.lh) AS hgt
+  FROM (SELECT MAX(CASE WHEN color IS NOT NULL
+                        THEN lvl END) AS lc,
+               MAX(CASE WHEN length IS NOT NULL
+                        THEN lvl END) AS ll,
+               MAX(CASE WHEN width IS NOT NULL
+                        THEN lvl END) AS lw,
+               MAX(CASE WHEN hgt IS NOT NULL
+                        THEN lvl END) AS lh
+          FROM Foobar) AS M;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT MIN(CASE WHEN Foobar.lvl = M.lc
+                THEN Foobar.color END) AS color,
+       MIN(CASE WHEN Foobar.lvl = M.ll
+                THEN Foobar.length END) AS length,
+       MIN(CASE WHEN Foobar.lvl = M.lw
+                THEN Foobar.width END) AS width,
+       MIN(CASE WHEN Foobar.lvl = M.lh
+                THEN Foobar.hgt END) AS hgt
+  FROM (SELECT MAX(CASE WHEN color IS NOT NULL
+                        THEN lvl END) AS lc,
+               MAX(CASE WHEN length IS NOT NULL
+                        THEN lvl END) AS ll,
+               MAX(CASE WHEN width IS NOT NULL
+                        THEN lvl END) AS lw,
+               MAX(CASE WHEN hgt IS NOT NULL
+                        THEN lvl END) AS lh
+          FROM Foobar) AS M
+       INNER JOIN
+       Foobar
+       ON Foobar.lvl IN (M.lc, M.ll, M.lw, M.lh);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT COALESCE(F5.color, F4.color, F3.color, F2.color, F1.color)
+                AS color,
+       COALESCE(F5.length, F4.length, F3.length, F2.length,
+                F1.length) AS length,
+       COALESCE(F5.width, F4.width, F3.width, F2.width, F1.width)
+                AS width,
+       COALESCE(F5.hgt, F4.hgt, F3.hgt, F2.hgt, F1.hgt)
+                AS hgt
+  FROM Foobar AS F1, Foobar AS F2, Foobar AS F3, Foobar AS F4,
+       Foobar AS F5
+ WHERE F1.lvl = 1
+   AND F2.lvl = 2
+   AND F3.lvl = 3
+   AND F4.lvl = 4
+   AND F5.lvl = 5;
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.215 - 217, Copyright Elsevier 2006.

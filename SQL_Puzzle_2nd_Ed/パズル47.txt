@@ -1,0 +1,32 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ñ‚ëËï∂
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Reservations
+(reserver CHAR(10) NOT NULL PRIMARY KEY,
+ start_seat INTEGER NOT NULL,
+ finish_seat INTEGER NOT NULL);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Reservations
+(reserver CHAR(10) NOT NULL PRIMARY KEY,
+ start_seat INTEGER NOT NULL,
+ finish_seat INTEGER NOT NULL,
+   CHECK (start_seat <= finish_seat),
+   CONSTRAINT No_Overlaps
+   CHECK (NOT EXISTS
+             (SELECT R1.reserver
+                FROM Reservations AS R1
+               WHERE Reservations.start_seat
+                     BETWEEN R1.start_seat AND R1.finish_seat
+                  OR Reservations.finish_seat
+                     BETWEEN R1.start_seat AND R1.finish_seat));
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.190 - 191, Copyright Elsevier 2006.

@@ -1,0 +1,122 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ñ‚ëËï∂
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Losses
+(cust_nbr INTEGER NOT NULL PRIMARY KEY,
+ a INTEGER, b INTEGER, c INTEGER, d INTEGER, e INTEGER,
+ f INTEGER, g INTEGER, h INTEGER, i INTEGER, j INTEGER,
+ k INTEGER, l INTEGER, m INTEGER, n INTEGER, o INTEGER);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO Losses
+VALUES (  99,
+           5,   10,   15, NULL, NULL,
+        NULL, NULL, NULL, NULL, NULL,
+        NULL, NULL, NULL, NULL, NULL);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Policy_Criteria
+(criteria_id INTEGER NOT NULL,
+ criteria CHAR(1) NOT NULL,
+ crit_val INTEGER NOT NULL,
+ PRIMARY KEY (criteria_id, criteria, crit_val));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO Policy_Criteria VALUES (1, 'A', 5);
+INSERT INTO Policy_Criteria VALUES (1, 'A', 9);
+INSERT INTO Policy_Criteria VALUES (1, 'A', 14);
+INSERT INTO Policy_Criteria VALUES (1, 'B', 4);
+INSERT INTO Policy_Criteria VALUES (1, 'B', 10);
+INSERT INTO Policy_Criteria VALUES (1, 'B', 20);
+INSERT INTO Policy_Criteria VALUES (2, 'B', 10);
+INSERT INTO Policy_Criteria VALUES (2, 'B', 19);
+INSERT INTO Policy_Criteria VALUES (3, 'A', 5);
+INSERT INTO Policy_Criteria VALUES (3, 'B', 10);
+INSERT INTO Policy_Criteria VALUES (3, 'B', 30);
+INSERT INTO Policy_Criteria VALUES (3, 'C', 3);
+INSERT INTO Policy_Criteria VALUES (3, 'C', 15);
+INSERT INTO Policy_Criteria VALUES (4, 'A', 5);
+INSERT INTO Policy_Criteria VALUES (4, 'B', 21);
+INSERT INTO Policy_Criteria VALUES (4, 'B', 22);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE LossDoneRight
+(cust_nbr INTEGER NOT NULL,
+ criteria CHAR(1) NOT NULL,
+ crit_val INTEGER NOT NULL);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO LossDoneRight (cust_nbr, criteria, crit_val)
+SELECT cust_nbr, 'A', a FROM Losses WHERE a IS NOT NULL
+UNION ALL
+SELECT cust_nbr, 'B', b FROM Losses WHERE b IS NOT NULL
+UNION ALL
+SELECT cust_nbr, 'C', c FROM Losses WHERE c IS NOT NULL
+UNION ALL
+SELECT cust_nbr, 'D', d FROM Losses WHERE d IS NOT NULL
+UNION ALL
+SELECT cust_nbr, 'E', e FROM Losses WHERE e IS NOT NULL
+UNION ALL
+SELECT cust_nbr, 'F', f FROM Losses WHERE f IS NOT NULL
+UNION ALL
+SELECT cust_nbr, 'G', g FROM Losses WHERE g IS NOT NULL
+UNION ALL
+SELECT cust_nbr, 'H', h FROM Losses WHERE h IS NOT NULL
+UNION ALL
+SELECT cust_nbr, 'I', i FROM Losses WHERE i IS NOT NULL
+UNION ALL
+SELECT cust_nbr, 'J', j FROM Losses WHERE j IS NOT NULL
+UNION ALL
+SELECT cust_nbr, 'K', k FROM Losses WHERE k IS NOT NULL
+UNION ALL
+SELECT cust_nbr, 'L', l FROM Losses WHERE l IS NOT NULL
+UNION ALL
+SELECT cust_nbr, 'M', m FROM Losses WHERE m IS NOT NULL
+UNION ALL
+SELECT cust_nbr, 'N', n FROM Losses WHERE n IS NOT NULL
+UNION ALL
+SELECT cust_nbr, 'O', o FROM Losses WHERE o IS NOT NULL;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT L1.cust_nbr, ' could use policy ', C1.criteria_id,
+       COUNT(*) AS score
+  FROM LossDoneRight AS L1, Policy_Criteria AS C1
+ WHERE L1.criteria = C1.criteria
+   AND L1.crit_val = C1.crit_val
+ GROUP BY L1.cust_nbr, C1.criteria_id
+HAVING COUNT(*) = (SELECT COUNT(*)
+                     FROM LossDoneRight AS L2
+                    WHERE L1.cust_nbr = L2.cust_nbr);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT L1.cust_nbr, 'matches to ', C1.criteria_id,
+       ' with a score of ', COUNT(*) AS score
+  FROM LossDoneRight AS L1, Policy_Criteria AS C1
+ WHERE L1.criteria = C1.criteria
+   AND L1.crit_val = C1.crit_val
+ GROUP BY L1.cust_nbr, C1.criteria_id
+HAVING COUNT(*) <= (SELECT COUNT(*)
+                      FROM LossDoneRight AS L2
+                     WHERE L1.cust_nbr = L2.cust_nbr)
+   AND COUNT(*) = (SELECT COUNT(DISTINCT C2.criteria)
+                     FROM Policy_Criteria AS C2
+                    WHERE C1.criteria_id = C2.criteria_id)
+ ORDER BY L1.cust_nbr, score;
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.158 - 162, Copyright Elsevier 2006.

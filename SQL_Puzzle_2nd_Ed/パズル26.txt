@@ -1,0 +1,75 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■問題文
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE DataFlowDiagrams
+(diagram_name CHAR(10) NOT NULL,
+ bubble_name CHAR(10) NOT NULL,
+ flow_name CHAR(10) NOT NULL,
+ PRIMARY KEY (diagram_name, bubble_name, flow_name));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT diagram_name, bubble_name, flow_name
+  FROM (SELECT F1.diagram_name, F1.bubble_name, F2.flow_name
+          FROM DataFlowDiagrams AS F1
+          CROSS JOIN
+          DataFlowDiagrams AS F2) AS TMP
+EXCEPT
+SELECT F3.diagram_name, F3.bubble_name, F3.flow_name
+  FROM DataFlowDiagrams AS F3;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT DISTINCT diagram_name, bubble_name, flow_name
+  FROM (SELECT F1.diagram_name, F1.bubble_name, F2.flow_name
+          FROM DataFlowDiagrams AS F1
+          CROSS JOIN
+          DataFlowDiagrams AS F2
+         WHERE F2.flow_name NOT IN
+              (SELECT F3.flow_name
+                 FROM DataFlowDiagrams AS F3
+                WHERE F3.diagram_name = F1.diagram_name
+                  AND F3.bubble_name  = F1.bubble_name)) AS TMP
+ ORDER BY diagram_name, bubble_name, flow_name;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその3
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- すべてのフローを保持するビュー
+CREATE VIEW AllDFDFlows (flow_name)
+AS SELECT DISTINCT flow_name FROM DataFlowDiagrams;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- 元のテーブルの各行にすべてのフローを割り当てる
+CREATE VIEW NewDFD
+(diagram_name, bubble_name, flow_name, missingflow)
+AS SELECT DISTINCT F1.diagram_name, F1.bubble_name, F1.flow_name,
+                   F2.flow_name
+     FROM DataFlowDiagrams AS F1, AllDFDFlows AS F2
+    WHERE F1.flow_name <> F2.flow_name;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- flow_name列に失われたフローが存在しない
+-- (diagram_name, bubble_name) の組み合わせを表示する
+SELECT DISTINCT diagram_name, bubble_name, missingflow
+  FROM NewDFD AS ND1
+ WHERE NOT EXISTS (SELECT *
+                     FROM NewDFD AS ND2
+                    WHERE ND1.diagram_name = ND2.diagram_name
+                      AND ND1.bubble_name  = ND2.bubble_name
+                      AND ND2.flow_name    = ND1.missingflow)
+ ORDER BY diagram_name, bubble_name, missingflow;
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.112 - 114, Copyright Elsevier 2006.

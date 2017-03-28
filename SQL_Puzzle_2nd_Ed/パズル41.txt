@@ -1,0 +1,58 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT * FROM
+  (SELECT I1.item_nbr, I1.item_descr,
+         (SELECT SUM(A1.actual_amt)
+            FROM Actuals AS A1
+           WHERE I1.item_nbr = A1.item_nbr) AS tot_act,
+         (SELECT SUM(E1.estimated_amt)
+            FROM Estimates AS E1
+           WHERE I1.item_nbr = E1.item_nbr) AS estimate_tot,
+         (SELECT CASE WHEN COUNT(*) = 1
+                      THEN MAX(check_nbr)
+                      ELSE 'Mixed' END
+            FROM Actuals AS A2
+           WHERE I1.item_nbr = A2.item_nbr
+           GROUP BY item_nbr) AS check_nbr
+     FROM Items I1) AS TMP
+    WHERE tot_act IS NOT NULL
+       OR estimate_tot IS NOT NULL;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT I1.item_nbr, I1.item_descr,
+       SUM(A1.actual_amt) AS tot_act,
+       SUM(E1.estimated_amt) AS estimate_tot,
+       (SELECT CASE WHEN COUNT(check_nbr) = 0
+                    THEN NULL
+                    WHEN COUNT(check_nbr) = 1
+                    THEN MAX(check_nbr)
+                    ELSE 'Mixed' END
+          FROM Actuals A2
+         WHERE A2.item_nbr = I1.item_nbr) AS check_nbr
+  FROM (Items AS I1
+        LEFT OUTER JOIN
+       (SELECT item_nbr,
+               SUM(actual_amt) AS actual_amt
+          FROM Actuals
+         GROUP BY item_nbr) AS A1
+       ON I1.item_nbr = A1.item_nbr)
+          LEFT OUTER JOIN
+          (SELECT item_nbr,
+                  SUM(estimated_amt) AS estimated_amt
+             FROM Estimates
+            GROUP BY item_nbr) AS E1
+          ON I1.item_nbr = E1.item_nbr
+ WHERE actual_amt IS NOT NULL
+    OR estimated_amt IS NOT NULL
+ GROUP BY I1.item_nbr, I1.item_descr;
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.169 - 171, Copyright Elsevier 2006.

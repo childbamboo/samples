@@ -1,0 +1,86 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ñ‚ëËï∂
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Pensions
+(sin CHAR(10) NOT NULL,
+ pen_year INTEGER NOT NULL,
+ month_cnt INTEGER DEFAULT 0 NOT NULL
+      CHECK (month_cnt BETWEEN 0 AND 12),
+ earnings DECIMAL(8,2) DEFAULT 0.00 NOT NULL);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE VIEW PenPeriods (sin, start_year, end_year, earnings_tot)
+AS SELECT P0.sin, P0.pen_year, P1.pen_year,
+          (SELECT SUM(earnings) -- ä˙ä‘íPà ÇÃëçé˚ì¸
+             FROM Pensions AS P2
+            WHERE P2.sin = P0.sin
+              AND P2.pen_year BETWEEN P0.pen_year
+                                  AND P1.pen_year)
+     FROM Pensions AS P0, Pensions AS P1
+    WHERE P1.sin = P0.sin -- éxï•ä˙ä‘ÇçÏÇÈÇΩÇﬂÇÃé©å»åãçá
+      AND P1.pen_year >= (P0.pen_year - 4)
+      AND 0 < ALL (SELECT month_cnt        -- òAë±Ç∑ÇÈåé
+                     FROM Pensions AS P3
+                    WHERE P3.sin = P0.sin
+                      AND P3.pen_year BETWEEN P0.pen_year
+                                          AND P1.pen_year)
+      AND 60 <= (SELECT SUM(month_cnt)    -- 60Éñåéà»è„
+                   FROM Pensions AS P4
+                  WHERE P4.sin = P0.sin
+                    AND P4.pen_year BETWEEN P0.pen_year
+                                        AND P1.pen_year);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT *
+  FROM PenPeriods AS P0
+ WHERE end_year = (SELECT MAX(end_year)
+                     FROM PenPeriods AS P1
+                    WHERE P1.sin = P0.sin);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT P0.sin,
+       P0.pen_year AS start_year,
+       P2.pen_year AS end_year,
+       SUM(P1.earnings) AS sumofearning
+  FROM Pensions AS P0, Pensions AS P1, Pensions AS P2
+ WHERE P0.month_cnt > 0
+   AND P1.month_cnt > 0
+   AND P2.month_cnt > 0
+   AND P0.sin = P1.sin
+   AND P0.sin = P2.sin
+   AND P0.pen_year BETWEEN P2.pen_year - 59 AND (P2.pen_year - 4)
+   AND P1.pen_year BETWEEN P0.pen_year AND P2.pen_year
+ GROUP BY P0.sin, P0.pen_year, P2.pen_year
+HAVING SUM(P1.month_cnt) >= 60
+   AND (P2.pen_year - P0.pen_year) = (COUNT(*) - 1);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ3
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT P0.sin, P0.end_year,
+       MAX(P0.start_year) AS laststart_year,
+       MIN(P0.sumofearnings) AS minearnings,
+       MIN(P0.sumofmonth_cnt) AS minmonth_cnt,
+       MIN(P0.start_year) AS firststart_year,
+       MAX(P0.sumofearnings) AS maxearnings,
+       MAX(P0.sumofmonth_cnt) AS maxmonth_cnt
+  FROM PensionsView AS P0
+ WHERE end_year = (SELECT MAX(end_year)
+                     FROM Pensions AS P1
+                    WHERE P1.sin = P0.sin)
+ GROUP BY P0.sin, P0.end_year;
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.037 - 040, Copyright Elsevier 2006.

@@ -1,0 +1,363 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■問題文
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Husbands
+(man VARCHAR(5) NOT NULL,
+ woman VARCHAR(5) NOT NULL,
+ ranking INTEGER NOT NULL CHECK (ranking > 0),
+ PRIMARY KEY (man, woman));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO Husbands VALUES ('Abe', 'Joan', 1);
+INSERT INTO Husbands VALUES ('Abe', 'Kathy', 2);
+INSERT INTO Husbands VALUES ('Abe', 'Lynn', 3);
+INSERT INTO Husbands VALUES ('Abe', 'Molly', 4);
+
+INSERT INTO Husbands VALUES ('Bob', 'Joan', 3);
+INSERT INTO Husbands VALUES ('Bob', 'Kathy', 4);
+INSERT INTO Husbands VALUES ('Bob', 'Lynn', 2);
+INSERT INTO Husbands VALUES ('Bob', 'Molly', 1);
+
+INSERT INTO Husbands VALUES ('Chuck', 'Joan', 3);
+INSERT INTO Husbands VALUES ('Chuck', 'Kathy', 4);
+INSERT INTO Husbands VALUES ('Chuck', 'Lynn', 2);
+INSERT INTO Husbands VALUES ('Chuck', 'Molly', 1);
+
+INSERT INTO Husbands VALUES ('Dave', 'Joan', 2);
+INSERT INTO Husbands VALUES ('Dave', 'Kathy', 1);
+INSERT INTO Husbands VALUES ('Dave', 'Lynn', 3);
+INSERT INTO Husbands VALUES ('Dave', 'Molly', 4);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Wives
+(woman VARCHAR(5) NOT NULL,
+ man VARCHAR(5) NOT NULL,
+ ranking INTEGER NOT NULL CHECK (ranking > 0),
+ PRIMARY KEY (man, woman));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO Wives VALUES ('Joan', 'Abe', 1);
+INSERT INTO Wives VALUES ('Joan', 'Bob', 3);
+INSERT INTO Wives VALUES ('Joan', 'Chuck', 2);
+INSERT INTO Wives VALUES ('Joan', 'Dave', 4);
+
+INSERT INTO Wives VALUES ('Kathy', 'Abe', 4);
+INSERT INTO Wives VALUES ('Kathy', 'Bob', 2);
+INSERT INTO Wives VALUES ('Kathy', 'Chuck', 3);
+INSERT INTO Wives VALUES ('Kathy', 'Dave', 1);
+
+INSERT INTO Wives VALUES ('Lynn', 'Abe', 1);
+INSERT INTO Wives VALUES ('Lynn', 'Bob', 3);
+INSERT INTO Wives VALUES ('Lynn', 'Chuck', 4);
+INSERT INTO Wives VALUES ('Lynn', 'Dave', 2);
+
+INSERT INTO Wives VALUES ('Molly', 'Abe', 3);
+INSERT INTO Wives VALUES ('Molly', 'Bob', 4);
+INSERT INTO Wives VALUES ('Molly', 'Chuck', 1);
+INSERT INTO Wives VALUES ('Molly', 'Dave', 2);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Wife_Perms
+(wife_name VARCHAR(5) NOT NULL PRIMARY KEY,
+ perm INTEGER NOT NULL);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO Wife_Perms
+VALUES ('Joan', 1), ('Kathy', 2), ('Lynn', 4), ('Molly', 8);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT W1.wife_name AS abe_wife, W2.wife_name AS bob_wife,
+       W3.wife_name AS chuck_wife, W4.wife_name AS dave_wife
+  FROM Wife_perms AS W1, Wife_perms AS W2,
+       Wife_perms AS W3, Wife_perms AS W4
+ WHERE (W1.perm + W2.perm + W3.perm + W4.perm) = 15
+   AND NOT EXISTS
+       (SELECT *
+          FROM Husbands AS H1, Husbands AS H2,
+               Wives AS WV1, Wives AS WV2
+         WHERE H1.man = H2.man
+           AND H1.ranking > H2.ranking
+           AND (H1.man || H1.woman)
+                IN ('Abe'   || W1.wife_name,
+                    'Bob'   || W2.wife_name,
+                    'Chuck' || W3.wife_name,
+                    'Dave'  || W4.wife_name)
+           AND H2.woman = WV1.woman
+           AND WV1.woman = WV2.woman
+           AND WV1.ranking > WV2.ranking
+           AND (WV1.man || WV1.woman)
+                IN ('Abe'   || W1.wife_name,
+                    'Bob'   || W2.wife_name,
+                    'Chuck' || W3.wife_name,
+                    'Dave'  || W4.wife_name));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT *
+  FROM Foo as F1, Bar as B1
+ WHERE F1.city = B1.city
+   AND F1.state = B1.state;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT *
+  FROM Foo as F1, Bar as B1
+ WHERE F1.city || F1.state = B1.city || B1.state;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT *
+  FROM Foo as F1, Bar as B1
+ WHERE (F1.city, F1.state) = (B1.city, B1.state);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Husbands
+(man CHAR(2) NOT NULL,
+ woman CHAR(2) NOT NULL,
+ PRIMARY KEY (man, woman),
+ ranking INTEGER NOT NULL);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Wives
+(woman CHAR(2) NOT NULL,
+ man CHAR(2) NOT NULL,
+ PRIMARY KEY (woman, man),
+ ranking INTEGER NOT NULL);
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Wife_Perms
+(perm INTEGER NOT NULL PRIMARY KEY,
+ wife_name CHAR(2) NOT NULL);
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- 男性の女性に対する好みの順位
+INSERT INTO Husbands -- 夫 #1
+VALUES ('h1', 'w1', 5), ('h1', 'w2', 2),
+       ('h1', 'w3', 6), ('h1', 'w4', 8),
+       ('h1', 'w5', 4), ('h1', 'w6', 3),
+       ('h1', 'w7', 1), ('h1', 'w8', 7);
+
+INSERT INTO Husbands -- 夫 #2
+VALUES ('h2', 'w1', 6), ('h2', 'w2', 3),
+       ('h2', 'w3', 2), ('h2', 'w4', 1),
+       ('h2', 'w5', 8), ('h2', 'w6', 4),
+       ('h2', 'w7', 7), ('h2', 'w8', 5);
+
+INSERT INTO Husbands -- 夫 #3
+VALUES ('h3', 'w1', 4), ('h3', 'w2', 2),
+       ('h3', 'w3', 1), ('h3', 'w4', 3),
+       ('h3', 'w5', 6), ('h3', 'w6', 8),
+       ('h3', 'w7', 7), ('h3', 'w8', 5);
+
+INSERT INTO Husbands -- 夫 #4
+VALUES ('h4', 'w1', 8), ('h4', 'w2', 4),
+       ('h4', 'w3', 1), ('h4', 'w4', 3),
+       ('h4', 'w5', 5), ('h4', 'w6', 6),
+       ('h4', 'w7', 7), ('h4', 'w8', 2);
+
+INSERT INTO Husbands -- 夫 #5
+       VALUES ('h5', 'w1', 6), ('h5', 'w2', 8),
+       ('h5', 'w3', 2), ('h5', 'w4', 3),
+       ('h5', 'w5', 4), ('h5', 'w6', 5),
+       ('h5', 'w7', 7), ('h5', 'w8', 1);
+
+INSERT INTO Husbands -- 夫 #6
+VALUES ('h6', 'w1', 7), ('h6', 'w2', 4),
+       ('h6', 'w3', 6), ('h6', 'w4', 5),
+       ('h6', 'w5', 3), ('h6', 'w6', 8),
+       ('h6', 'w7', 2), ('h6', 'w8', 1);
+
+INSERT INTO Husbands -- 夫 #7
+VALUES ('h7', 'w1', 5), ('h7', 'w2', 1),
+       ('h7', 'w3', 4), ('h7', 'w4', 2),
+       ('h7', 'w5', 7), ('h7', 'w6', 3),
+       ('h7', 'w7', 6), ('h7', 'w8', 8);
+
+INSERT INTO Husbands -- 夫 #8
+VALUES ('h8', 'w1', 2), ('h8', 'w2', 4),
+       ('h8', 'w3', 7), ('h8', 'w4', 3),
+       ('h8', 'w5', 6), ('h8', 'w6', 1),
+       ('h8', 'w7', 5), ('h8', 'w8', 8);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- 女性の男性に対する好みの順位
+INSERT INTO Wives -- 妻 #1
+VALUES ('w1', 'h1', 6), ('w1', 'h2', 3),
+       ('w1', 'h3', 7), ('w1', 'h4', 1),
+       ('w1', 'h5', 4), ('w1', 'h6', 2),
+       ('w1', 'h7', 8), ('w1', 'h8', 5);
+
+INSERT INTO Wives -- 妻 #2
+VALUES ('w2', 'h1', 4), ('w2', 'h2', 8),
+       ('w2', 'h3', 3), ('w2', 'h4', 7),
+       ('w2', 'h5', 2), ('w2', 'h6', 5),
+       ('w2', 'h7', 6), ('w2', 'h8', 1);
+
+INSERT INTO Wives -- 妻 #3
+VALUES ('w3', 'h1', 3), ('w3', 'h2', 4),
+       ('w3', 'h3', 5), ('w3', 'h4', 6),
+       ('w3', 'h5', 8), ('w3', 'h6', 1),
+       ('w3', 'h7', 7), ('w3', 'h8', 2);
+
+INSERT INTO Wives -- 妻 #4
+VALUES ('w4', 'h1', 8), ('w4', 'h2', 2),
+       ('w4', 'h3', 1), ('w4', 'h4', 3),
+       ('w4', 'h5', 7), ('w4', 'h6', 5),
+       ('w4', 'h7', 4), ('w4', 'h8', 6);
+
+INSERT INTO Wives -- 妻 #5
+VALUES ('w5', 'h1', 3), ('w5', 'h2', 7),
+       ('w5', 'h3', 2), ('w5', 'h4', 4),
+       ('w5', 'h5', 5), ('w5', 'h6', 1),
+       ('w5', 'h7', 6), ('w5', 'h8', 8);
+
+INSERT INTO Wives -- 妻 #6
+VALUES ('w6', 'h1', 2), ('w6', 'h2', 1),
+       ('w6', 'h3', 3), ('w6', 'h4', 6),
+       ('w6', 'h5', 8), ('w6', 'h6', 7),
+       ('w6', 'h7', 5), ('w6', 'h8', 4);
+
+INSERT INTO Wives -- 妻 #7
+VALUES ('w7', 'h1', 6), ('w7', 'h2', 4),
+       ('w7', 'h3', 1), ('w7', 'h4', 5),
+       ('w7', 'h5', 2), ('w7', 'h6', 8),
+       ('w7', 'h7', 3), ('w7', 'h8', 7);
+
+INSERT INTO Wives -- 妻 #8
+VALUES ('w8', 'h1', 8), ('w8', 'h2', 2),
+       ('w8', 'h3', 7), ('w8', 'h4', 4),
+       ('w8', 'h5', 5), ('w8', 'h6', 6),
+       ('w8', 'h7', 1), ('w8', 'h8', 3);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- この補助テーブルによって、妻のすべての順列を作成できる
+INSERT INTO Wife_Perms
+VALUES (1, 'w1'), (2, 'w2'), (4, 'w3'), (8, 'w4'),
+       (16, 'w5'), (32, 'w6'), (64, 'w7'), (128, 'w8');
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT A.wife_name AS h1, B.wife_name AS h2,
+       C.wife_name AS h3, D.wife_name AS h4,
+       E.wife_name AS h5, F.wife_name AS h6,
+       G.wife_name AS h7, H.wife_name AS h8
+  FROM Wife_Perms AS A, Wife_Perms AS B,
+       Wife_Perms AS C, Wife_Perms AS D,
+       Wife_Perms AS E, Wife_Perms AS F,
+       Wife_Perms AS G, Wife_Perms AS H
+ WHERE A.perm + B.perm + C.perm + D.perm
+       + E.perm + F.perm + G.perm + H.perm = 255
+   AND NOT EXISTS
+     (SELECT *
+        FROM Husbands AS W, Husbands AS X, Wives AS Y, Wives AS Z
+       WHERE W.man = X.man
+         AND W.ranking > X.ranking
+         AND X.woman = Y.woman
+         AND Y.woman = Z.woman
+         AND Y.ranking > Z.ranking
+         AND Z.man = W.man
+         AND W.man || W.woman
+             IN ('h1' || A.wife_name, 'h2' || B.wife_name,
+                 'h3' || C.wife_name, 'h4' || D.wife_name,
+                 'h5' || E.wife_name, 'h6' || F.wife_name,
+                 'h7' || G.wife_name, 'h8' || H.wife_name)
+         AND Y.man || Y.woman
+             IN ('h1' || A.wife_name, 'h2' || B.wife_name,
+                 'h3' || C.wife_name, 'h4' || D.wife_name,
+                 'h5' || E.wife_name, 'h6' || F.wife_name,
+                 'h7' || G.wife_name, 'h8' || H.wife_name));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその3
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Unstable
+(bad_marriage CHAR(16) NOT NULL);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO Unstable
+SELECT DISTINCT
+       CASE WHEN W.man = 'h1' THEN W.woman
+            WHEN Y.man = 'h1' THEN Y.woman
+                              ELSE '__' END
+    || CASE WHEN W.man = 'h2' THEN W.woman
+            WHEN Y.man = 'h2' THEN Y.woman
+                              ELSE '__' END
+    || CASE WHEN W.man = 'h3' THEN W.woman
+            WHEN Y.man = 'h3' THEN Y.woman
+                              ELSE '__' END
+    || CASE WHEN W.man = 'h4' THEN W.woman
+            WHEN Y.man = 'h4' THEN Y.woman
+                              ELSE '__' END
+    || CASE WHEN W.man = 'h5' THEN W.woman
+            WHEN Y.man = 'h5' THEN Y.woman
+                              ELSE '__' END
+    || CASE WHEN W.man = 'h6' THEN W.woman
+            WHEN Y.man = 'h6' THEN Y.woman
+                              ELSE '__' END
+    || CASE WHEN W.man = 'h7' THEN W.woman
+            WHEN Y.man = 'h7' THEN Y.woman
+                              ELSE '__' END
+    || CASE WHEN W.man = 'h8' THEN W.woman
+            WHEN Y.man = 'h8' THEN Y.woman
+                              ELSE '__' END
+  FROM Husbands AS W, Husbands AS X,
+       Wives AS Y, Wives AS Z
+ WHERE W.man = X.man
+   AND W.ranking > X.ranking
+   AND X.woman = Y.woman
+   AND Y.woman = Z.woman
+   AND Y.ranking > Z.ranking
+   AND Z.man = W.man;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT A.wife_name AS h1, B.wife_name AS h2, C.wife_name AS h3,
+       D.wife_name AS h4, E.wife_name AS h5, F.wife_name AS h6,
+       G.wife_name AS h7, H.wife_name AS h8
+  FROM wife_perms AS a, wife_perms AS b, wife_perms AS c,
+       wife_perms AS d, wife_perms AS e, wife_perms AS f,
+       wife_perms AS g, wife_perms AS h
+ WHERE B.wife_name NOT IN (A.wife_name)
+   AND C.wife_name NOT IN (A.wife_name, B.wife_name)
+   AND D.wife_name NOT IN (A.wife_name, B.wife_name, C.wife_name)
+   AND E.wife_name NOT IN (A.wife_name, B.wife_name, C.wife_name,
+       D.wife_name)
+   AND F.wife_name NOT IN (A.wife_name, B.wife_name, C.wife_name,
+       D.wife_name, E.wife_name)
+   AND G.wife_name NOT IN (A.wife_name, B.wife_name, C.wife_name,
+       D.wife_name, E.wife_name, F.wife_name)
+   AND H.wife_name NOT IN (A.wife_name, B.wife_name, C.wife_name,
+       D.wife_name, E.wife_name, F.wife_name, G.wife_name)
+   AND NOT EXISTS
+      (SELECT * FROM Unstable
+        WHERE A.wife_name || B.wife_name || C.wife_name ||
+              D.wife_name || E.wife_name || F.wife_name ||
+              G.wife_name || H.wife_name
+              LIKE bad_marriage);
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.267 - 279, Copyright Elsevier 2006.

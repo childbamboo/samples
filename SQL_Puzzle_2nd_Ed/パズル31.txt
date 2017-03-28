@@ -1,0 +1,88 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ñ‚ëËï∂
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Customers
+(customer_id INTEGER NOT NULL PRIMARY KEY,
+ acct_balance DECIMAL (12, 2) NOT NULL,
+ ... );
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Orders
+(customer_id INTEGER NOT NULL,
+ order_id INTEGER NOT NULL PRIMARY KEY,
+ ... );
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE OrderDetails
+(order_id INTEGER NOT NULL,
+ item_id INTEGER NOT NULL,
+ item_qty INTEGER NOT NULL,
+ PRIMARY KEY (order_id, item_id),
+ ... );
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Products
+(item_id INTEGER NOT NULL PRIMARY KEY,
+ item_qty_on_hand INTEGER NOT NULL,
+ ... );
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT AVG(acct_balance)
+  FROM Customers AS C1
+ WHERE EXISTS
+         (SELECT *
+            FROM Products AS P1
+           WHERE P1.item_id
+             NOT IN (SELECT D1.item_id
+                       FROM Orders AS O1, OrderDetails AS D1
+                      WHERE O1.customer_id = C1.customer_id
+                        AND O1.order_id = D1.order_id));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT AVG(acct_balance)
+  FROM Customers AS C1
+ WHERE (SELECT COUNT(DISTINCT item_id) -- îÃîÑíÜÇÃëSêªïi
+          FROM Products)               --       ëŒ
+    <> (SELECT COUNT(DISTINCT item_id) -- å⁄ãqÇ™îÉÇ¡ÇΩêªïi
+          FROM Orders, OrderDetails
+          WHERE Orders.customer_id = C1.customer_id
+            AND Orders.order_id = OrderDetails.order_id);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ3
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT AVG(acct_balance), ordered_all_desc
+  FROM (SELECT Customers.customer_id, acct_balance,
+              CASE WHEN num_ordered_products = all_product_cnt
+                   THEN 'ordered all'
+                   ELSE 'not ordered all' END AS ordered_all_desc
+          FROM Customers
+         INNER JOIN
+           (SELECT customer_id,
+                   COUNT(DISTINCT item_id) num_ordered_products
+              FROM Orders INNER JOIN OrderDetails
+                ON Orders.order_id = OrderDetails.order_id
+             GROUP BY customer_id ) AS ordered_products
+          ON Customers.customer_id = ordered_products.customer_id
+         CROSS JOIN
+           (SELECT COUNT(DISTINCT item_id)
+              FROM Products) AS AllProducts (all_product_cnt)
+ ) AS T
+GROUP BY ordered_all_desc;
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.129 - 131, Copyright Elsevier 2006.

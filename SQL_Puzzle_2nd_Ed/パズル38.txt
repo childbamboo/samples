@@ -1,0 +1,76 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ñ‚ëËï∂
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Journal
+(acct_nbr INTEGER NOT NULL,
+ trx_date DATE NOT NULL,
+ trx_amt DECIMAL(10, 2) NOT NULL,
+ duration INTEGER NOT NULL);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+UPDATE Journal
+   SET duration
+     = (SELECT CAST((Journal.trx_date - J1.trx_date) AS INTEGER)
+          FROM Journal AS J1
+         WHERE J1.acct_nbr = Journal.acct_nbr
+           AND J1.trx_date =
+                 (SELECT MIN(trx_date)
+                    FROM Journal AS J2
+                   WHERE J2.acct_nbr = Journal.acct_nbr
+                     AND J2.trx_date > Journal.trx_date))
+ WHERE EXISTS (SELECT *
+                 FROM Journal AS J3
+                WHERE J3.acct_nbr = Journal.acct_nbr
+                  AND J3.trx_date > Journal.trx_date);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+UPDATE Journal
+   SET duration
+          = CAST((Journal.trx_date -
+                    (SELECT MIN(J1.trx_date)
+                       FROM Journal AS J1
+                      WHERE J1.acct_nbr = Journal.acct_nbr
+                        AND J1.trx_date > Journal.trx_date)
+                  ) AS INTEGER)
+ WHERE EXISTS (SELECT *
+                 FROM Journal AS J2
+                WHERE J2.acct_nbr = Journal.acct_nbr
+                  AND J2.trx_date > Journal.trx_date);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ3
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+UPDATE Journal
+   SET duration
+     = COALESCE(CAST((Journal.trx_date -
+                  (SELECT MIN(trx_date)
+                     FROM Journal AS J1
+                    WHERE J1.acct_nbr = Journal.acct_nbr
+                      AND J1.trx_date > Journal.trx_date)
+                    ) AS INTEGER),
+                Journal.duration);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ4
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT acct_nbr, trx_date,
+       (trx_date - MAX(trx_date)
+          OVER (PARTITION BY acct_nbr
+                ORDER BY trx_date DESC
+                ROWS 1 PRECEDING)) AS duration
+  FROM Journal;
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.155 - 157, Copyright Elsevier 2006.

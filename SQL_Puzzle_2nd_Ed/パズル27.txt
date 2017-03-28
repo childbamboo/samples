@@ -1,0 +1,168 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■問題文
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE SupParts
+(sno CHAR(2) NOT NULL,
+ pno CHAR(2) NOT NULL,
+ PRIMARY KEY (sno, pno));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT SP1.sno, SP2.sno
+  FROM SupParts AS SP1 INNER JOIN SupParts AS SP2
+    ON SP1.pno = SP2.pno
+   AND SP1.sno < SP2.sno
+EXCEPT
+SELECT DISTINCT SP1.sno, SP2.sno
+  FROM SupParts AS SP1 FULL OUTER JOIN SupParts AS SP2
+    ON SP1.pno = SP2.pno
+   AND SP1.sno < SP2.sno
+ WHERE SP1.sno IS NULL
+    OR SP2.sno IS NULL;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT DISTINCT SP1.sno, SP2.sno
+  FROM SupParts AS SP1, SupParts AS SP2
+ WHERE SP1.sno < SP2.sno
+   AND SP1.pno IN (SELECT SP22.pno
+                     FROM SupParts AS SP22
+                    WHERE SP22.sno = SP2.sno)
+   AND SP2.pno IN (SELECT SP11.pno
+                     FROM SupParts AS SP11
+                    WHERE SP11.sno = SP1.sno);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその3
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT DISTINCT SP1.sno, SP2.sno
+  FROM SupParts AS SP1, SupParts AS SP2
+ WHERE SP1.sno < SP2.sno
+   AND NOT EXISTS  -- SP1にはあるがSP2にはない部品
+             (SELECT SP3.pno
+                FROM SupParts AS SP3
+               WHERE SP1.sno = SP3.sno
+                 AND SP3.pno NOT IN
+                       (SELECT pno
+                          FROM SupParts AS SP4
+                         WHERE SP2.sno = SP4.sno))
+   AND NOT EXISTS  -- SP2にはあるがSP1にはない部品
+             (SELECT SP5.pno
+                FROM SupParts AS SP5
+               WHERE SP2.sno = SP5.sno
+                 AND SP5.pno NOT IN
+                       (SELECT pno
+                          FROM SupParts AS SP4
+                         WHERE SP1.sno = SP4.sno));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその4
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT SP1.sno, SP2.sno
+  FROM SupParts AS SP1 INNER JOIN SupParts AS SP2
+    ON SP1.pno = SP2.pno
+   AND SP1.sno < SP2.sno
+ GROUP BY SP1.sno, SP2.sno
+HAVING COUNT(*) =
+  (SELECT COUNT(*) -- 1対1の対応が存在するか否かのテスト
+     FROM SupParts AS SP3
+    WHERE SP3.sno = SP1.sno)
+   AND COUNT(*) =
+     (SELECT COUNT(*)
+        FROM SupParts AS SP4
+       WHERE SP4.sno = SP2.sno);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその5
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT SP1.sno, SP2.sno
+  FROM SupParts AS SP1 INNER JOIN SupParts AS SP2
+    ON SP1.pno = SP2.pno
+   AND SP1.sno < SP2.sno
+ WHERE (SELECT COUNT(pno)
+          FROM SupParts AS SP3
+         WHERE SP3.sno = SP1.sno) = (SELECT COUNT(pno)
+                                       FROM SupParts AS SP4
+                                      WHERE SP4.sno = SP2.sno)
+ GROUP BY SP1.sno, SP2.sno
+HAVING COUNT(SP1.sno || SP2.sno) = (SELECT COUNT(pno)
+                                      FROM SupParts AS SP3
+                                     WHERE SP3.sno = SP1.sno);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその6
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT DISTINCT SP1.sno, SP2.sno
+  FROM SupParts AS SP1, SupParts AS SP2
+ WHERE SP1.sno < SP2.sno
+   AND NOT EXISTS  -- SP1にはあるがSP2にはない部品
+             (SELECT SP3.pno
+                FROM SupParts AS SP3
+               WHERE SP1.sno = SP3.sno
+              EXCEPT
+              SELECT SP4.pno
+                FROM SupParts AS SP4
+               WHERE SP2.sno = SP4.sno)
+   AND NOT EXISTS  -- SP2にはあるがSP1にはない部品
+             (SELECT SP5.pno
+                FROM SupParts AS SP5
+               WHERE SP2.sno = SP5.sno
+              EXCEPT
+              SELECT SP6.pno
+                FROM SupParts AS SP6
+               WHERE SP1.sno = SP6.sno);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその7
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT A.sno AS sno1, B.sno AS sno2
+  FROM (SELECT sno, COUNT(*), MIN(pno), MAX(pno)
+          FROM SupParts GROUP BY sno)
+       AS A(sno, cnt, min_pno, max_pno)
+       INNER JOIN
+       (SELECT sno, COUNT(*), MIN(pno), MAX(pno)
+          FROM SupParts GROUP BY sno)
+       AS B(sno, cnt, min_pno, max_pno)
+  -- 以下の4つの条件でほとんどの組み合わせが除外される
+       ON A.cnt = B.cnt
+      AND A.min_pno = B.min_pno
+      AND A.max_pno = B.max_pno
+      AND A.sno < B.sno
+  -- 以下の高コストなSELECT文は、すべての組み合わせについて
+  -- 実行する必要はない
+ WHERE A.cnt
+        = (SELECT COUNT(*)
+             FROM SupParts AS A1,
+                  SupParts AS B1
+            WHERE A1.pno = B1.pno
+              AND A1.sno = A.sno
+              AND B1.sno = B.sno);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその8
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT DISTINCT 'not equal'  -- '等しくない'
+  FROM ((SELECT * FROM  A
+         UNION
+         SELECT * FROM  B)
+         EXCEPT
+        (SELECT * FROM  A
+         INTERSECT
+         SELECT * FROM  B));
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.115 - 120, Copyright Elsevier 2006.

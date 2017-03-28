@@ -1,0 +1,70 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ñ‚ëËï∂
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE T
+(num INTEGER NOT NULL PRIMARY KEY,
+ data CHAR(1) NOT NULL);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO T
+VALUES (1, 'a'),
+       (2, 'a'),
+       (3, 'b'),
+       (6, 'b'),
+       (8, 'a');
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT MIN(T1.num) AS low,
+       MAX(T1.num) AS high,
+       T1.data
+  FROM T AS T1
+       LEFT OUTER JOIN
+       T AS T2
+       ON T2.num
+          = (SELECT MIN(num)
+               FROM T
+              WHERE num > T1.num
+                AND data <> T1.data)
+ GROUP BY T1.data, T2.num;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT X.data, MIN(X.low) AS low, X.high
+  FROM (SELECT T1.data, T1.num, MAX(T2.num)
+          FROM T AS T1, T AS T2
+         WHERE T1.num <= T2.num
+           AND T1.data
+               = ALL(SELECT T3.data
+                       FROM T AS T3
+                      WHERE T3.num BETWEEN T1.num AND T2.num)
+         GROUP BY T1.data, T1.num) AS X(data, low, high)
+ GROUP BY X.data, X.high;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ3
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT MIN(num) AS low, MAX(num) AS high, data
+  FROM (SELECT A.num,
+               SUM(CASE WHEN A.data = B.data
+                        THEN 1
+                        ELSE 0 END)
+               - COUNT(B.num) AS ct,
+               A.data
+          FROM T AS A, T AS B
+         WHERE A.num >= B.num
+         GROUP BY A.num, A.data) AS A (num, ct, data)
+GROUP BY data, ct;
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.254 - 256, Copyright Elsevier 2006.

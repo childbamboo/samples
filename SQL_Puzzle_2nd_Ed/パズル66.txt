@@ -1,0 +1,101 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■問題文
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE SudokuGrid
+(i INTEGER NOT NULL
+  CHECK (i BETWEEN 1 AND 9),
+ j INTEGER NOT NULL
+  CHECK (j BETWEEN 1 AND 9),
+ val INTEGER NOT NULL
+  CHECK (val BETWEEN 1 AND 9),
+ region_nbr INTEGER NOT NULL,
+ PRIMARY KEY (i, j, val));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO SudokuGrid (i, j, val, region_nbr)
+SELECT D1.d, D2.d, D3.d,
+       10 * ((D1.d + 2) / 3) + ((D2.d + 2) / 3) AS region_nbr
+  FROM Digits AS D1
+       CROSS JOIN Digits AS D2
+                  CROSS JOIN Digits AS D3;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+BEGIN
+DELETE FROM SudokuGrid -- 横
+WHERE :my_i = i
+  AND :my_j <> j
+  AND :my_val = val;
+
+DELETE FROM SudokuGrid -- 縦
+WHERE :my_i <> i
+  AND :my_j = j
+  AND :my_val = val;
+
+DELETE FROM SudokuGrid -- エリア
+WHERE i <> :my_i
+  AND j <> :my_j
+  AND region_nbr = 10 * ((:my_i + 2) / 3)
+                   + ((:my_j + 2) / 3)
+  AND :my_val = val);
+END;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+DELETE FROM SudokuGrid
+WHERE (((:my_i = i AND j <> :my_j)
+        OR (:my_i <> i AND j = :my_j))
+       AND :my_val = val)
+   OR (i <> :my_i
+       AND j <> :my_j
+       AND region_nbr = 10 * ((:my_i + 2) / 3)
+                        + ((:my_j + 2) / 3)
+       AND :my_val = val);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+DELETE FROM SudokuGrid
+ WHERE CASE WHEN :my_i = i AND :my_j = j   -- 私たちの入力
+            THEN 'Keep'
+            WHEN :my_i = i AND :my_j <> j  -- 横
+            THEN 'Delete'
+            WHEN :my_i <> i AND :my_j = j  -- 縦
+            THEN 'Delete'
+            WHEN i <> :my_i AND j <> :my_j -- エリア
+                 AND region_nbr = 10 * (:my_i + 2) / 3)
+                                  + (:my_j + 2) / 3)
+            THEN 'Delete'
+            ELSE NULL END = 'Delete'
+   AND :my_val = val);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその3
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+DELETE FROM SudokuGrid
+ WHERE CASE WHEN :my_i = i AND :my_j = j AND my_val = val
+            THEN 'Keep'
+            WHEN :my_i = i AND :my_j = j AND my_val <> val
+            THEN 'Delete'
+            WHEN :my_i = i AND :my_j <> j  -- 横
+            THEN 'Delete'
+            WHEN :my_i <> i AND :my_j = j  -- 縦
+            THEN 'Delete'
+            WHEN i <> :my_i AND j <> :my_j -- エリア
+                 AND region_nbr = 10 * (:my_i + 2) / 3)
+                                  + (:my_j + 2) / 3)
+            THEN 'Delete'
+            ELSE NULL END = 'Delete'
+   AND :my_val = val);
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.263 - 266, Copyright Elsevier 2006.

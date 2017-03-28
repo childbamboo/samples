@@ -1,0 +1,72 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ñ‚ëËï∂
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE RacingResults
+(track_id CHAR(3) NOT NULL,
+ race_date DATE NOT NULL,
+ race_nbr INTEGER NOT NULL,
+ win_name CHAR(30) NOT NULL,
+ place_name CHAR(30) NOT NULL,
+ show_name CHAR(30) NOT NULL,
+ PRIMARY KEY (track_id, race_date, race_nbr));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE VIEW InMoney (horse, tally, position)
+AS SELECT win_name, COUNT(*), 'win_name'
+     FROM RacingResults
+    GROUP BY win_name
+   UNION ALL
+   SELECT place_name, COUNT(*), 'place_name'
+     FROM RacingResults
+    GROUP BY place_name
+   UNION ALL
+   SELECT show_name, COUNT(*), 'show_name'
+     FROM RacingResults
+    GROUP BY show_name;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT horse, SUM(tally)
+  FROM InMoney
+ GROUP BY horse;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT horse, position, SUM(tally)
+  FROM InMoney
+ GROUP BY horse, position;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT H1.horse, COUNT(*)
+  FROM HorseNames AS H1, RacingResults AS R1
+ WHERE H1.horse IN (R1.win_name, R1.place_name, R1.show_name)
+ GROUP BY H1.horse;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ3
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT H1.horse,
+      (SELECT COUNT(*)
+         FROM RacingResults AS R1
+        WHERE R1.win_name = H1.horse)
+    + (SELECT COUNT(*)
+         FROM RacingResults AS R1
+        WHERE R1.place_name = H1.horse)
+    + (SELECT COUNT(*)
+         FROM RacingResults AS R1
+        WHERE R1.show_name = H1.horse)
+  FROM HorseNames AS H1;
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.221 - 223, Copyright Elsevier 2006.

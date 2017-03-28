@@ -1,0 +1,90 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT R1.person, R1.role
+  FROM Roles AS R1
+ WHERE R1.role IN ('D', 'O')
+ GROUP BY R1.person
+HAVING COUNT(DISTINCT R1.role) = 1
+UNION
+SELECT R2.person, 'B'
+  FROM Roles AS R2
+ WHERE R2.role IN ('D', 'O')
+ GROUP BY R2.person
+HAVING COUNT(DISTINCT R2.role) = 2;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT DISTINCT R1.person,
+       CASE WHEN EXISTS (SELECT COUNT(*)
+                           FROM Roles AS R2
+                          WHERE R2.person = R1.person
+                            AND R2.role IN ('D', 'O')
+                         HAVING COUNT(*) = 2)
+            THEN 'B'
+            ELSE (SELECT DISTINCT R3.role
+                    FROM Roles AS R3
+                   WHERE R3.person = R1.person
+                     AND R3.role IN ('D', 'O'))
+            END AS combined_role
+FROM Roles AS R1
+WHERE R1.role IN ('D', 'O');
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ3
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT R1.person, MAX(R1.role)
+  FROM Roles AS R1
+ WHERE R1.role IN ('D','O')
+ GROUP BY R1.person
+HAVING COUNT(*) = 1
+UNION
+SELECT R2.person, 'B'
+  FROM Roles AS R2
+ WHERE R2.role IN ('D','O')
+ GROUP BY R2.person
+HAVING COUNT(*) = 2;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ4
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT person,
+       CASE WHEN COUNT(*) = 1
+            THEN role
+            ELSE 'B' END
+  FROM Roles
+ WHERE role IN ('D','O')
+ GROUP BY person;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ5
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT person,
+       CASE WHEN MIN(role) <> MAX(role)
+            THEN 'B'
+            ELSE MIN(role) END AS combined_role
+  FROM Roles
+ WHERE role IN ('D','O')
+ GROUP BY person;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ6
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT person,
+       SUBSTRING ('DOB' FROM SUM (POSITION (role IN 'DO')) FOR 1)
+  FROM Roles
+ WHERE role IN ('D','O')
+ GROUP BY person;
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.148 - 151, Copyright Elsevier 2006.

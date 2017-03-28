@@ -1,0 +1,35 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ñ‚ëËï∂
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT *
+  FROM Staging
+ WHERE col1 IS NULL
+   AND col2 IS NULL
+   AND col3 IS NULL
+   ..
+   AND col100 IS NULL;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT *
+  FROM syscolumns
+WHERE id
+      = (SELECT id
+           FROM sysobjects
+          WHERE name = <ÉeÅ[ÉuÉãñº>);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ3
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+DELETE FROM Staging
+ WHERE COALESCE(col1, col2, col3, .., col100) IS NULL;
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.304 - 305, Copyright Elsevier 2006.

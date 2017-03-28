@@ -1,0 +1,60 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ñ‚ëËï∂
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Sales
+(customer_name CHAR(5) NOT NULL,
+ sale_date DATE NOT NULL,
+ PRIMARY KEY (customer_name, sale_date));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE VIEW Lastsales
+(customer_name, this_sale_date, last_sale_date)
+AS SELECT S1.customer_name, S1.sale_date,
+          (SELECT MAX(sale_date)
+             FROM Sales AS S2
+            WHERE S2.sale_date < S1.sale_date
+              AND S2.customer_name = S1.customer_name)
+     FROM Sales AS S1;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE VIEW SalesGap (customer_name, gap)
+AS SELECT customer_name, DAYS(this_sale_date, last_sale_date)
+     FROM Lastsales;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT customer_name, AVG(gap)
+  FROM SalesGap
+ GROUP BY customer_name;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT customer_name,
+       DAYS(MAX(sale_date), MIN(sale_date)) / (COUNT(*) - 1)
+       AS avg_gap
+  FROM Sales
+ GROUP BY customer_name
+HAVING COUNT(*) > 1;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT customer_name,
+    CASE WHEN COUNT(*) > 1
+         THEN DAYS(MAX(sale_date), MIN(sale_date)) / (COUNT(*)-1)
+         ELSE DAYS(CURRENT_DATE, MIN(sale_date))
+     END AS avg_gap
+  FROM Sales
+ GROUP BY customer_name;
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.126 - 128, Copyright Elsevier 2006.

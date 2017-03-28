@@ -1,0 +1,223 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ñ‚ëËï∂
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE WidgetInventory
+(receipt_nbr INTEGER NOT NULL PRIMARY KEY,
+ purchase_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+ qty_on_hand INTEGER NOT NULL
+ CHECK (qty_on_hand >= 0),
+ unit_price DECIMAL (12,4) NOT NULL);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE VIEW ReplacementCost(current_replacement_cost)
+AS
+SELECT unit_price
+  FROM WidgetInventory
+ WHERE purchase_date
+        = (SELECT MAX(purchase_date) FROM WidgetInventory);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE VIEW AverageCost(average_replacement_cost)
+AS
+SELECT SUM(unit_price * qty_on_hand) / SUM(qty_on_hand)
+  FROM WidgetInventory;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE VIEW LIFO
+(stock_date, unit_price, tot_qty_on_hand, tot_cost)
+AS
+SELECT W1.purchase_date, W1.unit_price,
+       SUM(W2.qty_on_hand), SUM(W2.qty_on_hand * W2.unit_price)
+  FROM WidgetInventory AS W1, WidgetInventory AS W2
+ WHERE W2.purchase_date >= W1.purchase_date
+ GROUP BY W1.purchase_date, W1.unit_price;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT (tot_cost - ((tot_qty_on_hand - :order_qty)
+        * unit_price)) AS cost
+  FROM LIFO AS L1
+ WHERE stock_date
+        = (SELECT MAX(stock_date)
+             FROM LIFO AS L2
+            WHERE tot_qty_on_hand >= :order_qty);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE VIEW FIFO
+(stock_date, unit_price, tot_qty_on_hand, tot_cost)
+AS
+SELECT W1.purchase_date, W1.unit_price,
+       SUM(W2.qty_on_hand), SUM(W2.qty_on_hand * W2.unit_price)
+  FROM WidgetInventory AS W1, WidgetInventory AS W2
+ WHERE W2.purchase_date <= W1.purchase_date
+ GROUP BY W1.purchase_date, W1.unit_price;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT (tot_cost - ((tot_qty_on_hand - :order_qty)
+        * unit_price)) AS cost
+  FROM FIFO AS F1
+ WHERE stock_date = (SELECT MIN(stock_date)
+                       FROM FIFO AS F2
+                      WHERE tot_qty_on_hand >= :order_qty);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT SUM(W3.v) AS cost
+  FROM (
+    SELECT W1.unit_price
+           * CASE WHEN SUM(W2.qty_on_hand) <= :order_qty
+                  THEN W1.qty_on_hand
+                  ELSE :order_qty
+                       - (SUM(W2.qty_on_hand) - W1.qty_on_hand)
+             END
+      FROM WidgetInventory AS W1, WidgetInventory AS W2
+     WHERE W1.purchase_date <= W2.purchase_date
+     GROUP BY W1.purchase_date, W1.qty_on_hand, W1.unit_price
+    HAVING (SUM(W2.qty_on_hand) - W1.qty_on_hand) <= :order_qty
+  ) AS W3(v);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ3
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE VIEW StockLevels (purchase_date, previous_qty,current_qty)
+AS
+SELECT W1.purchase_date,
+       SUM(CASE WHEN W2.purchase_date < W1.purchase_date
+                THEN W2.qty_on_hand ELSE 0 END),
+       SUM(CASE WHEN W2.purchase_date <= W1.purchase_date
+                THEN W2.qty_on_hand ELSE 0 END)
+  FROM WidgetInventory AS W1, WidgetInventory AS W2
+ WHERE W2.purchase_date <= W1.purchase_date
+ GROUP BY W1.purchase_date, W1.unit_price;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE PROCEDURE RemoveQty (IN my_order_qty INTEGER)
+LANGUAGE SQL
+BEGIN
+
+IF my_order_qty > 0
+THEN
+UPDATE WidgetInventory
+   SET qty_on_hand
+       = CASE WHEN my_order_qty
+                   >= (SELECT current_qty
+                         FROM StockLevels AS L
+                        WHERE L.purchase_date
+                              = WidgetInventory.purchase_date)
+              THEN 0
+              WHEN my_order_qty
+                   < (SELECT previous_qty
+                        FROM StockLevels AS L
+                       WHERE L.purchase_date
+                             = WidgetInventory.purchase_date)
+              THEN WidgetInventory.qty_on_hand
+              ELSE (SELECT current_qty
+                      FROM StockLevels AS L
+                     WHERE L.purchase_date
+                           = WidgetInventory.purchase_date)
+                   - my_order_qty
+         END;
+END IF;
+
+-- ïîïiÇÃédì¸êîÇ™0Ç…Ç»Ç¡ÇΩì˙ÇÃçsÇçÌèúÇ∑ÇÈ
+DELETE FROM WidgetInventory
+ WHERE qty_on_hand = 0;
+
+END;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ4
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Picklists
+(order_nbr INTEGER NOT NULL PRIMARY KEY,
+ goal_qty INTEGER NOT NULL
+    CHECK (goal_qty > 0),
+ bin_1 INTEGER NOT NULL UNIQUE,
+ qty_on_hand_1 INTEGER DEFAULT 0 NOT NULL
+    CHECK (qty_on_hand_1 >= 0),
+ bin_2 INTEGER NOT NULL UNIQUE,
+ qty_on_hand_2 INTEGER DEFAULT 0 NOT NULL
+    CHECK (qty_on_hand_2 >= 0),
+ bin_3 INTEGER NOT NULL UNIQUE,
+ qty_on_hand_3 INTEGER DEFAULT 0 NOT NULL
+    CHECK (qty_on_hand_3 >= 0),
+ CONSTRAINT not_over_goal
+    CHECK (qty_on_hand_1 + qty_on_hand_2 + qty_on_hand_3
+           <= goal_qty),
+ CONSTRAINT bins_sorted
+    CHECK (qty_on_hand_1 >= qty_on_hand_2
+           AND qty_on_hand_2 >= qty_on_hand_3));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO WidgetInventory VALUES (-1, '1990-01-01', 0, 0.00);
+INSERT INTO WidgetInventory VALUES (-2, '1990-01-02', 0, 0.00);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE VIEW PickCombos (total_pick, bin_1, qty_on_hand_1, bin_2,
+                        qty_on_hand_2, bin_3, qty_on_hand_3)
+AS
+SELECT DISTINCT
+      (W1.qty_on_hand + W2.qty_on_hand + W3.qty_on_hand)
+       AS total_pick,
+       CASE WHEN W1.receipt_nbr < 0
+            THEN 0
+            ELSE W1.receipt_nbr
+            END AS bin_1,
+       W1.qty_on_hand,
+       CASE WHEN W2.receipt_nbr < 0
+            THEN 0
+            ELSE W2.receipt_nbr
+            END AS bin_2,
+       W2.qty_on_hand,
+       CASE WHEN W3.receipt_nbr < 0
+            THEN 0
+            ELSE W3.receipt_nbr
+            END AS bin_3,
+       W3.qty_on_hand
+  FROM WidgetInventory AS W1, WidgetInventory AS W2,
+       WidgetInventory AS W3
+ WHERE W1.receipt_nbr NOT IN (W2.receipt_nbr, W3.receipt_nbr)
+   AND W2.receipt_nbr NOT IN (W1.receipt_nbr, W3.receipt_nbr)
+   AND W1.qty_on_hand >= W2.qty_on_hand
+   AND W2.qty_on_hand >= W3.qty_on_hand;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE PROCEDURE OverPick (IN goal_qty INTEGER)
+LANGUAGE SQL
+BEGIN
+
+IF goal_qty > 0
+THEN
+SELECT goal_qty, total_pick,
+       bin_1, qty_on_hand_1,
+       bin_2, qty_on_hand_2,
+       bin_3, qty_on_hand_3
+  FROM PickCombos
+ WHERE total_pick
+         = (SELECT MIN (total_pick)
+              FROM PickCombos
+             WHERE total_pick >= goal_qty)
+END IF;
+END;
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.283 - 291, Copyright Elsevier 2006.

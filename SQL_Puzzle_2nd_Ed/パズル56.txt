@@ -1,0 +1,65 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■問題文
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+--room_nbrにNULLを許可するため、現段階では主キーを定義していない
+CREATE TABLE Hotel
+(floor_nbr INTEGER NOT NULL,
+ room_nbr INTEGER,
+ FOREIGN KEY floor_nbr REFERENCES Bldg(floor_nbr));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+UPDATE Hotel
+   SET room_nbr = (floor_nbr * 100) + NUMBER(*)
+ ORDER BY floor_nbr;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+UPDATE Hotel
+   SET room_nbr = (room_nbr - 3)
+ WHERE floor_nbr = 2;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+UPDATE Hotel
+   SET room_nbr = (room_nbr - 5)
+ WHERE floor_nbr = 3;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT DISTINCT
+'UPDATE Hotel
+    SET room_nbr = ('
+          || CAST(floor_nbr AS CHAR(1))
+          || ' * 100) + NUMBER(*) WHERE floor_nbr = '
+          || CAST(floor_nbr AS CHAR(1)) || ';'
+   FROM Hotel;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+UPDATE Hotel
+   SET room_nbr = (1 * 100) + NUMBER(*) WHERE floor_nbr = 1;
+UPDATE Hotel
+   SET room_nbr = (2 * 100) + NUMBER(*) WHERE floor_nbr = 2;
+UPDATE Hotel
+   SET room_nbr = (3 * 100) + NUMBER(*) WHERE floor_nbr = 3;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその3
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+UPDATE Hotel
+SET room_nbr
+    = (floor_nbr * 100)
+      + ROW_NUMBER() OVER (PARTITION BY floor_nbr);
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.224 - 226, Copyright Elsevier 2006.

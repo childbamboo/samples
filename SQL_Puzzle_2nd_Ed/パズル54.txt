@@ -1,0 +1,61 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ñ‚ëËï∂
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE VIEW Dups (custnbr, last_name, first_name,
+street_address, city_name, state_code, phone_nbr, m)
+AS
+SELECT C0.custnbr, C0. last_name, C0.first_name,
+       C0.street_address, C0.city_name,
+       C0.state_code, C0.phone_nbr,
+       (CASE WHEN C0.first_name = C1.first_name
+             THEN 1 ELSE 0 END)
+     + (CASE WHEN C0.street_address = C1.street_address
+             THEN 1 ELSE 0 END)
+     + (CASE WHEN C0.city_name = C1.city_name
+             THEN 1
+             ELSE 0 END)
+     + (CASE WHEN C0.state_code = C1.state_code
+             THEN 1
+             ELSE 0 END)
+     + (CASE WHEN C0.phone_nbr = C1.phone_nbr
+             THEN 1
+             ELSE 0 END) AS m
+  FROM Customers AS C1, Customers AS C0
+ WHERE C0.custnbr <> C1.custnbr
+   AND C0.last_name = C1.last_name;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT DISTINCT *
+  FROM Dups
+ WHERE m >= 2
+ ORDER BY last_name;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT C0.custnbr
+  FROM Customers AS C0
+ WHERE EXISTS (
+         SELECT *
+           FROM Customers AS C1
+          WHERE C0.last_name = C1.last_name
+            AND C0.custnbr <> C1.custnbr
+            AND (CASE WHEN C0.first_name = C1.first_name
+                      THEN 1 ELSE 0 END)
+              + (CASE WHEN C0.street_address = C1.street_address
+                      THEN 1 ELSE 0 END)
+              + (CASE WHEN C0.city_name = C1.city_name
+                      THEN 1 ELSE 0 END)
+              + (CASE WHEN C0.state_code = C1.state_code
+                      THEN 1 ELSE 0 END)
+              + (CASE WHEN C0.phone_nbr = C1.phone_nbr
+                      THEN 1 ELSE 0 END) >= 2);
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.218 - 220, Copyright Elsevier 2006.

@@ -1,0 +1,63 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ñ‚ëËï∂
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE InventoryAdjustments
+(req_date DATE NOT NULL,
+ req_qty INTEGER NOT NULL
+   CHECK (req_qty <> 0),
+ PRIMARY KEY (req_date, req_qty));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT cust_nbr, cust_name,
+       (SELECT order_amt
+          FROM Orders
+         WHERE Customers.cust_nbr = Orders.cust_nbr)
+  FROM Customers;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT cust_nbr, cust_name, order_amt
+  FROM Customers
+       LEFT OUTER JOIN Orders
+       ON Customers.cust_nbr = Orders.cust_nbr;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT req_date, req_qty,
+       (SELECT SUM(req_qty)
+          FROM InventoryAdjustments AS A2
+         WHERE A2.req_date <= A1.req_date) AS req_onhand_qty
+  FROM InventoryAdjustments AS A1
+ ORDER BY req_date;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT A1.req_date, A1.req_qty,
+       SUM(A2.req_qty) AS req_onhand_qty
+  FROM InventoryAdjustments AS A1, InventoryAdjustments AS A2
+ WHERE A2.req_date <= A1.req_date
+ GROUP BY A1.req_date, A1.req_qty
+ ORDER BY A1.req_date;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ3
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT req_date, req_qty,
+       SUM(req_qty) OVER (ORDER BY req_date ASC
+                          ROWS UNBOUNDED PRECEDING)
+           AS req_onhand_qty
+  FROM InventoryAdjustments
+ ORDER BY req_date;
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.145 - 147, Copyright Elsevier 2006.

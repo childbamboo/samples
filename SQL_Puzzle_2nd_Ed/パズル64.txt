@@ -1,0 +1,113 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■問題文
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Boxes
+(box_id CHAR(1) NOT NULL,
+ dim    CHAR(1) NOT NULL,
+ PRIMARY KEY (box_id, dim),
+ low INTEGER NOT NULL,
+ high INTEGER NOT NULL);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT B1.box_id AS box1, B2.box_id AS box2
+  FROM Boxes AS B1, Boxes AS B2
+ WHERE B1.box_id < B2.box_id
+   AND NOT EXISTS
+       (SELECT *
+          FROM Boxes AS B3, Boxes AS B4
+         WHERE B3.box_id = B1.box_id
+           AND B4.box_id = B2.box_id
+           AND B4.dim = B3.dim
+           AND (B4.high < B3.low OR B4.low > B3.high))
+ GROUP BY B1.box_id, B2.box_id;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT B1.box_id AS box1, B2.box_id AS box2
+  FROM Boxes AS B1, Boxes AS B2
+ WHERE B1.low BETWEEN B2.low AND B2.high
+   AND B1.dim = B2.dim
+   AND B1.box_id <> B2.box_id
+ GROUP BY B1.box_id, B2.box_id
+HAVING COUNT(*)
+          = (SELECT COUNT(*)
+               FROM Boxes AS B3
+              WHERE B3.box_id = B1.box_id);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Boxes
+(box_id CHAR(1) NOT NULL,
+ dim CHAR(1) NOT NULL,
+ PRIMARY KEY (box_id, dim),
+ low INTEGER NOT NULL,
+ high INTEGER NOT NULL,
+ CHECK (low < high));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO Boxes VALUES ('A', 'x', 0, 2);
+INSERT INTO Boxes VALUES ('B', 'x', 1, 3);
+INSERT INTO Boxes VALUES ('C', 'x', 10, 12);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+--1次元の場合
+SELECT B1.box_id, B2.box_id
+  FROM Boxes AS B1, Boxes AS B2
+ WHERE B1.box_id < B2.box_id
+   AND (   (B1.high BETWEEN B2.low and B2.high)
+        OR (B2.high BETWEEN B1.low and B1.high));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO Boxes VALUES ('A', 'y', 0, 2);
+INSERT INTO Boxes VALUES ('B', 'y', 1, 3);
+INSERT INTO Boxes VALUES ('C', 'y', 0, 4);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- 2次元の場合：第1案
+SELECT B1.box_id, B2.box_id
+  FROM Boxes AS B1, Boxes AS B2
+ WHERE B1.box_id < B2.box_id
+   AND B1.dim = B2.dim
+   AND (   (B1.high BETWEEN B2.low and B2.high)
+        OR (B2.high BETWEEN B1.low and B1.high));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- 2次元の場合：第2案
+SELECT B1.box_id, B2.box_id
+  FROM Boxes AS B1, Boxes AS B2
+ WHERE B1.box_id < B2.box_id
+   AND B1.dim = B2.dim
+   AND (   (B1.high BETWEEN B2.low and B2.high)
+        OR (B2.high BETWEEN B1.low and B1.high));
+ GROUP BY B1.box_id, B2.box_id
+HAVING COUNT(B1.dim) = 2;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+--3次元の場合
+INSERT INTO Boxes VALUES ('A', 'z', 0, 2);
+INSERT INTO Boxes VALUES ('B', 'z', 1, 3);
+INSERT INTO Boxes VALUES ('C', 'z', 0, 100);
+もうお分かりだろうが、HAVING句を次のように変える。
+COUNT(B1.dim) = 3
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+COUNT(B1.dim) = (SELECT COUNT(DISTINCT dim) FROM Boxes)
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.257 - 260, Copyright Elsevier 2006.

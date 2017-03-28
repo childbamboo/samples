@@ -1,0 +1,93 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■問題文
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE CallsTable
+(call_id INTEGER IDENTITY(1,1) NOT NULL PRIMARY KEY, --実装時の
+ client_id INTEGER NOT NULL,                           データ型
+ employee_id INTEGER NOT NULL,      -- 列名が長くて覚えにくい
+ call_date SMALLDATETIME NOT NULL,  -- RDBMS依存のデータ型
+ duration INTEGER NOT NULL,
+ start_time SMALLDATETIME NOT NULL, -- RDBMS依存のデータ型
+ end_time INTEGER NOT NULL);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE ScheduledCalls
+(client_id INTEGER NOT NULL
+   REFERENCES Clients (client_id),
+ scheduled_start_time TIMESTAMP NOT NULL,
+ scheduled_end_time TIMESTAMP NOT NULL,
+   CHECK (scheduled_start_time < scheduled_end_time),
+ emp_id CHAR(9) DEFAULT '{xxxxxxx}' NOT NULL
+   REFERENCES Personnel (emp_id),
+ PRIMARY KEY (client_id, emp_id, scheduled_start_time));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Clients
+(client_id INTEGER NOT NULL PRIMARY KEY,
+ first_name VARCHAR(15) NOT NULL,
+ last_name VARCHAR(20) NOT NULL,
+ phone_nbr CHAR(15) NOT NULL,
+ phone_nbr_2 CHAR(15),
+ client_street VARCHAR(35) NOT NULL,
+ client_city_name VARCHAR(20) NOT NULL);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Personnel
+(emp_id CHAR(9) NOT NULL PRIMARY KEY,
+ first_name VARCHAR(15) NOT NULL,
+ last_name VARCHAR(20) NOT NULL,
+ home_phome_nbr CHAR(15) NOT NULL,
+ cell_phone_nbr CHAR(15) NOT NULL,
+ street_addr VARCHAR(35) NOT NULL,
+ city_name VARCHAR(20) NOT NULL,
+ zip_code CHAR(5) NOT NULL);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Services
+(client_id INTEGER NOT NULL REFERENCES Clients,
+ emp_id CHAR(9) NOT NULL REFERENCES Personnel,
+ start_time TIMESTAMP NOT NULL,
+ end_time TIMESTAMP,  -- まだ仕事中の場合はNULL
+  CHECK (start_time < end_time),
+ sku INTEGER NOT NULL,
+ PRIMARY KEY (client_id, emp_id, start_time, sku));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE PersonnelSchedule
+(emp_id CHAR(9) NOT NULL
+   REFERENCES Personnel(emp_id),
+ avail_start_time TIMESTAMP NOT NULL,
+ avail_end_time TIMESTAMP NOT NULL,
+  CHECK (avail_start_time < avail_end_time),
+ PRIMARY KEY (emp_id, avail_start_time));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT P.emp_id,
+       S.client_id,
+       S.scheduled_start_time,
+       S.scheduled_end_time
+  FROM ScheduledCalls AS S,
+       PersonnelSchedule AS P
+ WHERE S.emp_id = P.emp_id
+   AND P.emp_id <> '{xxxxxxx}'
+   AND S.scheduled_start_time
+       BETWEEN P.avail_start_time AND P.avail_end_time
+   AND S.scheduled_end_time
+       BETWEEN P.avail_start_time AND P.avail_end_time;
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.300 - 303, Copyright Elsevier 2006.

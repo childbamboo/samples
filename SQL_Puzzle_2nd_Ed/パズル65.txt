@@ -1,0 +1,45 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ñ‚ëËï∂
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE PriceByAge
+(product_id CHAR(10) NOT NULL,
+ low_age INTEGER NOT NULL,
+ high_age INTEGER NOT NULL,
+ CHECK (low_age < high_age),
+ product_price DECIMAL(12,4) NOT NULL,
+ PRIMARY KEY (product_id, low_age));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO PriceByAge VALUES ('Product1', 5, 15, 20.00);
+INSERT INTO PriceByAge VALUES ('Product1', 16, 60, 18.00);
+INSERT INTO PriceByAge VALUES ('Product1', 65, 150, 17.00);
+INSERT INTO PriceByAge VALUES ('Product2', 1, 5, 20.00);
+...
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT P.product_id
+  FROM PriceByAge AS P, Sequence AS S
+ WHERE S.seq BETWEEN P.low_age AND P.high_age
+   AND S.seq <= 150
+ GROUP BY P.product_id
+HAVING COUNT(seq) = 150;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT product_id
+  FROM PriceByAge
+ GROUP BY product_id
+HAVING SUM(high_age - low_age + 1) = 150;
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.261 - 262, Copyright Elsevier 2006.

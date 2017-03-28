@@ -1,0 +1,102 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■問題文
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Accounts
+(acct_nbr INTEGER NOT NULL PRIMARY KEY);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO Accounts VALUES(1), (2), (3), (4);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Foo
+(acct_nbr INTEGER NOT NULL
+   REFERENCES Accounts(acct_nbr),
+ foo_qty INTEGER NOT NULL);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO Foo VALUES (1, 10);
+INSERT INTO Foo VALUES (2, 20);
+INSERT INTO Foo VALUES (2, 40);
+INSERT INTO Foo VALUES (3, 80);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Bar
+(acct_nbr INTEGER NOT NULL
+   REFERENCES Accounts(acct_nbr),
+ bar_qty INTEGER NOT NULL);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO Bar VALUES (2, 160);
+INSERT INTO Bar VALUES (3, 320);
+INSERT INTO Bar VALUES (3, 640);
+INSERT INTO Bar VALUES (3, 1);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT A.acct_nbr,
+       COALESCE(F.foo_qty, 0) AS foo_qty_tot,
+       COALESCE(B.bar_qty, 0) AS bar_qty_tot
+  FROM Accounts AS A
+       LEFT OUTER JOIN
+       (SELECT acct_nbr, SUM(foo_qty) AS foo_qty
+          FROM Foo
+         GROUP BY acct_nbr) AS F
+       ON F.acct_nbr = A.acct_nbr
+       LEFT OUTER JOIN
+       (SELECT acct_nbr, SUM(bar_qty) AS bar_qty
+          FROM Bar
+         GROUP BY acct_nbr) AS B
+       ON F.acct_nbr = B.acct_nbr;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT A.acct_nbr,
+       COALESCE(SUM(F.foo_qty), 0) AS foo_qty_tot,
+       COALESCE(MAX(B.bar_qty), 0) AS bar_qty_tot
+  FROM (SELECT * FROM Accounts) AS A
+       LEFT OUTER JOIN
+      (SELECT * FROM Foo) AS F
+       ON A.acct_nbr = F.acct_nbr
+       LEFT OUTER JOIN
+      (SELECT acct_nbr, SUM(bar_qty) AS bar_qty
+         FROM Bar
+        GROUP BY acct_nbr) AS B
+       ON A.acct_nbr = B.acct_nbr
+ GROUP BY A.acct_nbr;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+■答えその2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT acct_nbr,
+       COALESCE (SUM(foo_qty), 0) AS foo_qty_tot,
+       COALESCE (SUM(bar_qty), 0) AS bar_qty_tot
+  FROM ((SELECT A1.acct_nbr, foo_qty, bar_qty
+           FROM Accounts AS A1
+                LEFT OUTER JOIN
+                (SELECT acct_nbr, foo_qty, 0 AS bar_qty
+                   FROM Foo) AS F
+                ON A1.acct_nbr = F.acct_nbr) -- Fooのデータ
+        UNION ALL
+        (SELECT A2.acct_nbr, foo_qty, bar_qty
+           FROM Accounts AS A2
+                LEFT OUTER JOIN
+                (SELECT acct_nbr, 0 AS foo_qty, bar_qty
+                   FROM Bar) AS B
+                ON A2.acct_nbr = B.acct_nbr) -- Barのデータ
+       ) AS X (acct_nbr, foo_qty, bar_qty) -- FooとBarが1つに
+ GROUP BY acct_nbr;
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.306 - 308, Copyright Elsevier 2006.

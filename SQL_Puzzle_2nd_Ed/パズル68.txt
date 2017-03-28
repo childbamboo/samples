@@ -1,0 +1,75 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ñ‚ëËï∂
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Schedule
+(route_nbr INTEGER NOT NULL,
+ depart_time TIMESTAMP NOT NULL,
+ arrive_time TIMESTAMP NOT NULL,
+ CHECK (depart_time < arrive_time),
+ PRIMARY KEY (route_nbr, depart_time));
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO Schedule
+VALUES (3, '2006-02-09 10:00', '2006-02-09 14:00'),
+       (4, '2006-02-09 16:00', '2006-02-09 17:00'),
+       (5, '2006-02-09 18:00', '2006-02-09 19:00'),
+       (6, '2006-02-09 20:00', '2006-02-09 21:00'),
+       (7, '2006-02-09 11:00', '2006-02-09 13:00'),
+       (8, '2006-02-09 15:00', '2006-02-09 16:00'),
+       (9, '2006-02-09 18:00', '2006-02-09 20:00');
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT route_nbr, depart_time, arrive_time
+  FROM Schedule
+ WHERE depart_time
+       = (SELECT MIN(depart_time)
+            FROM Schedule
+           WHERE :my_time <= depart_time);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Schedule
+(route_nbr INTEGER NOT NULL,
+ wait_time TIMESTAMP NOT NULL,
+ depart_time TIMESTAMP NOT NULL,
+ arrive_time TIMESTAMP NOT NULL,
+ CHECK (depart_time < arrive_time),
+ PRIMARY KEY (route_nbr, depart_time));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO Schedule
+VALUES (3, '2006-02-09 00:00', '2006-02-09 10:00',
+        '2006-02-09 14:00'),
+       (7, '2006-02-09 10:00', '2006-02-09 11:00',
+        '2006-02-09 13:00'),
+       (8, '2006-02-09 11:00', '2006-02-09 15:00',
+        '2006-02-09 16:00'),
+       (4, '2006-02-09 15:00', '2006-02-09 16:00',
+        '2006-02-09 17:00'),
+       (5, '2006-02-09 16:00', '2006-02-09 18:00',
+        '2006-02-09 19:00'),
+       (9, '2006-02-09 16:00', '2006-02-09 18:00',
+        '2006-02-09 20:00'),
+       (6, '2006-02-09 18:00', '2006-02-09 20:00',
+        '2006-02-09 21:00');
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT route_nbr, depart_time, arrive_time
+  FROM Schedule
+ WHERE :my_time > wait_time AND :my_time <= depart_time;
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.280 - 282, Copyright Elsevier 2006.

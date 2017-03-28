@@ -1,0 +1,122 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ñ‚ëËï∂
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE StockHistory
+(ticker_sym CHAR(5) NOT NULL,
+ sale_date DATE DEFAULT CURRENT_DATE NOT NULL,
+ closing_price DECIMAL (10,4) NOT NULL,
+ trend INTEGER DEFAULT 0 NOT NULL
+   CHECK(trend IN(-1, 0, 1)),
+ PRIMARY KEY (ticker_sym, sale_date));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO StockHistory (ticker_sym, sale_date, closing_price)
+VALUES ('XXX', '2000-04-01', 10.75),
+       ('XXX', '2000-04-03', 200.00);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO StockHistory (ticker_sym, sale_date, closing_price)
+VALUES ('XXX', '2000-04-02', 313.25);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+INSERT INTO StockHistory 
+(ticker_sym, sale_date, closing_price, trend)
+VALUES (:new_ticker_sym, :new_sale_date, :new_closing_price,
+        COALESCE(SIGN(:new_closing_price
+        - (SELECT H1.closing_price
+             FROM StockHistory AS H1
+            WHERE H1.ticker_sym = StockHistory.ticker_sym
+              AND H1.sale_date
+                  = (SELECT MAX(sale_date)
+                       FROM StockHistory AS H2
+                      WHERE H2.ticker_sym = :new_ticker_sym
+                        AND H2.sale_date < :new_sale_date))), 0));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ3
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+UPDATE StockHistory
+   SET trend
+       = COALESCE(SIGN(closing_price
+         - (SELECT H1.closing_price
+              FROM StockHistory AS H1
+             WHERE H1.ticker_sym = StockHistory.ticker_sym
+               AND H1.sale_date =
+                   (SELECT MAX(sale_date)
+                      FROM StockHistory AS H2
+                     WHERE H2.ticker_sym
+                           = StockHistory.ticker_sym
+                       AND H2.sale_date
+                           < StockHistory.sale_date))),0);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+UPDATE StockHistory
+   SET trend = ...
+ WHERE trend IS NULL;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE StockHistory
+(ticker_sym CHAR(5) NOT NULL,
+ sale_date DATE DEFAULT CURRENT_DATE NOT NULL,
+ closing_price DECIMAL (10,4) NOT NULL,
+ PRIMARY KEY (ticker_sym, sale_date));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Åyèâî≈ëÊ1ç¸åfç⁄î≈ Å¶â∫ÇÃèCê≥î≈ÇÇ≤égópÇ≠ÇæÇ≥Ç¢Åz
+CREATE VIEW StockTrends
+(ticker_sym, sale_date, closing_price, trend)
+AS SELECT H1.ticker_sym, H1.sale_date, H1.closing_price, 
+          COALESCE(SIGN(MAX(H2.closing_price)
+          - H1.closing_price), 0) AS trend
+     FROM StockHistory AS H1
+          LEFT OUTER JOIN StockHistory AS H2
+          ON H1.ticker_sym = H2.ticker_sym
+          AND H2.sale_date < H1.sale_date
+    GROUP BY H1.ticker_sym, H1.sale_date, H1.closing_price;
+
+
+ÅyèCê≥î≈Åz
+CREATE VIEW StockTrends
+(ticker_sym, sale_date, closing_price, trend)
+AS SELECT ticker_sym, sale_date, closing_price,
+          SIGN(closing_price -
+                (SELECT closing_price
+                   FROM StockHistory H2
+                  WHERE H1.ticker_sym = H2.ticker_sym
+                    AND H2.sale_date = (SELECT MAX(H3.sale_date)
+                                          FROM StockHistory H3
+                                         WHERE H2.ticker_sym = H3.ticker_sym
+                                           AND H3.sale_date < H1.sale_date))) AS trend
+     FROM StockHistory H1;
+
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ4
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE VIEW StockTrends 
+(ticker_sym, sale_date, closing_price, trend)
+AS SELECT ticker_sym, sale_date, closing_price,
+          COALESCE(SIGN(closing_price - MAX(closing_price)
+             OVER(PARTITION BY ticker_sym
+             ORDER BY sale_date ASC
+             ROWS BETWEEN 1 PRECEDING AND 1 PRECEDING)), )
+     FROM StockHistory;
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.292 - 296, Copyright Elsevier 2006.

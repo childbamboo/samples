@@ -1,0 +1,72 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ñ‚ëËï∂
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Samples
+(sample_time TIMESTAMP NOT NULL PRIMARY KEY,
+ load REAL NOT NULL);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ1
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE Samples
+(sample_time TIMESTAMP NOT NULL PRIMARY KEY,
+ moving_avg REAL DEFAULT 0 NOT NULL ,
+ load REAL DEFAULT 0 NOT NULL);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+UPDATE Samples
+SET moving_avg
+    = (SELECT AVG(S1.load)
+         FROM Samples AS S1
+        WHERE S1.sample_time
+              IN (Samples.sample_time,
+                 (Samples.sample_time - INTERVAL '15' MINUTE),
+                 (Samples.sample_time - INTERVAL '30' MINUTE),
+                 (Samples.sample_time - INTERVAL '45' MINUTE)));
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ2
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+UPDATE Samples
+   SET moving_avg
+       = (SELECT AVG(S1.load)
+            FROM Samples AS S1
+           WHERE S1.sample_time
+                 BETWEEN (Samples.sample_time - INTERVAL '1' HOUR)
+                     AND Samples.sample_time);
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ3
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT S1.sample_time, AVG(S2.load) AS avg_prev_hour_load
+  FROM Samples AS S1, Samples AS S2
+ WHERE S2.sample_time BETWEEN (S1.sample_time - INTERVAL '1' HOUR)
+                          AND S1.sample_time
+ GROUP BY S1.sample_time;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Å°ìöÇ¶ÇªÇÃ4
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT *
+  FROM (SELECT sample_time,
+        AVG(load) OVER (ORDER BY sample_time ASC ROWS 4 PRECEDING)
+          FROM Samples)
+ WHERE EXTRACT(MINUTE FROM sample_time) = 00;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE VIEW DailyTimeSlots (slot_timestamp)
+AS SELECT CURRENT_DATE + CAST(tick AS MINUTES)
+     FROM ClockTicks;
+
+
+
+=================================================================
+This article was published in JOE CELKO'S SQL PUZZLES AND ANSWERS
+Second Edition, Joe Celko, pp.152 - 154, Copyright Elsevier 2006.
