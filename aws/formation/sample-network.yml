@@ -1,0 +1,156 @@
+# http://qiita.com/na0AaooQ/items/251790a7ef311804b77e
+AWSTemplateFormatVersion: 2010-09-09
+Description: Create AWS CloudFormation Customize Virtual Private Cloud
+Parameters:
+  VpcName:
+    Description: Please input VPC name.
+    Type: String
+    Default: example-vpc
+    AllowedPattern: '[-a-zA-Z0-9]*'
+    ConstraintDescription: ''
+  VpcCidrBlock:
+    Type: String
+    Description: Please input an IP range in VPC.
+    Default: 10.0.0.0/16
+    AllowedPattern: '(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/16'
+    ConstraintDescription: ''
+  VpcSubnetNamePublic1c:
+    Description: Please input the subnet name of example-vpc-public-subnet-1c.
+    Type: String
+    Default: example-vpc-public-subnet-1c
+    AllowedPattern: '[-a-zA-Z0-9]*'
+    ConstraintDescription: ''
+  VpcSubnetCidrBlockPublic1c:
+    Type: String
+    Description: Please input an IP range in example-vpc-public-subnet-1c.
+    Default: 10.0.3.0/24
+    AllowedPattern: '(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/24'
+    ConstraintDescription: ''
+  InternetGatewayName:
+    Description: Please input the name of Internet Gateway.
+    Type: String
+    Default: example-vpc-igw
+    AllowedPattern: '[-a-zA-Z0-9]*'
+    ConstraintDescription: ''
+  InstanceType:
+    Description: EC2 instance type
+    Type: String
+    Default: t2.nano
+    AllowedValues:
+      - t1.micro
+      - t2.nano
+      - t2.micro
+      - m1.small
+      - m1.medium
+      - m1.large
+      - m1.xlarge
+      - m2.xlarge
+      - m2.2xlarge
+      - m2.4xlarge
+      - m3.xlarge
+      - m3.2xlarge
+      - c1.medium
+      - c1.xlarge
+      - cc1.4xlarge
+      - cc2.8xlarge
+      - cg1.4xlarge
+    ConstraintDescription: must be a valid EC2 instance type.
+  NameTags:
+    Description: EC2 instance Name Tags
+    Type: String
+    Default: example-vpc-server
+    AllowedPattern: '[\x20-\x7E]*'
+    ConstraintDescription: must be a valid EC2 instance Name Tags.
+  KeyName:
+    Description: Name of an existing EC2 KeyPair to enable SSH access to the instance
+    Type: String
+    MinLength: '1'
+    MaxLength: '255'
+    Default: example-keypair
+    AllowedPattern: '[\x20-\x7E]*'
+    ConstraintDescription: can contain only ASCII characters.
+  SSHLocation:
+    Description: ' The IP address range that can be used to SSH to the EC2 instances'
+    Type: String
+    MinLength: '9'
+    MaxLength: '18'
+    Default: 10.0.0.0/16
+    AllowedPattern: '(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})'
+    ConstraintDescription: must be a valid IP CIDR range of the form x.x.x.x/x.
+Mappings: {}
+Resources:
+  VPC:
+    Type: 'AWS::EC2::VPC'
+    Properties:
+      CidrBlock: !Ref VpcCidrBlock
+      EnableDnsSupport: 'true'
+      EnableDnsHostnames: 'true'
+      Tags:
+        - Key: Name
+          Value: !Ref VpcName
+  SubnetPublic1c:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZone: ap-northeast-1c
+      CidrBlock: !Ref VpcSubnetCidrBlockPublic1c
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Ref VpcSubnetNamePublic1c
+  InternetGateway:
+    Type: 'AWS::EC2::InternetGateway'
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Ref InternetGatewayName
+  GatewayToInternet:
+    Type: 'AWS::EC2::VPCGatewayAttachment'
+    Properties:
+      VpcId: !Ref VPC
+      InternetGatewayId: !Ref InternetGateway
+  PublicRouteTable:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Application
+          Value: !Ref 'AWS::StackId'
+        - Key: Network
+          Value: Public
+  PublicRoute:
+    Type: 'AWS::EC2::Route'
+    DependsOn: GatewayToInternet
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+  PublicSubnetRouteTableAssociatio1c:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      SubnetId: !Ref SubnetPublic1c
+      RouteTableId: !Ref PublicRouteTable
+  InstanceSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      VpcId: !Ref VPC
+      GroupDescription: Enable SSH access via port 22
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '22'
+          ToPort: '22'
+          CidrIp: !Ref SSHLocation
+  EC2Instance:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      ImageId: ami-03cf3903
+      SecurityGroupIds:
+        - !Ref InstanceSecurityGroup
+      SubnetId: !Ref SubnetPublic1c
+      InstanceType: !Ref InstanceType
+      Tags:
+        - Key: Application
+          Value: string
+        - Key: Name
+          Value: !Ref NameTags
+Outputs: {}

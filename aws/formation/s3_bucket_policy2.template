@@ -1,0 +1,27 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "test",
+
+  "Resources" : {
+    "Bucket" : {
+      "Type" : "AWS::S3::Bucket"
+    },
+
+    "BucketPolicy" : {
+      "Type" : "AWS::CloudFormation::Stack",
+      "Properties" : {
+        "TemplateURL" : "https://s3-ap-northeast-1.amazonaws.com/cf-templates-9w9b3ersgzwe-ap-northeast-1/2017097M7W-template143oezn3myqk",
+        "Parameters" : {
+          "BucketName" : { "Ref" : "Bucket" }
+        }
+      }
+    }
+  },
+
+  "Outputs" : {
+    "S3BucketPolicy" : {
+      "Value" : { "Fn::GetAtt" : ["BucketPolicy", "Outputs.S3BucketPolicy"]}
+    }
+  }
+}
