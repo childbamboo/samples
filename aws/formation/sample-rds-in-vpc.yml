@@ -1,0 +1,43 @@
+# http://qiita.com/na0AaooQ/items/251790a7ef311804b77e
+AWSTemplateFormatVersion: 2010-09-09
+Description: Create AWS CloudFormation Customize Virtual Private Cloud
+Resources:
+  MyDB: 
+    Type: "AWS::RDS::DBInstance"
+    Properties: 
+      AllocatedStorage: "100"
+      DBInstanceClass: "db.m1.small"
+      DBSubnetGroupName:
+        Ref: DBSubnetGroup
+      Engine: "MySQL"
+      EngineVersion: "5.5"
+      Iops: "1000"
+      MasterUsername: "DBUser"
+      MasterUserPassword: "DBPassword"
+      VPCSecurityGroups:
+      - !GetAtt DBEC2SecurityGroup.GroupId
+      Tags:
+        - Key: Name
+          Value: 'example-rds' 
+  DBSubnetGroup: 
+    Type: "AWS::RDS::DBSubnetGroup"
+    Properties: 
+      DBSubnetGroupDescription: "description"
+      SubnetIds: 
+        - "subnet-4182e719"
+        - "subnet-ff96cd89"
+      Tags:
+        - Key: Name
+          Value: 'example-rds' 
+  DBEC2SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      VpcId: "vpc-16e67572"
+      GroupDescription: Open database for access
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: '3306'
+        ToPort: '3306'
+      Tags:
+        - Key: Name
+          Value: 'example-rds' 
