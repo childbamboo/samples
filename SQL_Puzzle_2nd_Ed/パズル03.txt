@@ -28,6 +28,14 @@ SELECT E1.proc_id, E1.event_time,
   FROM Events AS E1
  ORDER BY E1.proc_id, E1.event_time;
 
+
+
+50,000 x 1,000 = 50,000,000 x 30
+  500,000,000
+1,500,000,000
+
+
+
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 SELECT proc_id, MAX(instantaneous_count) AS max_inst
