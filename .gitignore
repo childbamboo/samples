@@ -21,3 +21,4 @@
 vendor
 Gemfile.lock
 *.sw*
+.DS_Store
